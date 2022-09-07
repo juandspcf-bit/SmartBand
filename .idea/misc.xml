@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.23741007194244604" />
+        <entry key="app/src/main/res/drawable-v24/ic_baseline_directions_walk_bus.xml" value="0.1755" />
+        <entry key="app/src/main/res/drawable/disconnected.xml" value="0.3325" />
+        <entry key="app/src/main/res/drawable/ic_baseline_link_off_24.xml" value="0.3325" />
+        <entry key="app/src/main/res/drawable/shape_buttons.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/shape_buttons2.xml" value="0.144" />
+        <entry key="app/src/main/res/font/.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/layout-1280x800-v29/row_layout_bp.xml" value="0.5625" />
+        <entry key="app/src/main/res/layout-800x1200/fragment_summary_sleep.xml" value="0.11" />
+        <entry key="app/src/main/res/layout-960x600/fragment_sports_summary.xml" value="0.12760416666666666" />
+        <entry key="app/src/main/res/layout-960x600/row_layout_sleep_card.xml" value="0.17736625514403292" />
+        <entry key="app/src/main/res/layout-land/fragment_data_summary_v2.xml" value="1.0" />
+        <entry key="app/src/main/res/layout-land/fragment_personals_fields.xml" value="0.309009009009009" />
+        <entry key="app/src/main/res/layout-land/row_layout_sports.xml" value="0.38385416666666666" />
+        <entry key="app/src/main/res/layout-large/fragment_data_steps.xml" value="0.16" />
+        <entry key="app/src/main/res/layout-large/fragment_data_summary.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-large/fragment_personal_fields_scrolling.xml" value="0.240625" />
+        <entry key="app/src/main/res/layout-large/fragment_personals_fields.xml" value="0.38994169096209913" />
+        <entry key="app/src/main/res/layout-normal-port-960x600-v30/fragment_sports_summary.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-normal/activity_dash_board_v2.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-normal/fragment_data_steps.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-normal/fragment_data_summary.xml" value="0.24188034188034188" />
+        <entry key="app/src/main/res/layout-normal/fragment_personal_fields_scrolling.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-port-1280x800-v28/row_layout_sleep_card.xml" value="0.5625" />
+        <entry key="app/src/main/res/layout-port-1280x800-v29/row_layout_sleep_card.xml" value="0.5625" />
+        <entry key="app/src/main/res/layout-port-600x960-v30/fragment_sports_v2_summary.xml" value="0.2890625" />
+        <entry key="app/src/main/res/layout-port-800x1200/fragment_summary_sleep.xml" value="0.36923076923076925" />
+        <entry key="app/src/main/res/layout-port-960x600-v30/fragment_sports_summary.xml" value="0.19192708333333333" />
+        <entry key="app/src/main/res/layout-port-960x600-v30/fragment_summary_bp.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-port-960x600-v30/row_layout_sleep_card.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-port-960x600-v30/row_layout_sports.xml" value="0.16" />
+        <entry key="app/src/main/res/layout-port-960x600/fragment_summary_bp.xml" value="0.22447916666666667" />
+        <entry key="app/src/main/res/layout-port-960x600/row_layout_sports.xml" value="0.16" />
+        <entry key="app/src/main/res/layout-small-port-960x600-v30/fragment_sports_summary.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-small/activity_dash_board_v2.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-small/fragment_personal_fields_scrolling.xml" value="0.75" />
+        <entry key="app/src/main/res/layout-small/fragment_personals_fields.xml" value="0.20246913580246914" />
+        <entry key="app/src/main/res/layout-sw411dp/fragment_summary_hr.xml" value="0.30782385634886705" />
+        <entry key="app/src/main/res/layout-sw600dp-port/fragment_summary_bp.xml" value="0.12916666666666668" />
+        <entry key="app/src/main/res/layout-sw600dp-port/row_layout_sleep_card.xml" value="0.10182291666666667" />
+        <entry key="app/src/main/res/layout-sw600dp/activity_dash_board_v2.xml" value="0.2635416666666667" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_personal_fields_scrolling.xml" value="0.21" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_personals_fields.xml" value="0.17" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_sports_summary.xml" value="0.12760416666666666" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_summary_bp.xml" value="0.22" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_summary_sleep.xml" value="0.15" />
+        <entry key="app/src/main/res/layout-sw600dp/row_layout_bp.xml" value="0.5" />
+        <entry key="app/src/main/res/layout-sw600dp/row_layout_sleep_card.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-sw600dp/row_layout_sports.xml" value="0.18" />
+        <entry key="app/src/main/res/layout-sw800dp-port/fragment_summary_hr.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout-sw800dp-port/row_layout_sleep_card.xml" value="0.10182291666666667" />
+        <entry key="app/src/main/res/layout-sw800dp/activity_dash_board_v2.xml" value="0.18" />
+        <entry key="app/src/main/res/layout-w400dp/fragment_personals_fields.xml" value="0.16073102155576383" />
+        <entry key="app/src/main/res/layout-xhdpi-960x600/fragment_summary_bp.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_dash_board_v2.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_dash_board_v3.xml" value="0.12578125" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_main2.xml" value="0.10078125" />
+        <entry key="app/src/main/res/layout/botton_sheet_date_picker.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/botton_sheet_height.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/botton_sheet_info_user.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/botton_sheet_weight.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/buttons_day_fragment_layout.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/content_dash_board_v2.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_daily_activity.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_data_steps.xml" value="0.3202223172295853" />
+        <entry key="app/src/main/res/layout/fragment_data_summary.xml" value="0.2291577597263788" />
+        <entry key="app/src/main/res/layout/fragment_data_summary_v2.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_first2.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_general_summary.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_main_dashboard.xml" value="0.15476699444206926" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.1466438648995297" />
+        <entry key="app/src/main/res/layout/fragment_personal_fields_scrolling.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/fragment_personals_fields.xml" value="0.20246913580246914" />
+        <entry key="app/src/main/res/layout/fragment_real_time_blood_pressue.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_real_time_ecg.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_real_time_heart_rate.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/fragment_real_time_info.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_realt_time_Steps.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/fragment_realt_time_data.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_realt_time_steps.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_sports_summary.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_sports_summary_sub.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_summary_activity.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_summary_bp.xml" value="0.3625" />
+        <entry key="app/src/main/res/layout/fragment_summary_hr.xml" value="0.30782385634886705" />
+        <entry key="app/src/main/res/layout/fragment_summary_sleep.xml" value="0.346636259977195" />
+        <entry key="app/src/main/res/layout/fragment_summary_sop2.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/fragment_tabs_daily_activity.xml" value="0.27704147071398033" />
+        <entry key="app/src/main/res/layout/fragment_tabs_day.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_tabs_day_v2.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_today.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_yesterday.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/gragment_real_time_ecg.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout.xml" value="0.195382642154767" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/row_layou_hr.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/row_layout_bp.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/row_layout_calories.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/row_layout_distance.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/row_layout_sleep_card.xml" value="0.2599401453612655" />
+        <entry key="app/src/main/res/layout/row_layout_sports.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/settings.xml" value="0.2802056555269923" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.12994791666666666" />
+        <entry key="app/src/main/res/layout/tab_days_layout.xml" value="0.18697916666666667" />
+        <entry key="app/src/main/res/layout/tabs_day_fragment_layout.xml" value="0.22" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1078125" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/blood_pressure.xml" value="0.203" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/blood_pressure_round.xml" value="0.1845" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/heartRate.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/heart_rate.xml" value="0.1845" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/heart_rate_round.xml" value="0.1845" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/steps_counter_round.xml" value="0.1" />
+        <entry key="app/src/main/res/xml/provider_paths.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.16" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

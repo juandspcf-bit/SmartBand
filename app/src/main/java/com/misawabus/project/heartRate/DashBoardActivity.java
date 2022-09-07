@@ -1,0 +1,298 @@
+package com.misawabus.project.heartRate;
+
+import static com.misawabus.project.heartRate.Utils.DateUtils.getPastYesterdayFormattedDate;
+import static com.misawabus.project.heartRate.Utils.DateUtils.getYesterdayFormattedDate;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.inuker.bluetooth.library.Constants;
+import com.misawabus.project.heartRate.Utils.DBops;
+import com.misawabus.project.heartRate.Utils.DateUtils;
+import com.misawabus.project.heartRate.databinding.ActivityDashBoardV2Binding;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
+import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
+import com.misawabus.project.heartRate.device.config.DeviceConfig;
+import com.misawabus.project.heartRate.device.readData.DeviceReadData;
+import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
+import com.misawabus.project.heartRate.fragments.MainDashBoardFragment;
+import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
+import com.misawabus.project.heartRate.Database.entities.Device;
+import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.orhanobut.logger.Logger;
+import com.veepoo.protocol.VPOperateManager;
+import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+public class DashBoardActivity extends AppCompatActivity {
+    private final static String TAG = DashBoardActivity.class.getSimpleName();
+    private ActivityDashBoardV2Binding binding;
+    private String macAddress;
+    private DashBoardViewModel dashBoardViewModel;
+
+
+    ConnectivityManager connectivityManager;
+    ConnectivityManager.NetworkCallback myCallBack= new ConnectivityManager.NetworkCallback(){
+        @Override
+        public void onAvailable(@NonNull Network network) {
+            super.onAvailable(network);
+            dashBoardViewModel.setWiFiEnable(true);
+        }
+
+        @Override
+        public void onLost(@NonNull Network network) {
+            super.onLost(network);
+            dashBoardViewModel.setWiFiEnable(false);
+        }
+    };
+    private VPOperateManager mVpoperateManager;
+    private List<SleepDataUI> todaySleepDataList;
+    private List<SleepDataUI> yesterdaySleepDataList;
+    private List<SleepDataUI> pastYesterdaySleepDataList;
+
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
+        mVpoperateManager = VPOperateManager.getMangerInstance(getApplicationContext());
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Log.d("onBackPressed","...........");
+                Intent intent = new Intent(DashBoardActivity.this, ScanConnectionActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("keep", false);
+                //ActivityCompat.finishAffinity(DashBoardActivity.this);
+/*                mVpoperateManager.disconnectWatch(new IBleWriteResponse() {
+                    @Override
+                    public void onResponse(int i) {
+
+                    }
+                });*/
+                //startActivity(intent);
+                //finish();
+
+
+            }
+        });
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        Bundle extras = getIntent().getExtras();
+        macAddress = extras.getString("deviceAddress");
+
+        DBops dbHandler = new DBops();
+        dbHandler.initViewModels(this);
+
+        DeviceReadData deviceReadData = new DeviceReadData(getApplicationContext(), this);
+
+
+        RealTimeTesterClass realTimeTesterClass = new RealTimeTesterClass(getApplicationContext(),this, getApplication());
+        DeviceConfig.enableDevice(getApplicationContext(), this);
+
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
+
+        windowInsetsController.setSystemBarsBehavior(
+                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+         );
+        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+
+
+        dashBoardViewModel = new ViewModelProvider(this).get(DashBoardViewModel.class);
+        dashBoardViewModel.setHealthsDataManager(deviceReadData);
+        dashBoardViewModel.setRealTimeTesterClass(realTimeTesterClass);
+        DeviceViewModel deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        deviceViewModel.setMacAddress(macAddress);
+
+        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, deviceDB -> {
+            Device device = deviceDB == null ? new Device() : deviceDB;
+            dashBoardViewModel.setDevice(device);
+        });
+
+
+
+        dashBoardViewModel.getIsEnableFeatures().observe(DashBoardActivity.this, isEnabled -> {
+            if (!isEnabled) return;
+            sleepUpdate();
+        });
+
+        dashBoardViewModel.getIsConnected().observe(this, aBoolean -> {
+            if(aBoolean) return;
+            final Map<String, Boolean> value = deviceViewModel.getDeviceFeatures().getValue();
+            value.replace("BP", false);
+            value.replace("HEARTDETECT", false);
+            value.replace("SPORTMODEL", false);
+            deviceViewModel.setDeviceFeatures(value);
+        });
+
+
+
+        dashBoardViewModel.getTodayUpdateSleepFullData().observe(this, sleepDataUIList -> {
+            if(sleepDataUIList==null) return;
+            todaySleepDataList = sleepDataUIList;
+        });
+
+        dashBoardViewModel.getYesterdayUpdateSleepFullData().observe(this, sleepDataUIList -> {
+            if(sleepDataUIList==null) return;
+            yesterdaySleepDataList = sleepDataUIList;
+        });
+
+        dashBoardViewModel.getPastYesterdayUpdateSleepFullData().observe(this, sleepDataUIList -> {
+            if(sleepDataUIList==null) return;
+            pastYesterdaySleepDataList = sleepDataUIList;
+        });
+
+
+        VPOperateManager.getMangerInstance(this).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {
+
+            @Override
+            public void onConnectStatusChanged(String mac, int status) {
+                if (status == Constants.STATUS_CONNECTED) {
+                    Logger.t(TAG).i("STATUS_CONNECTED");
+                } else if (status == Constants.STATUS_DISCONNECTED) {
+                    dashBoardViewModel.setIsConnected(false);
+                    Logger.t(TAG).i("STATUS_DISCONNECTED..........");
+                }
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView3, new MainDashBoardFragment()).commit();
+
+        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, new Observer<Device>() {
+            @Override
+            public void onChanged(Device device) {
+                if(device== null || device.getBirthDate()==null) return;
+                LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
+                int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
+                dashBoardViewModel.setAge(age);
+            }
+        });
+
+    }
+
+
+
+
+    private void sleepUpdate() {
+        if (todaySleepDataList != null) {
+            for (int i = 0; i < todaySleepDataList.size(); i++) {
+                SleepDataUI sleepDataUI = todaySleepDataList.get(i);
+                sleepDataUI.setIndex(i);
+                DBops.updateSleepData(todaySleepDataList.get(i), macAddress, DashBoardActivity.this, i);
+            }
+        }
+
+        if(yesterdaySleepDataList !=null) {
+            for (int i = 0; i < yesterdaySleepDataList.size(); i++) {
+                SleepDataUI sleepDataUI = yesterdaySleepDataList.get(i);
+                sleepDataUI.setIndex(i);
+                DBops.updateSleepData(yesterdaySleepDataList.get(i), macAddress, DashBoardActivity.this, i);
+            }
+        }else{
+            LiveData<SleepDataUI> singleRowForU = SleepDataUIViewModel
+                    .getSingleRowForU(getYesterdayFormattedDate(),
+                            macAddress,
+                            0);
+            Observer<SleepDataUI> MyObserver = new Observer<>() {
+                @Override
+                public void onChanged(SleepDataUI sleepDataUI) {
+                    if (sleepDataUI != null) {
+                        dashBoardViewModel.setYesterdayUpdateSleepFullData(Collections.singletonList(sleepDataUI));
+                    }
+                    singleRowForU.removeObserver(this);
+                }
+            };
+            singleRowForU.observe(this, MyObserver);
+        }
+
+        if(pastYesterdaySleepDataList !=null) {
+            for (int i = 0; i < pastYesterdaySleepDataList.size(); i++) {
+                SleepDataUI sleepDataUI = pastYesterdaySleepDataList.get(i);
+                sleepDataUI.setIndex(i);
+                DBops.updateSleepData(pastYesterdaySleepDataList.get(i), macAddress, DashBoardActivity.this, i);
+            }
+        }else{
+            LiveData<SleepDataUI> singleRowForU = SleepDataUIViewModel
+                    .getSingleRowForU(getPastYesterdayFormattedDate(),
+                            macAddress,
+                            0);
+            Observer<SleepDataUI> MyObserver = new Observer<>() {
+                @Override
+                public void onChanged(SleepDataUI sleepDataUI) {
+                    if (sleepDataUI != null) {
+                        dashBoardViewModel.setPastYesterdayUpdateSleepFullData(Collections.singletonList(sleepDataUI));
+                    }
+                    singleRowForU.removeObserver(this);
+                }
+            };
+            singleRowForU.observe(this, MyObserver);
+        }
+    }
+
+
+    private void registerCallBack(){
+        connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager.registerDefaultNetworkCallback(myCallBack);
+    }
+
+    private void unRegisterCallBack(){
+        if(connectivityManager==null) return;
+        connectivityManager.unregisterNetworkCallback(myCallBack);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
+        //ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        registerCallBack();
+    }
+
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DeviceConfig.disconnectDevice(getBaseContext());
+        unRegisterCallBack();
+        finish();
+        finishAndRemoveTask();
+    }
+
+
+
+
+}

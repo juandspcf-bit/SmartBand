@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/realTimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f2f2f2"
+        android:verticalScrollbarPosition="defaultPosition">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewRealTimeOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#0097A7"
+            app:layout_constraintBottom_toTopOf="@id/imageView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardViewRealTimeOptionsConstrainLy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <ImageButton
+                    android:id="@+id/imageButtonBloodP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_buttons"
+                    app:srcCompat="@mipmap/blood_pressure_foreground" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonHeartRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_buttons"
+                    app:srcCompat="@mipmap/heart_rate_foreground" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonRunner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_buttons"
+                    app:srcCompat="@mipmap/steps_counter_foreground" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonEcg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_buttons"
+                    app:srcCompat="@mipmap/ecg_foreground" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_buttons"
+                    app:srcCompat="@mipmap/thermo2_foreground" />
+
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow10"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/ap_transparent"
+                    android:orientation="horizontal"
+                    app:constraint_referenced_ids="imageButtonRunner,imageButtonHeartRate,imageButtonBloodP,imageButtonEcg,imageButtonTemp"
+                    app:flow_maxElementsWrap="3"
+                    app:flow_verticalGap="10dp"
+                    app:flow_wrapMode="aligned"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewRealTimeOptions"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/_c615f4bef38de411b56e4b1509d35b4" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</layout>

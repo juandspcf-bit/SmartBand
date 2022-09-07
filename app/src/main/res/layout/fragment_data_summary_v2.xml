@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="30dp">
+
+    <data>
+
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#d9eee1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipShareEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="share"
+                    app:chipIcon="@drawable/ic_baseline_attach_email_48"
+                    app:chipIconSize="32dp"
+                    app:chipIconTint="#2C4C2D"
+                    app:chipStrokeColor="#A69B9B"
+                    app:chipStrokeWidth="1dp"
+                    app:chipSurfaceColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.95"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentFitnessPlotCardView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="#282a35"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline45"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline46">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageViewRealStepsCounterDialog"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            app:srcCompat="@drawable/ic_baseline_directions_run_24"
+                            app:tint="#E4DA81"
+                            tools:layout_editor_absoluteX="190dp"
+                            tools:layout_editor_absoluteY="7dp"
+                            tools:srcCompat="@drawable/ic_baseline_directions_run_24" />
+
+                        <TextView
+                            android:id="@+id/textViewTitleRealStepsCounterDialog"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:text="@string/steps"
+                            android:textColor="@color/white"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="254dp"
+                            tools:layout_editor_absoluteY="92dp" />
+
+                        <TextView
+                            android:id="@+id/fragmentCounterSteps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="60sp"
+                            tools:layout_editor_absoluteX="284dp"
+                            tools:layout_editor_absoluteY="222dp" />
+
+
+                        <ImageView
+                            android:id="@+id/imageViewRealDistanceCounterDialog"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            app:srcCompat="@drawable/ic_baseline_add_road_24"
+                            app:tint="#E4DA81"
+                            tools:layout_editor_absoluteX="571dp"
+                            tools:layout_editor_absoluteY="185dp" />
+
+                        <TextView
+                            android:id="@+id/textViewTitleRealDistanceCounterDialog"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="Distance"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:layout_editor_absoluteX="560dp"
+                            tools:layout_editor_absoluteY="251dp" />
+
+                        <TextView
+                            android:id="@+id/textViewDistanceCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 Km"
+                            android:textColor="@color/white"
+                            android:textSize="34sp"
+                            tools:layout_editor_absoluteX="289dp"
+                            tools:layout_editor_absoluteY="413dp" />
+
+
+                        <ImageView
+                            android:id="@+id/imageViewRealCaloriesCounterDialog"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            app:srcCompat="@drawable/ic_baseline_local_fire_department_24"
+                            app:tint="#E4DA81"
+                            tools:layout_editor_absoluteX="571dp"
+                            tools:layout_editor_absoluteY="16dp" />
+
+                        <TextView
+                            android:id="@+id/textViewTitleRealCaloriesCounterDialog"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="Calories"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:layout_editor_absoluteX="563dp"
+                            tools:layout_editor_absoluteY="82dp" />
+
+                        <TextView
+                            android:id="@+id/textViewCaloriesCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="0 Kcal"
+                            android:textColor="@color/white"
+                            android:textSize="34sp"
+                            tools:layout_editor_absoluteX="103dp"
+                            tools:layout_editor_absoluteY="413dp" />
+
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:constraint_referenced_ids="imageViewRealDistanceCounterDialog,textViewTitleRealDistanceCounterDialog,textViewDistanceCounter"
+                            app:flow_verticalGap="10dp"
+                            app:flow_verticalStyle="spread_inside"
+                            tools:layout_editor_absoluteX="74dp"
+                            tools:layout_editor_absoluteY="287dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowSteps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="310dp"
+                            android:layout_marginStart="80dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="vertical"
+                            app:constraint_referenced_ids="imageViewRealStepsCounterDialog,textViewTitleRealStepsCounterDialog,fragmentCounterSteps"
+                            app:flow_verticalAlign="center"
+                            app:flow_verticalStyle="spread"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/flow14"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowCalories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:constraint_referenced_ids="imageViewRealCaloriesCounterDialog,textViewTitleRealCaloriesCounterDialog,textViewCaloriesCounter"
+                            app:flow_verticalGap="10dp"
+                            tools:layout_editor_absoluteX="145dp"
+                            tools:layout_editor_absoluteY="125dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flow14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="80dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="vertical"
+                            app:constraint_referenced_ids="flowCalories,flowDistance"
+                            app:flow_horizontalAlign="center"
+                            app:flow_horizontalStyle="spread_inside"
+                            app:flow_verticalGap="20dp"
+                            app:flow_wrapMode="aligned"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/flowSteps"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentRatePlotCardView"
+                    style="@style/cardViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragmentStepsPlotCardView">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/fragmentRatePlot"
+                            style="@style/APDefacto.Light"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            app:backgroundColor="@color/white"
+                            app:domainLineColor="@color/ap_transparent"
+                            app:domainOriginLineColor="@color/ap_transparent"
+                            app:graphBackgroundColor="@color/white"
+                            app:graphMarginLeft="50dp"
+                            app:graphMarginTop="30dp"
+                            app:graphWidthMode="fill"
+                            app:gridBackgroundColor="@color/ap_transparent"
+                            app:gridClippingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:legendVisible="false"
+                            app:lineLabelInsetLeft="4dp"
+                            app:lineLabelRotationBottom="-45"
+                            app:lineLabelTextColorLeft="#4B1263"
+                            app:lineLabels="left|bottom"
+                            app:rangeLineColor="#646D71"
+                            app:rangeStep="5dp"
+                            app:title="Heart Rate" />
+
+                        <ImageView
+                            android:id="@+id/noDataHRImageView"
+                            android:layout_width="92dp"
+                            android:layout_height="108dp"
+                            app:srcCompat="@drawable/ic_reshot_icon_heart_rate_p82mhqkrxl"
+                            tools:layout_editor_absoluteX="464dp"
+                            tools:layout_editor_absoluteY="130dp" />
+
+                        <TextView
+                            android:id="@+id/noDataHRTextView"
+                            android:layout_width="204dp"
+                            android:layout_height="68dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="No data"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="207dp"
+                            tools:layout_editor_absoluteY="50dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowNoHeartRateData"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="1dp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="noDataHRTextView,noDataHRImageView"
+                            app:flow_verticalStyle="packed"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentStepsPlotCardView"
+                    style="@style/cardViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guideline45">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/fragmentPlot"
+                            style="@style/APDefacto.Light"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            app:backgroundColor="@color/white"
+                            app:domainLineColor="@color/ap_transparent"
+                            app:domainOriginLineColor="@color/ap_transparent"
+                            app:graphBackgroundColor="@color/white"
+                            app:graphMarginLeft="50dp"
+                            app:graphMarginTop="20dp"
+                            app:graphWidthMode="fill"
+                            app:gridBackgroundColor="@color/white"
+                            app:gridClippingEnabled="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:legendVisible="false"
+                            app:lineLabelInsetLeft="4dp"
+                            app:lineLabelRotationBottom="-45"
+
+                            app:lineLabelTextColorLeft="#4B1263"
+                            app:lineLabels="left|bottom"
+                            app:rangeLineColor="#646D71"
+                            app:rangeStep="4dp"
+                            app:title="Steps" />
+
+                        <ImageView
+                            android:id="@+id/noDataStepsImageView"
+                            android:layout_width="92dp"
+                            android:layout_height="108dp"
+                            app:srcCompat="@drawable/_55347"
+                            tools:layout_editor_absoluteX="464dp" />
+
+                        <TextView
+                            android:id="@+id/noDataStepsTextView"
+                            android:layout_width="204dp"
+                            android:layout_height="68dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="No data"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="207dp"
+                            tools:layout_editor_absoluteY="50dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowNoStepsData"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="noDataStepsTextView,noDataStepsImageView"
+                            app:flow_verticalStyle="packed"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" >
+
+                        </androidx.constraintlayout.helper.widget.Flow>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentBloodPressureCardView"
+                    style="@style/cardViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragmentRatePlotCardView">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/fragmentBloodPressurePlot"
+                            style="@style/APDefacto.Light"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            app:backgroundColor="@color/white"
+                            app:domainLineColor="@color/ap_transparent"
+                            app:domainOriginLineColor="@color/ap_transparent"
+                            app:domainStep="10dp"
+                            app:graphBackgroundColor="@color/white"
+                            app:graphMarginLeft="50dp"
+                            app:graphMarginTop="30dp"
+                            app:graphWidthMode="fill"
+                            app:gridBackgroundColor="@color/ap_transparent"
+                            app:gridClippingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:legendVisible="false"
+                            app:lineLabelInsetLeft="4dp"
+                            app:lineLabelRotationBottom="-45"
+                            app:lineLabelTextColorLeft="#4B1263"
+                            app:lineLabels="left|bottom"
+                            app:rangeLineColor="#646D71"
+                            app:rangeStep="5dp"
+                            app:title="Blood Pressure" />
+
+                        <ImageView
+                            android:id="@+id/noDataBPImageView"
+                            android:layout_width="92dp"
+                            android:layout_height="108dp"
+                            app:srcCompat="@drawable/_184202"
+                            tools:layout_editor_absoluteX="464dp"
+                            tools:layout_editor_absoluteY="130dp" />
+
+                        <TextView
+                            android:id="@+id/noDataBPTextView"
+                            android:layout_width="204dp"
+                            android:layout_height="68dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="No data"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="207dp"
+                            tools:layout_editor_absoluteY="50dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowNoBPData"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="1dp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="noDataBPTextView,noDataBPImageView"
+                            app:flow_verticalStyle="packed"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentSleepPlotCardView"
+                    style="@style/cardViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragmentBloodPressureCardView">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/fragmentSleepPlot"
+                            style="@style/APDefacto.Light"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            app:backgroundColor="@color/white"
+                            app:domainLineColor="@color/ap_transparent"
+                            app:domainOriginLineColor="@color/ap_transparent"
+                            app:graphBackgroundColor="@color/white"
+                            app:graphMarginLeft="10dp"
+                            app:graphMarginTop="20dp"
+                            app:graphWidthMode="fill"
+                            app:gridBackgroundColor="@color/white"
+                            app:gridClippingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+
+                            app:legendVisible="false"
+                            app:lineLabelInsetLeft="4dp"
+
+                            app:lineLabelRotationBottom="-45"
+                            app:lineLabelTextColorLeft="#4B1263"
+                            app:lineLabels="bottom"
+                            app:rangeLineColor="#646D71"
+                            app:rangeStep="2dp"
+                            app:title="Sleep" />
+
+                        <ImageView
+                            android:id="@+id/noDataSleepImageView"
+                            android:layout_width="92dp"
+                            android:layout_height="108dp"
+                            app:srcCompat="@drawable/ic_reshot_icon_sleeping_x2ekjbl3yq"
+                            tools:layout_editor_absoluteX="464dp"
+                            tools:layout_editor_absoluteY="130dp" />
+
+                        <TextView
+                            android:id="@+id/noDataSleepTextView"
+                            android:layout_width="204dp"
+                            android:layout_height="68dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="No data"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="207dp"
+                            tools:layout_editor_absoluteY="50dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowNoSleepData"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="1dp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="noDataSleepTextView,noDataSleepImageView"
+                            app:flow_verticalStyle="packed"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentSop2PlotCardView"
+                    style="@style/cardViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragmentSleepPlotCardView">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/fragmentSop2Plot"
+                            style="@style/APDefacto.Light"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            app:backgroundColor="@color/white"
+                            app:domainLineColor="@color/ap_transparent"
+                            app:domainOriginLineColor="@color/ap_transparent"
+                            app:graphBackgroundColor="@color/white"
+                            app:graphMarginLeft="10dp"
+                            app:graphMarginTop="20dp"
+                            app:graphWidthMode="fill"
+                            app:gridBackgroundColor="@color/white"
+                            app:gridClippingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+
+                            app:legendVisible="false"
+                            app:lineLabelInsetLeft="4dp"
+
+                            app:lineLabelRotationBottom="-45"
+                            app:lineLabelTextColorLeft="#4B1263"
+                            app:lineLabels="bottom"
+                            app:rangeLineColor="#646D71"
+                            app:rangeStep="2dp"
+                            app:title="Spo2" />
+
+                        <ImageView
+                            android:id="@+id/noDataSop2ImageView"
+                            android:layout_width="92dp"
+                            android:layout_height="108dp"
+                            app:srcCompat="@drawable/ic_reshot_icon_sleeping_x2ekjbl3yq"
+                            tools:layout_editor_absoluteX="464dp"
+                            tools:layout_editor_absoluteY="130dp" />
+
+                        <TextView
+                            android:id="@+id/noDataSop2TextView"
+                            android:layout_width="204dp"
+                            android:layout_height="68dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="No data"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="207dp"
+                            tools:layout_editor_absoluteY="50dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowNoSop2Data"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="1dp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="noDataSop2TextView,noDataSop2ImageView"
+                            app:flow_verticalStyle="packed"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline43"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline44"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline45"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.21" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline46"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.03" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline47"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</layout>

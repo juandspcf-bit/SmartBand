@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.SummaryActivityFragment">
+
+        <Button
+            android:id="@+id/dateButtonGeneralSummary"
+            android:layout_width="501dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="16dp"
+            android:text="Monthly Report"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fragmentStepsPlotCardView"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateButtonGeneralSummary">
+
+            <com.androidplot.xy.XYPlot
+                android:id="@+id/plotStepsSummaryMonth"
+                style="@style/APDefacto.Light"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                app:backgroundColor="@color/white"
+                app:domainLineColor="@color/ap_transparent"
+                app:domainOriginLineColor="@color/ap_transparent"
+                app:graphBackgroundColor="@color/white"
+                app:graphMarginLeft="50dp"
+                app:graphMarginRight="50dp"
+                app:graphMarginTop="50dp"
+                app:graphWidthMode="fill"
+                app:gridBackgroundColor="@color/white"
+                app:gridClippingEnabled="false"
+                app:legendVisible="false"
+                app:lineLabelInsetLeft="4dp"
+                app:lineLabelRotationBottom="-45"
+                app:lineLabelTextColorLeft="#4B1263"
+                app:lineLabels="left|bottom"
+                app:rangeLineColor="#646D71"
+                app:rangeStep="4dp"
+                app:domainStep="15dp"
+                app:title="Steps" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentStepsPlotCardView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
