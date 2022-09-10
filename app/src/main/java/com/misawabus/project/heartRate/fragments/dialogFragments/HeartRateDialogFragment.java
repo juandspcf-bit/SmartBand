@@ -103,12 +103,12 @@ public class HeartRateDialogFragment extends DialogFragment {
             }
         });
 
-        dashBoardViewModel.getRealTimeHearRateData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        dashBoardViewModel.getRealTimeHearRateData().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(String fullData) {
                 String[] split = fullData.split("---");
                 TextView stepsView = view.findViewById(R.id.textViewBPHigh);
-                if(split[0].equals("0")) return;
+                if (split[0].equals("0")) return;
                 animation.start();
                 stepsView.setText(split[0]);
             }

@@ -61,23 +61,6 @@ public class DeviceReadData {
                 case 1:
                     dashBoardViewModel.setRealTimeSportsData(fullData);
                     break;
-                case 7:
-                case 14:
-/*                    String[] split3 = fullData.split("---");
-                    String[] sportsSplit = split3[split3.length - 1].split("-");
-                    LocalDate localDate = LocalDate.of(Integer.parseInt(sportsSplit[0]),
-                            Integer.parseInt(sportsSplit[1]),
-                            Integer.parseInt(sportsSplit[2]));
-                    if (localDate.compareTo(LocalDate.now()) == 0) {
-                        dashBoardViewModel.setTodayUpdateSportsFullData(fullData);
-                    } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                        dashBoardViewModel.setYesterdayUpdateFullData(fullData);
-                    } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                        dashBoardViewModel.setPastYesterdayUpdateFullData(fullData);
-
-                    }*/
-
-                    break;
                 case 8:
                     dashBoardViewModel.setRealTimeHearRateData(fullData);
                     break;
@@ -150,14 +133,6 @@ public class DeviceReadData {
 
             @Override
             public void onOringinHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-/*                Log.d("FULL_DATA_FROM_API_FORMATTED", originHalfHourData.toString());
-                if (originHalfHourData.getHalfHourRateDatas().size() == 0
-                        || originHalfHourData.getHalfHourSportDatas().size() == 0
-                        || originHalfHourData.getHalfHourBps().size() == 0) return;
-                String fullData = HealthsReadDataUtils
-                        .processingHealthsData(originHalfHourData,
-                                countDays);
-                sendMsg(fullData, 7);*/
             }
 
             @Override
@@ -182,14 +157,6 @@ public class DeviceReadData {
 
             @Override
             public void onOriginHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-/*
-                if (originHalfHourData.getHalfHourRateDatas().size() == 0
-                        || originHalfHourData.getHalfHourSportDatas().size() == 0
-                        || originHalfHourData.getHalfHourBps().size() == 0) return;
-                String fullData = HealthsReadDataUtils
-                        .processingHealthsData(originHalfHourData,
-                                countDays);
-                sendMsg(fullData, 13);*/
 
             }
 

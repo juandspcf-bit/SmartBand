@@ -74,8 +74,8 @@ public class HealthsData {
 
             switch (msg.what) {
                 case 0:
-                    String[] split4 = fullData.split("---");
-                    SleepDataUI sleepDataUIObject = SleepDataUtils.getSleepDataUIObject(split4[0]);
+
+                    SleepDataUI sleepDataUIObject = SleepDataUtils.getSleepDataUIObject(fullData);
                     LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
 
                     if (sleepLocalDate.compareTo(LocalDate.now()) == 0) {
@@ -89,20 +89,6 @@ public class HealthsData {
                         dashBoardViewModel.setPastYesterdayUpdateSleepFullData(listPastYesterday);
                     }
                     break;
-                case 1:
-/*                    String[] split3 = fullData.split("---");
-                    String[] sportsSplit = split3[split3.length - 1].split("-");
-                    LocalDate localDate = LocalDate.of(Integer.parseInt(sportsSplit[0]),
-                            Integer.parseInt(sportsSplit[1]),
-                            Integer.parseInt(sportsSplit[2]));
-                    if (localDate.compareTo(LocalDate.now()) == 0) {
-                        dashBoardViewModel.setTodayUpdateSportsFullData(fullData);
-                    } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                        dashBoardViewModel.setYesterdayUpdateFullData(fullData);
-                    } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                        dashBoardViewModel.setPastYesterdayUpdateFullData(fullData);
-                    }
-                    break;*/
                 case 2:
                     if (fullData.equals("enable")) {
                         dashBoardViewModel.setIsEnableFeatures(true);

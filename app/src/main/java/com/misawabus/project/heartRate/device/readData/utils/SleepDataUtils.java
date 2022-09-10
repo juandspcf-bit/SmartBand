@@ -77,10 +77,7 @@ public class SleepDataUtils {
         list.add("sleepDown=" + sleepData.getSleepDown());
         list.add("sleepUp=" + sleepData.getSleepUp());
 
-        String date = sleepData.getDate();
-        return list + "---" +
-                countDays + "---" +
-                date;
+        return list.toString();
 
     }
 }

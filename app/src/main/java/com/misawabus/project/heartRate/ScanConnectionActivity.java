@@ -127,7 +127,7 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnRecyc
         });
 
 
-        scanConnectionViewModel.getRecyclerViewData().observe(this, new Observer<List<SearchResult>>() {
+        scanConnectionViewModel.getRecyclerViewData().observe(this, new Observer<>() {
             @Override
             public void onChanged(List<SearchResult> searchResults) {
                 initRecycleView(searchResults);

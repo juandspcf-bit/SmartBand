@@ -79,7 +79,7 @@ public class BloodPressureDialogFragment extends DialogFragment {
             }
         });
 
-        dashBoardViewModel.getRealTimeBPData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        dashBoardViewModel.getRealTimeBPData().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(String fullData) {
                 String[] split = fullData.split("---");
@@ -90,7 +90,7 @@ public class BloodPressureDialogFragment extends DialogFragment {
                 highPressure.setText(MessageFormat.format("{0}: {1}", getString(R.string.higPressure), split[0]));
                 lowPressure.setText(MessageFormat.format("{0}: {1}", getString(R.string.lowPressure), split[1]));
 
-                if(progress==100){
+                if (progress == 100) {
                     bpCounterButton.setEnabled(true);
                     stopBPMeasurement();
                 }

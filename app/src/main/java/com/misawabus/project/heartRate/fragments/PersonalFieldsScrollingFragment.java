@@ -77,20 +77,20 @@ public class PersonalFieldsScrollingFragment extends Fragment {
             binding.floatingButtonAddUser.setEnabled(false);
 
 
-            DeviceViewModel.getIsInsertedRowLive().observe(getViewLifecycleOwner(), new Observer<String>() {
+            DeviceViewModel.getIsInsertedRowLive().observe(getViewLifecycleOwner(), new Observer<>() {
                 @Override
                 public void onChanged(String s) {
 
                     ESex eSex = device.getGender().equals("Male") ? ESex.MAN : ESex.WOMEN;
                     String Sheight = device.getHeight().substring(0, device.getHeight().indexOf(" m"));
-                    double height = Double.parseDouble(Sheight)*100.0;
+                    double height = Double.parseDouble(Sheight) * 100.0;
                     String Sweight = device.getWeight().substring(0, device.getWeight().indexOf(" k"));
                     double weight = Double.parseDouble(Sweight);
                     final String[] split = dateBirthDay.split("-");
                     LocalDate bii = LocalDate.of(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                     int i = LocalDate.now().getMonthValue() - bii.getMonthValue();
-                    int offset = i>=0?0:-1;
-                    int ageYears = LocalDate.now().getYear()+offset - bii.getYear();
+                    int offset = i >= 0 ? 0 : -1;
+                    int ageYears = LocalDate.now().getYear() + offset - bii.getYear();
                     Log.d("YEAR", String.valueOf(ageYears));
                     dashBoardViewModel.getHealthsDataManager().synchronizePersonalData(eSex,
                             (int) height,
@@ -145,7 +145,7 @@ public class PersonalFieldsScrollingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        DeviceViewModel.getSingleDeviceRow(macAddress).observe(getViewLifecycleOwner(), new Observer<Device>() {
+        DeviceViewModel.getSingleDeviceRow(macAddress).observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(Device device) {
                 if (device == null) {
@@ -190,20 +190,20 @@ public class PersonalFieldsScrollingFragment extends Fragment {
                         device.setWeight(binding.textViewWeight.getText().toString());
                         device.setHeight(binding.textViewHeight.getText().toString());
 
-                        DeviceViewModel.getIsUpdatedRowLive().observe(getViewLifecycleOwner(), new Observer<String>() {
+                        DeviceViewModel.getIsUpdatedRowLive().observe(getViewLifecycleOwner(), new Observer<>() {
                             @Override
                             public void onChanged(String s) {
 
                                 ESex eSex = device.getGender().equals("Male") ? ESex.MAN : ESex.WOMEN;
                                 String Sheight = device.getHeight().substring(0, device.getHeight().indexOf(" m"));
-                                double height = Double.parseDouble(Sheight)*100.0;
+                                double height = Double.parseDouble(Sheight) * 100.0;
                                 String Sweight = device.getWeight().substring(0, device.getWeight().indexOf(" k"));
                                 double weight = Double.parseDouble(Sweight);
                                 final String[] split = dateBirthDay.split("-");
                                 LocalDate bii = LocalDate.of(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                                 int i = LocalDate.now().getMonthValue() - bii.getMonthValue();
-                                int offset = i>=0?0:-1;
-                                int ageYears = LocalDate.now().getYear()+offset - bii.getYear();
+                                int offset = i >= 0 ? 0 : -1;
+                                int ageYears = LocalDate.now().getYear() + offset - bii.getYear();
 
                                 dashBoardViewModel.setDevice(device);
                                 dashBoardViewModel.getHealthsDataManager().synchronizePersonalData(eSex,

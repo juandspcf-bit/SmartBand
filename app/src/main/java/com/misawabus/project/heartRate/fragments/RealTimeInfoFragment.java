@@ -56,7 +56,7 @@ public class RealTimeInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        deviceViewModel.getDeviceFeatures().observe(getViewLifecycleOwner(), new Observer<Map<String, Boolean>>() {
+        deviceViewModel.getDeviceFeatures().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(Map<String, Boolean> stringBooleanMap) {
                 binding.imageButtonBloodP.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("BP")));

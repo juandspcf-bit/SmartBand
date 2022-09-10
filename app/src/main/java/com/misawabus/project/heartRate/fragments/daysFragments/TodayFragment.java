@@ -52,7 +52,7 @@ public class TodayFragment extends DayFragment {
 
 
 
-        dashBoardViewModel.getTodayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, DataFiveMinAvgDataContainer>>() {
+        dashBoardViewModel.getTodayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(Map<String, DataFiveMinAvgDataContainer> dataFiveMinAVGContainers) {
                 TodayFragment.this.stringDataFiveMinAVGAllIntervalsMap = dataFiveMinAVGContainers;

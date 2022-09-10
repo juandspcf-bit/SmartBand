@@ -123,13 +123,9 @@ public class DeviceConfig {
                     dashBoardViewModel.setWatchData(watchDataDay);
                     sendMsg(supportedFeatures.toString(), 2);
 
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (InvocationTargetException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
-
-
 
 
                 int contactMsgLength = functionSupport.getContactMsgLength();
@@ -177,9 +173,7 @@ public class DeviceConfig {
                             availableFunctionsMap.put(method.getName().substring(3).toUpperCase(), isAvailable);
 
 
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
+                        } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
                     }

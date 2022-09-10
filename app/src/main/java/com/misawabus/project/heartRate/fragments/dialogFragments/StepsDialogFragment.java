@@ -76,7 +76,7 @@ private ExecutorService executor;
             }
         });
 
-        dashBoardViewModel.getRealTimeSportsData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        dashBoardViewModel.getRealTimeSportsData().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(String fullData) {
                 String[] split = fullData.split("---");

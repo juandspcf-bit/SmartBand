@@ -141,12 +141,7 @@ public class FragmentUtil {
         List<Double> listCalories30Min = new ArrayList<>();
         List<Double> listDistance30Min = new ArrayList<>();
 
-/*        for (int i = 0; i < dataMap.size()-1.; i++) {
-            int interval = (int) Math.floor(i / 6.0)+1;
-            if(interval> list30Min.size()) list30Min.add(new ArrayList<>());
-            List<Map<String, Double>> doubles = list30Min.get(interval-1);
-            doubles.add(dataMap.get(i));
-        }*/
+
 
         int size =48;
         for (int i = 0; i < size; i++) {

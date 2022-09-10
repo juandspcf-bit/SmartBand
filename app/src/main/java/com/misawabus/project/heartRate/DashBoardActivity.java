@@ -184,10 +184,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView3, new MainDashBoardFragment()).commit();
 
-        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, new Observer<Device>() {
+        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, new Observer<>() {
             @Override
             public void onChanged(Device device) {
-                if(device== null || device.getBirthDate()==null) return;
+                if (device == null || device.getBirthDate() == null) return;
                 LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
                 int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
                 dashBoardViewModel.setAge(age);
