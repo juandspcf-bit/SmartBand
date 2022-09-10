@@ -257,10 +257,9 @@ public class HealthsData {
         VPOperateManager.getMangerInstance(context).readSleepData(writeResponse, new ISleepDataListener() {
                     @Override
                     public void onSleepDataChange(String s, SleepData sleepData) {
-                        String fullData = SleepDataUtils.processingSleepData(sleepData, countDays);
+                        String fullData = SleepDataUtils.processingSleepData(sleepData);
                         if(fullData.isEmpty()) return;
                         sendMsg(fullData, 0);
-
                     }
 
                     @Override

@@ -63,7 +63,7 @@ public class SleepDataUtils {
         return sleepDataUI;
     }
 
-    public static String processingSleepData(SleepData sleepData, int countDays) {
+    public static String processingSleepData(SleepData sleepData) {
         List<String> list= new ArrayList<>();
         if (sleepData.getSleepLine().isEmpty()) return "";
         list.add("date="+ sleepData.getSleepUp().year+"-" + sleepData.getSleepUp().getDate());
