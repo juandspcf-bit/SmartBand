@@ -68,14 +68,7 @@ public class SummarySop2Fragment extends SummaryFragment {
 
 
 
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //int width = (int) binding.textView15;
-                //Log.d("WIDTH", "onViewCreated: " +  width);
-                binding.apnea0.setTranslationX(190);
-            }
-        });
+
 
     }
 }

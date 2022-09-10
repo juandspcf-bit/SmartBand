@@ -45,6 +45,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/slide_fields_sop2"
             android:minWidth="32dp"
             app:icon="@drawable/ic_baseline_share_24"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +94,7 @@
                 app:lineLabels="left|bottom"
                 app:rangeLineColor="#646D71"
                 app:rangeStep="5dp"
-                app:title="Heart Rate" />
+                app:title="Sop2" />
 
 
         </androidx.cardview.widget.CardView>
@@ -120,325 +121,725 @@
             android:visibility="visible"
             app:layout_constraintGuide_percent="0.35" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragmentRatePlotCardViewSummary">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentRatePlotCardViewSummary">
 
-                <TextView
-                    android:id="@+id/analyticResultTextView"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/analyticResultTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/analytic_result"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Analytic Result"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:background="#AED1EC">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/apneaResultValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/result_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMax"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/apnea"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/apneaResultTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/result"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMax"
+                        app:layout_constraintTop_toBottomOf="@+id/apneaResultValue" />
+
+                    <TextView
+                        android:id="@+id/apneaResultMaxTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/apnea_frequency_max_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/apneaResultMinTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/min_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <ProgressBar
+                        android:id="@+id/apneaResultProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2196F3"
+                        android:max="50"
+                        android:progress="10"
+                        android:progressBackgroundTint="#D1B2B2"
+                        android:progressTint="#FFF59D"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineApneaResultMax"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/apneaResultNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="@string/apnea_n_result"
+                        android:textAlignment="center"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineApneaResultMin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineApneaResultMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineApneaResultMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBarApnea"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/guideline60"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_margin="10dp"
+                    android:background="#AED1EC">
 
-                <TextView
-                    android:id="@+id/textViewApnea"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/bloodOxygenValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/result_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineBloodOxygenMax"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/resultBloodOxygenTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/result"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineBloodOxygenMax"
+                        app:layout_constraintTop_toBottomOf="@+id/bloodOxygenValue" />
+
+                    <TextView
+                        android:id="@+id/bloodOxygenMaxTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/blood_oxygen_max_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/bloodOxygenMinTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/min_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/bloodOxygenProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <ProgressBar
+                        android:id="@+id/bloodOxygenProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2196F3"
+                        android:max="50"
+                        android:progress="10"
+                        android:progressBackgroundTint="#D1B2B2"
+                        android:progressTint="#FFF59D"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineBloodOxygenMax"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineBloodOxygenMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/bloodOxygenNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="@string/blood_n_oxygen"
+                        android:textAlignment="center"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineBloodOxygenMin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineBloodOxygenMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineBloodOxygenMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:text="Apnea Results\n"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline58"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_margin="10dp"
+                    android:background="#AED1EC">
 
-                <ProgressBar
-                    android:id="@+id/progressBarApnea"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/respirationRateValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/result_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineRespirationRateMax"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/resultRespirationRateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/result"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineRespirationRateMax"
+                        app:layout_constraintTop_toBottomOf="@+id/respirationRateValue" />
+
+                    <TextView
+                        android:id="@+id/respirationRateMaxTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/respiration_rate_max_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/respirationRateMinTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/min_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/RespirationRateProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <ProgressBar
+                        android:id="@+id/RespirationRateProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2196F3"
+                        android:max="50"
+                        android:progress="10"
+                        android:progressBackgroundTint="#D1B2B2"
+                        android:progressTint="#FFF59D"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineRespirationRateMax"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineRespirationRateMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/respirationRateNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="@string/respiration_n_rate"
+                        android:textAlignment="center"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineRespirationRateMin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineRespirationRateMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineRespirationRateMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline60"
-                    app:layout_constraintStart_toStartOf="@+id/guideline58"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    android:layout_margin="10dp"
+                    android:background="#AED1EC">
 
-                <TextView
-                    android:id="@+id/apnea0"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/hypoxiaTimeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/result_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineHypoxiaTimeMax"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/resultHypoxiaTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/result"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineHypoxiaTimeMax"
+                        app:layout_constraintTop_toBottomOf="@+id/hypoxiaTimeValue" />
+
+                    <TextView
+                        android:id="@+id/hypoxiaTimeMaxTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/hypoxia_time_max_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/hypoxiaTimeMinTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/min_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/hypoxiaTimeProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <ProgressBar
+                        android:id="@+id/hypoxiaTimeProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2196F3"
+                        android:max="50"
+                        android:progress="10"
+                        android:progressBackgroundTint="#D1B2B2"
+                        android:progressTint="#FFF59D"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineHypoxiaTimeMax"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineHypoxiaTimeMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/hypoxiaTimeNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="@string/hypoxia_n_time"
+                        android:textAlignment="center"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineHypoxiaTimeMin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineHypoxiaTimeMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineHypoxiaTimeMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBarApnea"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBarApnea"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/progressBarApnea"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    android:layout_margin="10dp"
+                    android:background="#AED1EC">
 
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/cardiacLoadValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/result_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineCardiacLoadMax"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/resultCardiacLoadTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/result"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineCardiacLoadMax"
+                        app:layout_constraintTop_toBottomOf="@+id/cardiacLoadValue" />
+
+                    <TextView
+                        android:id="@+id/cardiacLoadMaxTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/cardiac_load_max_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/cardiacLoadMinTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/min_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/cardiacLoadProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <ProgressBar
+                        android:id="@+id/cardiacLoadProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2196F3"
+                        android:max="50"
+                        android:progress="10"
+                        android:progressBackgroundTint="#D1B2B2"
+                        android:progressTint="#FFF59D"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineCardiacLoadMax"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineCardiacLoadMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/cardiacLoadNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="@string/cardiac_n_load"
+                        android:textAlignment="center"
+                        android:textColor="#455A64"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineCardiacLoadMin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineCardiacLoadMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineCardiacLoadMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="30"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBarApnea"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBarApnea"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/progressBarApnea"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    android:layout_margin="10dp"
+                    android:background="#AED1EC">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline58"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.25" />
+                    <TextView
+                        android:id="@+id/sleepActivityValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/result_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineSleepActivityMax"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline60"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.75" />
+                    <TextView
+                        android:id="@+id/resultSleepActivityTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/result"
+                        android:textColor="@color/textRowFieldsSop2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineSleepActivityMax"
+                        app:layout_constraintTop_toBottomOf="@+id/sleepActivityValue" />
 
-                <TextView
-                    android:id="@+id/ResultApneaTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/progressBarApnea"
-                    app:layout_constraintTop_toBottomOf="@+id/apnea" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/sleepActivityMaxTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/sleep_activity_max_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/sleepActivityMinTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/min_value_fields_sop2"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/sleepActivityProgressBar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
 
-                <TextView
-                    android:id="@+id/resultApneaTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/progressBar4"
-                    app:layout_constraintTop_toBottomOf="@+id/apnea2" />
+                    <ProgressBar
+                        android:id="@+id/sleepActivityProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2196F3"
+                        android:max="50"
+                        android:progress="10"
+                        android:progressBackgroundTint="#D1B2B2"
+                        android:progressTint="#FFF59D"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineSleepActivityMax"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineSleepActivityMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
 
-                <TextView
-                    android:id="@+id/apnea2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBar4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView21"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/sleepActivityNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="@string/range_of_sleeping_n_activity"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineSleepActivityMin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textViewBloodOxigen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:gravity="center"
-                    android:text="Blood Oxygen\n Concentration"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline61"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineSleepActivityMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar4"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline62"
-                    app:layout_constraintStart_toStartOf="@+id/guideline61"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineSleepActivityMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBar4"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBar4"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/progressBar4"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
 
-                <TextView
-                    android:id="@+id/textView21"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="99"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBar4"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBar4"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/progressBar4"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+            </LinearLayout>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline61"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.25" />
+        </ScrollView>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline62"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.75" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/resultApneaTextView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/progressBar3"
-                    app:layout_constraintTop_toBottomOf="@+id/apnea3" />
-
-                <TextView
-                    android:id="@+id/apnea3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBar3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView13"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="40"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBar3"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBar3"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/progressBar3"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBar3"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBar3"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/progressBar3"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar3"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline65"
-                    app:layout_constraintStart_toStartOf="@+id/guideline64"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/textViewBloodOxigen2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:gravity="center"
-                    android:text="Respiration\n rate"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline64"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline64"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.25" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline65"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.75" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
