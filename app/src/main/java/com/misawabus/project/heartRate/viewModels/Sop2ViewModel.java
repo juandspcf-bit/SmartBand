@@ -6,9 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.misawabus.project.heartRate.Database.entities.BloodPressure;
 import com.misawabus.project.heartRate.Database.entities.Sop2;
-import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.datasource.Sop2Repository;
 
 import java.util.Date;
@@ -20,10 +18,6 @@ public class Sop2ViewModel extends AndroidViewModel {
         super(application);
         sop2Repository = new Sop2Repository(application);
     }
-
-    //public LiveData<List<BloodPressure>> getAllData(){
-    //return allBloodPressure;
-    //}
 
     public static void insertSingleRow(Sop2 sop2){
         sop2Repository.insertSingleRow(sop2);

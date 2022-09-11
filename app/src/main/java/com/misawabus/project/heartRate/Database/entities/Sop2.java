@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.Database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -26,14 +27,6 @@ public class Sop2 {
     private String data;
 
     public Sop2() {
-    }
-
-    public Sop2(long id, IdTypeDataTable idTypeDataTable, String macAddress, Date dateData, String data) {
-        Id = id;
-        this.idTypeDataTable = idTypeDataTable;
-        this.macAddress = macAddress;
-        this.dateData = dateData;
-        this.data = data;
     }
 
     public long getId() {
@@ -76,6 +69,7 @@ public class Sop2 {
         this.data = data;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Sop2{" +

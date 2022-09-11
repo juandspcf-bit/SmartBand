@@ -4,17 +4,14 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.misawabus.project.heartRate.Database.entities.BloodPressure;
 import com.misawabus.project.heartRate.Database.entities.Sop2;
 import com.misawabus.project.heartRate.Database.rommdb.AppRoomDataBase;
 import com.misawabus.project.heartRate.Database.rommdb.Sop2Dao;
-import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 
 import java.util.Date;
 
 public class Sop2Repository {
     private final Sop2Dao sop2Dao;
-    //private final LiveData<List<BloodPressure>> allData;
 
     public Sop2Repository(Application application) {
         AppRoomDataBase db = AppRoomDataBase.getDatabase(application);
