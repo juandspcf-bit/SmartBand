@@ -1,8 +1,5 @@
 package com.misawabus.project.heartRate;
 
-import static com.misawabus.project.heartRate.Utils.DateUtils.getPastYesterdayFormattedDate;
-import static com.misawabus.project.heartRate.Utils.DateUtils.getYesterdayFormattedDate;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -18,30 +15,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.inuker.bluetooth.library.Constants;
+import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Utils.DBops;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.databinding.ActivityDashBoardV2Binding;
-import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
-import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
 import com.misawabus.project.heartRate.device.config.DeviceConfig;
 import com.misawabus.project.heartRate.device.readData.DeviceReadData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
 import com.misawabus.project.heartRate.fragments.MainDashBoardFragment;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
-import com.misawabus.project.heartRate.Database.entities.Device;
-import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public class DashBoardActivity extends AppCompatActivity {
@@ -66,9 +57,6 @@ public class DashBoardActivity extends AppCompatActivity {
         }
     };
     private VPOperateManager mVpoperateManager;
-    private List<SleepDataUI> todaySleepDataList;
-    private List<SleepDataUI> yesterdaySleepDataList;
-    private List<SleepDataUI> pastYesterdaySleepDataList;
 
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -135,13 +123,6 @@ public class DashBoardActivity extends AppCompatActivity {
             dashBoardViewModel.setDevice(device);
         });
 
-
-
-        dashBoardViewModel.getIsEnableFeatures().observe(DashBoardActivity.this, isEnabled -> {
-            if (!isEnabled) return;
-            sleepUpdate();
-        });
-
         dashBoardViewModel.getIsConnected().observe(this, aBoolean -> {
             if(aBoolean) return;
             final Map<String, Boolean> value = deviceViewModel.getDeviceFeatures().getValue();
@@ -149,23 +130,6 @@ public class DashBoardActivity extends AppCompatActivity {
             value.replace("HEARTDETECT", false);
             value.replace("SPORTMODEL", false);
             deviceViewModel.setDeviceFeatures(value);
-        });
-
-
-
-        dashBoardViewModel.getTodayUpdateSleepFullData().observe(this, sleepDataUIList -> {
-            if(sleepDataUIList==null) return;
-            todaySleepDataList = sleepDataUIList;
-        });
-
-        dashBoardViewModel.getYesterdayUpdateSleepFullData().observe(this, sleepDataUIList -> {
-            if(sleepDataUIList==null) return;
-            yesterdaySleepDataList = sleepDataUIList;
-        });
-
-        dashBoardViewModel.getPastYesterdayUpdateSleepFullData().observe(this, sleepDataUIList -> {
-            if(sleepDataUIList==null) return;
-            pastYesterdaySleepDataList = sleepDataUIList;
         });
 
 
@@ -184,77 +148,14 @@ public class DashBoardActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView3, new MainDashBoardFragment()).commit();
 
-        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, new Observer<>() {
-            @Override
-            public void onChanged(Device device) {
-                if (device == null || device.getBirthDate() == null) return;
-                LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
-                int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
-                dashBoardViewModel.setAge(age);
-            }
+        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, device -> {
+            if (device == null || device.getBirthDate() == null) return;
+            LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
+            int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
+            dashBoardViewModel.setAge(age);
         });
 
     }
-
-
-
-
-    private void sleepUpdate() {
-        if (todaySleepDataList != null) {
-            for (int i = 0; i < todaySleepDataList.size(); i++) {
-                SleepDataUI sleepDataUI = todaySleepDataList.get(i);
-                sleepDataUI.setIndex(i);
-                DBops.updateSleepData(todaySleepDataList.get(i), macAddress, DashBoardActivity.this, i);
-            }
-        }
-
-        if(yesterdaySleepDataList !=null) {
-            for (int i = 0; i < yesterdaySleepDataList.size(); i++) {
-                SleepDataUI sleepDataUI = yesterdaySleepDataList.get(i);
-                sleepDataUI.setIndex(i);
-                DBops.updateSleepData(yesterdaySleepDataList.get(i), macAddress, DashBoardActivity.this, i);
-            }
-        }else{
-            LiveData<SleepDataUI> singleRowForU = SleepDataUIViewModel
-                    .getSingleRowForU(getYesterdayFormattedDate(),
-                            macAddress,
-                            0);
-            Observer<SleepDataUI> MyObserver = new Observer<>() {
-                @Override
-                public void onChanged(SleepDataUI sleepDataUI) {
-                    if (sleepDataUI != null) {
-                        dashBoardViewModel.setYesterdayUpdateSleepFullData(Collections.singletonList(sleepDataUI));
-                    }
-                    singleRowForU.removeObserver(this);
-                }
-            };
-            singleRowForU.observe(this, MyObserver);
-        }
-
-        if(pastYesterdaySleepDataList !=null) {
-            for (int i = 0; i < pastYesterdaySleepDataList.size(); i++) {
-                SleepDataUI sleepDataUI = pastYesterdaySleepDataList.get(i);
-                sleepDataUI.setIndex(i);
-                DBops.updateSleepData(pastYesterdaySleepDataList.get(i), macAddress, DashBoardActivity.this, i);
-            }
-        }else{
-            LiveData<SleepDataUI> singleRowForU = SleepDataUIViewModel
-                    .getSingleRowForU(getPastYesterdayFormattedDate(),
-                            macAddress,
-                            0);
-            Observer<SleepDataUI> MyObserver = new Observer<>() {
-                @Override
-                public void onChanged(SleepDataUI sleepDataUI) {
-                    if (sleepDataUI != null) {
-                        dashBoardViewModel.setPastYesterdayUpdateSleepFullData(Collections.singletonList(sleepDataUI));
-                    }
-                    singleRowForU.removeObserver(this);
-                }
-            };
-            singleRowForU.observe(this, MyObserver);
-        }
-    }
-
 
     private void registerCallBack(){
         connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

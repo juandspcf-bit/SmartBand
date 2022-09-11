@@ -59,7 +59,7 @@ public class SummaryActivityFragment extends Fragment {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HealthsData.readOOO(getContext(), dashBoardViewModel);
+                //HealthsData.readOOO(getContext(), dashBoardViewModel);
             }
         });
 

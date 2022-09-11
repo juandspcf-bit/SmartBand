@@ -37,6 +37,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SummarySleepFragment  extends SummaryFragment {
+    private static final String TAG = SummarySleepFragment.class.getSimpleName();
     private FragmentSummarySleepBinding binding;
     private DashBoardViewModel dashBoardViewModel;
     private SleepDataUIViewModel sleepDataUIViewModel;
@@ -89,6 +90,7 @@ public class SummarySleepFragment  extends SummaryFragment {
     }
 
     private void setFragmentViews(Date selectedDate, List<SleepDataUI> sleepDataUIS) {
+        Log.d(TAG, "setFragmentViews: " + sleepDataUIS);
         setTextButtonDate(selectedDate, binding.buttonSleepDateSelection);
         if(sleepDataUIS==null || sleepDataUIS.size()==0) {
             binding.imageViewSleep.setVisibility(View.VISIBLE);
