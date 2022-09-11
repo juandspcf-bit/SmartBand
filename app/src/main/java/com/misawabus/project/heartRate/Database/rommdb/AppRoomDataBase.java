@@ -9,6 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.misawabus.project.heartRate.Database.entities.Sop2;
 import com.misawabus.project.heartRate.Database.entities.Sports;
 import com.misawabus.project.heartRate.Utils.Converter;
 import com.misawabus.project.heartRate.Database.entities.BloodPressure;
@@ -20,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {
+        Sop2.class,
         Sports.class,
         HeartRate.class,
         BloodPressure.class,
@@ -55,6 +57,8 @@ public abstract class AppRoomDataBase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    public abstract Sop2Dao getSop2Dao();
 
     public abstract SportsDao getSportsDao();
 

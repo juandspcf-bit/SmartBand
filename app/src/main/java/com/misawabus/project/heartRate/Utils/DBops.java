@@ -41,21 +41,6 @@ public class DBops {
         sleepDataUIViewModel = new ViewModelProvider(viewModelStoreOwner).get(SleepDataUIViewModel.class);
     }
 
-    public static void updateAllFeatures(String fullData, String macAddress, LifecycleOwner lifecycleOwner) {
-        String[] fullDataSplit = fullData.split("---");
-
-        String date = fullDataSplit[fullDataSplit.length-1];
-        String HighPressure = fullDataSplit[7];
-        String LowPressure = fullDataSplit[8];
-
-
-
-        if(!(HighPressure.isEmpty() && LowPressure.isEmpty())){
-            DBops.updateBloodPressureRow( IdTypeDataTable.HighPressure,HighPressure, date, macAddress, lifecycleOwner);
-            DBops.updateBloodPressureRow( IdTypeDataTable.LowPressure,LowPressure, date, macAddress, lifecycleOwner);
-        }
-
-    }
 
     public static void updateSleepData(SleepDataUI dataMap, String macAddress, LifecycleOwner lifecycleOwner, int index){
         updateSleepRow(dataMap, dataMap.getDateData(), macAddress, lifecycleOwner, index);
@@ -138,7 +123,7 @@ public class DBops {
         singleHeartRateRowForU.observe(lifecycleOwner, MyObserver);
     }
 
-
+    //TODO remove unnecessary idTypeDataTable parameter
     public static void updateBloodPressureRow(IdTypeDataTable idTypeDataTable, String data, String myDate, String macAddress, LifecycleOwner lifecycleOwner){
         Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
 
