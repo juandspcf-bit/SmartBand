@@ -24,11 +24,13 @@ import com.veepoo.protocol.listener.data.IBPSettingDataListener;
 import com.veepoo.protocol.listener.data.IBreathDataListener;
 import com.veepoo.protocol.listener.data.IHeartDataListener;
 import com.veepoo.protocol.listener.data.ISportDataListener;
+import com.veepoo.protocol.listener.data.ITemptureDetectDataListener;
 import com.veepoo.protocol.model.datas.BpData;
 import com.veepoo.protocol.model.datas.BpSettingData;
 import com.veepoo.protocol.model.datas.BreathData;
 import com.veepoo.protocol.model.datas.HeartData;
 import com.veepoo.protocol.model.datas.SportData;
+import com.veepoo.protocol.model.datas.TemptureDetectData;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
 import com.veepoo.protocol.model.settings.BpSetting;
 
@@ -40,31 +42,16 @@ public class RealTimeTesterClass {
     private final Context context;
     private final DashBoardViewModel dashBoardViewModel;
     private final DeviceViewModel deviceViewModel;
-    private boolean isDeviceEnabled;
 
-    private static final String TAG = "FLOW";
-    int watchDataDay = 5;
-    int contactMsgLength = 0;
-    int allMsgLenght = 4;
-    private final int deviceNumber = -1;
-    private String deviceVersion;
-    private String deviceTestVersion;
-    boolean isOadModel = false;
-    boolean isNewSportCalc = false;
-    boolean isInPttModel = false;
-    private String deviceaddress;
-    boolean isSleepPrecision = false;
-    private TextView heartRateCounter;
-    private Button stepsButton;
-    private TextView counterSteps;
+
+    private static final String TAG = RealTimeTesterClass.class.getSimpleName();
+
     private final WriteResponse writeResponse = new WriteResponse();
-    private MyThread myThread;
+
     private final Application application;
     private HeartRateViewModel heartRateViewModel;
-    private final int countDays = 0;
-    private final List<Map<String, String>> mapListToday = new ArrayList<>();
-    private final List<Map<String, String>> mapListYesterday = new ArrayList<>();
-    private final List<Map<String, String>> mapListPastYesterday = new ArrayList<>();
+
+
 
     Message msg;
     Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -168,21 +155,28 @@ public class RealTimeTesterClass {
     }
 
 
-    public void startDetectBreath() {
-        VPOperateManager.getMangerInstance(context).startDetectBreath(new IBleWriteResponse() {
-            @Override
-            public void onResponse(int i) {
 
-            }
-        }, new IBreathDataListener() {
+    public void startTemperatureDetection(){
+        VPOperateManager.getMangerInstance(context).startDetectTempture(writeResponse, new ITemptureDetectDataListener() {
             @Override
-            public void onDataChange(BreathData breathData) {
+            public void onDataChange(TemptureDetectData temptureDetectData) {
+                String message = "Temperature" + temptureDetectData.toString();
+                Logger.t(TAG).i(message);
 
             }
         });
+
     }
 
-    public void stopDetectBreath() {
+    public void stopTemperatureDetection(){
+        VPOperateManager.getMangerInstance(context).stopDetectTempture(writeResponse, new ITemptureDetectDataListener() {
+            @Override
+            public void onDataChange(TemptureDetectData temptureDetectData) {
+                String message = "stopDetectTempture temptureDetectData:\n" + temptureDetectData.toString();
+                Logger.t(TAG).i(message);
+                sendMsg(message, 1);
+            }
+        });
 
     }
 

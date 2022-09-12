@@ -40,6 +40,7 @@ public class SummaryActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
+
     }
 
     @Override
@@ -59,7 +60,14 @@ public class SummaryActivityFragment extends Fragment {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //HealthsData.readOOO(getContext(), dashBoardViewModel);
+                dashBoardViewModel.getRealTimeTesterClass().startTemperatureDetection();
+            }
+        });
+
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dashBoardViewModel.getRealTimeTesterClass().stopTemperatureDetection();
             }
         });
 

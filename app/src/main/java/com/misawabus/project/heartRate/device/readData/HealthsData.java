@@ -92,6 +92,8 @@ public class HealthsData {
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
 
+                Log.d(TAG, "onOringinFiveMinuteDataChange: " + originData);
+
             }
 
             @Override

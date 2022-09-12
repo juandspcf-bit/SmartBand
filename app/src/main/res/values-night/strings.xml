@@ -17,4 +17,9 @@
     <string name="cardiac_load_max_value">60</string>
     <string name="apnea_frequency_max_value">20</string>
     <string name="slide_fields_sop2">slide the fields for sop2</string>
+    <string name="read_temperature">Read temperature</string>
+    <string name="an_image_of_thermometer">An image of thermometer</string>
+    <string name="temperature">Temperature</string>
+    <string name="body_temperature">Body temperature</string>
+    <string name="skin_temperature">Skin temperature</string>
 </resources>

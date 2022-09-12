@@ -59,7 +59,7 @@ public class DeviceConfig {
                 case 1:
                     Log.d("DEVICE_INFO", s);
                     dashBoardViewModel.setDeviceInfo(s);
-                    customizeDevice();
+                    //customizeDevice();
                     HealthsData healthsData = new HealthsData(context, activity);
                     healthsData.readOriginData();
 
