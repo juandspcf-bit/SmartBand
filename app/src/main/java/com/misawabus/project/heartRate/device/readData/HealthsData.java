@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.Utils.DBops;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.device.readData.utils.SleepDataUtils;
@@ -28,6 +29,7 @@ import com.veepoo.protocol.model.datas.OriginData3;
 import com.veepoo.protocol.model.datas.OriginHalfHourData;
 import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.Spo2hOriginData;
+import com.veepoo.protocol.model.datas.TimeData;
 
 import org.apache.logging.log4j.util.PropertySource;
 
@@ -35,6 +37,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -92,7 +95,11 @@ public class HealthsData {
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
 
-                Log.d(TAG, "onOringinFiveMinuteDataChange: " + originData);
+                TimeData timeData = originData.getmTime();
+                int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
+                        timeData.getMinute());
+
+                Log.d(TAG, "onOringinFiveMinuteDataChange: " + interval);
 
             }
 
