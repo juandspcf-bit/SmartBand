@@ -46,52 +46,7 @@ public class DeviceSettings {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String fullData = msg.obj.toString();
-
-
-            switch (msg.what) {
-                case 1:
-                    dashBoardViewModel.setRealTimeSportsData(fullData);
-                    break;
-                case 8:
-                    dashBoardViewModel.setRealTimeHearRateData(fullData);
-                    break;
-                case 9:
-                    dashBoardViewModel.setRealTimeBPData(fullData);
-                    break;
-                case 10:
-                    String[] split4 = fullData.split("---");
-                    SleepDataUI sleepDataUIObject = SleepDataUtils.getSleepDataUIObject(split4[0]);
-                    LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
-
-                    if (sleepLocalDate.compareTo(LocalDate.now()) == 0) {
-                        listToday.add(sleepDataUIObject);
-                        dashBoardViewModel.setTodayUpdateSleepFullData(listToday);
-                    } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                        listYesterday.add(sleepDataUIObject);
-                        dashBoardViewModel.setYesterdayUpdateSleepFullData(listYesterday);
-                    } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                        listPastYesterday.add(sleepDataUIObject);
-                        dashBoardViewModel.setPastYesterdayUpdateSleepFullData(listPastYesterday);
-                    }
-                    break;
-                case 11:
-                    if (fullData.equals("enable")) {
-                        dashBoardViewModel.setIsEnableFeatures(true);
-                    }
-                    break;
-                case 12:
-                    dashBoardViewModel.setIsTodayFragmentRefreshing(false);
-                    break;
-                case 13:
-/*                    String[] split13 = fullData.split("---");
-                    String[] sportsSplit13 = split13[split13.length - 1].split("-");
-                    LocalDate localDate13 = LocalDate.of(Integer.parseInt(sportsSplit13[0]), Integer.parseInt(sportsSplit13[1]), Integer.parseInt(sportsSplit13[2]));
-                    if (localDate13.compareTo(LocalDate.now()) == 0) {
-                        dashBoardViewModel.setTodayUpdateSportsFullData(fullData);
-                    }*/
-                    break;
-            }
-        }
+      }
     };
 
 
