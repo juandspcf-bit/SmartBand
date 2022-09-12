@@ -14,18 +14,9 @@ import com.misawabus.project.heartRate.device.readData.utils.SleepDataUtils;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
-import com.veepoo.protocol.listener.data.IOriginData3Listener;
-import com.veepoo.protocol.listener.data.IOriginDataListener;
-import com.veepoo.protocol.listener.data.IOriginProgressListener;
-import com.veepoo.protocol.model.datas.HRVOriginData;
-import com.veepoo.protocol.model.datas.OriginData;
-import com.veepoo.protocol.model.datas.OriginData3;
-import com.veepoo.protocol.model.datas.OriginHalfHourData;
 import com.veepoo.protocol.model.datas.PersonInfoData;
-import com.veepoo.protocol.model.datas.Spo2hOriginData;
 import com.veepoo.protocol.model.enums.ESex;
 
 import java.time.LocalDate;
@@ -34,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DeviceReadData {
+public class DeviceSettings {
     private final Context context;
     private final DashBoardViewModel dashBoardViewModel;
     private final DeviceViewModel deviceViewModel;
@@ -104,7 +95,7 @@ public class DeviceReadData {
     };
 
 
-    public DeviceReadData(Context context, AppCompatActivity activity) {
+    public DeviceSettings(Context context, AppCompatActivity activity) {
         this.context = context;
         this.dashBoardViewModel = new ViewModelProvider(activity).get(DashBoardViewModel.class);
         this.deviceViewModel = new ViewModelProvider(activity).get(DeviceViewModel.class);
@@ -119,86 +110,6 @@ public class DeviceReadData {
             Log.d("OPPP", message);
 
         }, new PersonInfoData(sex, height, weight, age, stepAim));
-    }
-
-
-
-    public void getSmartWatchDataSingleDay(int day) {
-        IOriginProgressListener originDataListener = new IOriginDataListener() {
-            @Override
-            public void onOringinFiveMinuteDataChange(OriginData originData) {
-
-
-            }
-
-            @Override
-            public void onOringinHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-            }
-
-            @Override
-            public void onReadOriginProgress(float progress) {
-            }
-
-            @Override
-            public void onReadOriginProgressDetail(int date, String dates, int all, int num) {
-            }
-
-            @Override
-            public void onReadOriginComplete() {
-                sendMsg("stopRefreshing", 12);
-            }
-        };
-
-        IOriginProgressListener originData3Listener = new IOriginData3Listener() {
-            @Override
-            public void onOriginFiveMinuteListDataChange(List<OriginData3> originData3List) {
-
-            }
-
-            @Override
-            public void onOriginHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-
-            }
-
-            @Override
-            public void onOriginHRVOriginListDataChange(List<HRVOriginData> originHrvDataList) {
-            }
-
-            @Override
-            public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> originSpo2hDataList) {
-
-            }
-
-            @Override
-            public void onReadOriginProgressDetail(int day, String date, int allPackage, int currentPackage) {
-            }
-
-            @Override
-            public void onReadOriginProgress(float progress) {
-                String message = "健康数据[5分钟]-读取进度:" + progress;
-                Logger.t(HealthsReadDataUtils.TAG).i(message);
-            }
-
-            @Override
-            public void onReadOriginComplete() {
-                sendMsg("stopRefreshing", 12);
-            }
-        };
-        IOriginProgressListener originDataListenerX;
-        boolean originProtcolVersion = Boolean.TRUE.equals(deviceViewModel.getDeviceFeatures().getValue().get("OriginProtcolVersion"));
-        originDataListenerX = originProtcolVersion? originData3Listener: originDataListener;
-        VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originDataListenerX, day, 1, dashBoardViewModel.getWatchData());
-
-    }
-
-
-
-
-    private void sendMsg(String message, int what) {
-        msg = Message.obtain();
-        msg.what = what;
-        msg.obj = message;
-        mHandler.sendMessage(msg);
     }
 
 

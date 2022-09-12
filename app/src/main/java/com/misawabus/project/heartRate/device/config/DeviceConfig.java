@@ -63,6 +63,7 @@ public class DeviceConfig {
                     HealthsData healthsData = new HealthsData(context, activity);
                     healthsData.readOriginData();
 
+
                     break;
                 case 2:
 
@@ -75,37 +76,24 @@ public class DeviceConfig {
                     });
                     deviceViewModel.setDeviceFeatures(availableFunctionsMap);
                     dashBoardViewModel.getRealTimeTesterClass().readSportSteps();
-
-/*                    if (count == 1 && Boolean.TRUE.equals(availableFunctionsMap.get("OriginProtcolVersion"))) {
-                        HealthsData healthsData = new HealthsData(context, activity);
-                        healthsData.readOriginData();
-                    } else if (count == 1) {
-                        HealthsData healthsData = new HealthsData(context, activity);
-                        healthsData.readOriginData();
-                    }
-
-                    count++;*/
-
-
                     break;
 
             }
         }
     };
 
-    public static void enableDevice(Context context, AppCompatActivity activity) {
+    public static void enableDevice(Context context, AppCompatActivity activity, HealthsData healthsData) {
         DeviceConfig.context = context;
         dashBoardViewModel = new ViewModelProvider(activity).get(DashBoardViewModel.class);
         deviceViewModel = new ViewModelProvider(activity).get(DeviceViewModel.class);
         DeviceConfig.activity = activity;
 
-        boolean is24Hourmodel = false;
+        boolean is24Hourmodel = true;
         VPOperateManager.getMangerInstance(context).confirmDevicePwd(writeResponse, new IPwdDataListener() {
                     @Override
                     public void onPwdDataChange(PwdData pwdData) {
-                        String message = "PwdData:\n" + pwdData.toString();
-                        Log.d(TAG, "onPwdDataChange: " + pwdData);
-                        sendMsg(message, 1);
+                        mHandler.post(healthsData::readOriginData);
+
                     }
                 },
                 new IDeviceFuctionDataListener() {

@@ -23,7 +23,8 @@ import com.misawabus.project.heartRate.Utils.DBops;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.databinding.ActivityDashBoardV2Binding;
 import com.misawabus.project.heartRate.device.config.DeviceConfig;
-import com.misawabus.project.heartRate.device.readData.DeviceReadData;
+import com.misawabus.project.heartRate.device.readData.DeviceSettings;
+import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
 import com.misawabus.project.heartRate.fragments.MainDashBoardFragment;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -63,10 +64,25 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        Bundle extras = getIntent().getExtras();
+        macAddress = extras.getString("deviceAddress");
+
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
+
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
-        mVpoperateManager = VPOperateManager.getMangerInstance(getApplicationContext());
+
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -88,32 +104,17 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        Bundle extras = getIntent().getExtras();
-        macAddress = extras.getString("deviceAddress");
-
+        mVpoperateManager = VPOperateManager.getMangerInstance(getApplicationContext());
         DBops dbHandler = new DBops();
         dbHandler.initViewModels(this);
-
-        DeviceReadData deviceReadData = new DeviceReadData(getApplicationContext(), this);
-
-
+        DeviceSettings deviceSettings = new DeviceSettings(getApplicationContext(), this);
+        HealthsData healthsData = new HealthsData(getApplicationContext(), this);
         RealTimeTesterClass realTimeTesterClass = new RealTimeTesterClass(getApplicationContext(),this, getApplication());
-        DeviceConfig.enableDevice(getApplicationContext(), this);
-
-        WindowInsetsControllerCompat windowInsetsController =
-                WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
-
-        windowInsetsController.setSystemBarsBehavior(
-                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-         );
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-
+        DeviceConfig.enableDevice(getApplicationContext(), this, healthsData);
 
         dashBoardViewModel = new ViewModelProvider(this).get(DashBoardViewModel.class);
-        dashBoardViewModel.setHealthsDataManager(deviceReadData);
+        dashBoardViewModel.setHealthsReadDataManager(healthsData);
+        dashBoardViewModel.setHealthsDataManager(deviceSettings);
         dashBoardViewModel.setRealTimeTesterClass(realTimeTesterClass);
         DeviceViewModel deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         deviceViewModel.setMacAddress(macAddress);

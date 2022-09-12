@@ -31,10 +31,7 @@ public class TodayFragment extends DayFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
-        dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
+       dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
             if(sleepDataUIList==null || sleepDataUIList.size()==0 ) {
 
                 return;
@@ -83,7 +80,8 @@ public class TodayFragment extends DayFragment {
                         && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()){
                     return;
                 }
-                dashBoardViewModel.getHealthsDataManager().getSmartWatchDataSingleDay(0);
+                //dashBoardViewModel.getHealthsDataManager().getSmartWatchDataSingleDay(0);
+                dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
                 dashBoardViewModel.setIsTodayFragmentRefreshing(true);
                 binding.fragmentPlot.setEnabled(false);
                 binding.fragmentSleepPlot.setEnabled(false);

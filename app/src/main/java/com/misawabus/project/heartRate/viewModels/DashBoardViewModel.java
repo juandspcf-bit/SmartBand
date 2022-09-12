@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModel;
 import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.readData.DeviceReadData;
+import com.misawabus.project.heartRate.device.readData.DeviceSettings;
+import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
 
 import java.util.List;
@@ -45,10 +46,10 @@ public class DashBoardViewModel extends ViewModel {
 
 
 
-    private DeviceReadData healthsDataManager;
+    private DeviceSettings healthsDataManager;
     private RealTimeTesterClass realTimeTesterClass;
     private List<int[]> dataEcg;
-
+    private HealthsData healthsReadDataManager;
 
 
     public DashBoardViewModel() {
@@ -81,13 +82,22 @@ public class DashBoardViewModel extends ViewModel {
         isWiFiEnable = wiFiEnable;
     }
 
-    public DeviceReadData getHealthsDataManager() {
+    public DeviceSettings getHealthsDataManager() {
         return healthsDataManager;
     }
 
-    public void setHealthsDataManager(DeviceReadData healthsDataManager) {
+    public void setHealthsDataManager(DeviceSettings healthsDataManager) {
         this.healthsDataManager = healthsDataManager;
     }
+
+    public HealthsData getHealthsReadDataManager() {
+        return healthsReadDataManager;
+    }
+
+    public void setHealthsReadDataManager(HealthsData healthsReadData) {
+        this.healthsReadDataManager = healthsReadData;
+    }
+
 
     public RealTimeTesterClass getRealTimeTesterClass() {
         return realTimeTesterClass;

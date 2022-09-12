@@ -1,5 +1,7 @@
 package com.misawabus.project.heartRate.Utils;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class DBops {
 
+    private static final String TAG = DBops.class.getSimpleName();
     private HeartRateViewModel heartRateViewModel;
     private BloodPressureViewModel bloodPressureViewModel;
 
@@ -81,13 +84,15 @@ public class DBops {
             @Override
             public void onChanged(SleepDataUI sleepDataUI) {
                 if (sleepDataUI == null) {
+                    Log.d(TAG, "onChanged: " + index);
                     insertSleepRow(data, formattedDate, macAddress);
-                    sleepDataUILiveData.removeObserver(this);
-                } else if (!sleepDataUI.getData().equals(data.getData())) {
+                } else {
+                    Log.d(TAG, "onChanged: " + index);
                     data.setMacAddress(macAddress);
+                    data.setId(sleepDataUI.getId());
                     SleepDataUIViewModel.updateSingleRow(data);
-                    sleepDataUILiveData.removeObserver(this);
                 }
+                sleepDataUILiveData.removeObserver(this);
             }
         };
         sleepDataUILiveData.observe(lifecycleOwner, MyObserver);
