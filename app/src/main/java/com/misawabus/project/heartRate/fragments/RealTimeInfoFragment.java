@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentRealtTimeDataBinding;
+import com.misawabus.project.heartRate.fragments.dialogFragments.TemperatureDialogFragment;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.fragments.dialogFragments.BloodPressureDialogFragment;
 import com.misawabus.project.heartRate.fragments.dialogFragments.EcgDialogFragment;
@@ -99,6 +101,15 @@ public class RealTimeInfoFragment extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getChildFragmentManager();
                 EcgDialogFragment newFragment = new EcgDialogFragment();
+                newFragment.show(fragmentManager, "dialog");
+            }
+        });
+
+        binding.imageButtonTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getChildFragmentManager();
+                DialogFragment newFragment = new TemperatureDialogFragment();
                 newFragment.show(fragmentManager, "dialog");
             }
         });

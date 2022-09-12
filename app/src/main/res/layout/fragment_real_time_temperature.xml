@@ -2,95 +2,111 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textViewTitleTempDialog"
-        android:layout_width="203dp"
-        android:layout_height="86dp"
-        android:layout_gravity="center|center_vertical"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="@string/temperature"
-        android:textSize="34sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tempBodyTextView"
-        android:layout_width="214dp"
-        android:layout_height="34dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/body_temperature"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/tempSkinTextView"
-        android:layout_width="214dp"
-        android:layout_height="34dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/skin_temperature"
-        android:textSize="24sp" />
-
-    <ImageView
-        android:id="@+id/tempDeviceImageView"
-        android:layout_width="77dp"
-        android:layout_height="114dp"
-        android:contentDescription="@string/an_image_of_thermometer"
-        app:layout_constraintBottom_toBottomOf="@+id/tempCircularProgress"
-        app:layout_constraintEnd_toEndOf="@+id/tempCircularProgress"
-        app:layout_constraintStart_toStartOf="@+id/tempCircularProgress"
-        app:layout_constraintTop_toTopOf="@+id/tempCircularProgress"
-        app:srcCompat="@drawable/thermometer" />
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/tempCircularProgress"
-        android:layout_width="134dp"
-        android:layout_height="112dp"
-        android:max="100"
-        android:min="0"
-        android:padding="30dp"
-        android:pointerIcon="none"
-        android:progress="0"
-        app:indicatorColor="#F06292"
-        app:indicatorSize="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempSkinTextView"
-        app:trackColor="#BAEBED"
-        app:trackThickness="8dp" />
-
-    <Button
-        android:id="@+id/tempReadButton"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:enabled="true"
-        android:gravity="center"
-        android:text="@string/read_temperature"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempCircularProgress" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:constraint_referenced_ids="textViewTitleTempDialog,tempBodyTextView,tempSkinTextView"
-        app:flow_verticalGap="20dp"
-        app:flow_wrapMode="chain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="28dp"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="textViewTitleTempDialog,tempBodyTextView,tempSkinTextView"
+            app:flow_verticalGap="20dp"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/tempDeviceImageView"
+            android:layout_width="77dp"
+            android:layout_height="114dp"
+            android:contentDescription="@string/an_image_of_thermometer"
+            app:layout_constraintBottom_toBottomOf="@+id/tempCircularProgress"
+            app:layout_constraintEnd_toEndOf="@+id/tempCircularProgress"
+            app:layout_constraintStart_toStartOf="@+id/tempCircularProgress"
+            app:layout_constraintTop_toTopOf="@+id/tempCircularProgress"
+            app:srcCompat="@drawable/thermometer" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/tempCircularProgress"
+            android:layout_width="134dp"
+            android:layout_height="112dp"
+            android:max="100"
+            android:min="0"
+            android:padding="30dp"
+            android:pointerIcon="none"
+            android:progress="0"
+            app:indicatorColor="#F06292"
+            app:indicatorSize="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flow8"
+            app:trackColor="#BAEBED"
+            app:trackThickness="8dp" />
+
+        <TextView
+            android:id="@+id/tempBodyTextView"
+            android:layout_width="214dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/body_temperature"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="106dp" />
+
+        <TextView
+            android:id="@+id/tempSkinTextView"
+            android:layout_width="214dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/skin_temperature"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="160dp" />
+
+        <TextView
+            android:id="@+id/textViewTitleTempDialog"
+            android:layout_width="203dp"
+            android:layout_height="86dp"
+            android:layout_gravity="center|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/temperature"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="33dp" />
+
+        <Button
+            android:id="@+id/tempReadButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="@string/read_temperature"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tempCircularProgress" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
