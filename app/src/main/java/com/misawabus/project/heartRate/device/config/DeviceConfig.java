@@ -14,9 +14,9 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
@@ -33,7 +33,6 @@ import com.veepoo.protocol.model.settings.CustomSetting;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 import com.veepoo.protocol.shareprence.VpSpGetUtil;
 
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,14 +41,14 @@ import java.util.Map;
 public class DeviceConfig {
 
     private static final WriteResponse writeResponse = new WriteResponse();
+    private static final String TAG = DeviceConfig.class.getSimpleName();
+    private static final Boolean readingStarted = false;
     private static Message msg;
-    private static final String TAG = "FLOW";
     private static Context context;
     private static DashBoardViewModel dashBoardViewModel;
     private static DeviceViewModel deviceViewModel;
     private static AppCompatActivity activity;
-    private static final Boolean readingStarted = false;
-    private static volatile int count=0;
+    private static volatile int count = 0;
 
     static Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -58,8 +57,11 @@ public class DeviceConfig {
             String s = msg.obj.toString();
             switch (msg.what) {
                 case 1:
-                    Log.d("DEVICE_INFO",s);
+                    Log.d("DEVICE_INFO", s);
                     dashBoardViewModel.setDeviceInfo(s);
+                    customizeDevice();
+                    HealthsData healthsData = new HealthsData(context, activity);
+                    healthsData.readOriginData();
 
                     break;
                 case 2:
@@ -67,33 +69,26 @@ public class DeviceConfig {
                     Map<String, Boolean> availableFunctionsMap = new HashMap<>();
                     String substring = s.substring(1, s.length() - 1);
                     String[] split1 = substring.split(", ");
-                    Arrays.stream(split1).forEach(keyVal ->{
+                    Arrays.stream(split1).forEach(keyVal -> {
                         final String[] splitKeyVal = keyVal.split("=");
                         availableFunctionsMap.put(splitKeyVal[0], Boolean.parseBoolean(splitKeyVal[1]));
                     });
                     deviceViewModel.setDeviceFeatures(availableFunctionsMap);
                     dashBoardViewModel.getRealTimeTesterClass().readSportSteps();
 
-                    if(count==1 && Boolean.TRUE.equals(availableFunctionsMap.get("OriginProtcolVersion"))) {
-                        Log.d("FULL_DATA_Origin", "...........");
+/*                    if (count == 1 && Boolean.TRUE.equals(availableFunctionsMap.get("OriginProtcolVersion"))) {
                         HealthsData healthsData = new HealthsData(context, activity);
                         healthsData.readOriginData();
-                    }else if(count==1){
+                    } else if (count == 1) {
                         HealthsData healthsData = new HealthsData(context, activity);
                         healthsData.readOriginData();
                     }
 
-                    count++;
+                    count++;*/
 
 
+                    break;
 
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
             }
         }
     };
@@ -106,59 +101,64 @@ public class DeviceConfig {
 
         boolean is24Hourmodel = false;
         VPOperateManager.getMangerInstance(context).confirmDevicePwd(writeResponse, new IPwdDataListener() {
-            @Override
-            public void onPwdDataChange(PwdData pwdData) {
-                String message = "PwdData:\n" + pwdData.toString();
-                Log.d("PWD", pwdData.toString());
-                sendMsg(message, 1);
-            }
-        }, new IDeviceFuctionDataListener() {
-            @Override
-            public void onFunctionSupportDataChange(FunctionDeviceSupportData functionSupport) {
-                functionSupport.getOriginProtcolVersion();
+                    @Override
+                    public void onPwdDataChange(PwdData pwdData) {
+                        String message = "PwdData:\n" + pwdData.toString();
+                        Log.d(TAG, "onPwdDataChange: " + pwdData);
+                        sendMsg(message, 1);
+                    }
+                },
+                new IDeviceFuctionDataListener() {
+                    @Override
+                    public void onFunctionSupportDataChange(FunctionDeviceSupportData functionSupport) {
+                        functionSupport.getOriginProtcolVersion();
 
-                try {
-                    final Map<String, Boolean> supportedFeatures = getSupportedFeatures(functionSupport);
-                    int watchDataDay = functionSupport.getWathcDay();
-                    dashBoardViewModel.setWatchData(watchDataDay);
-                    sendMsg(supportedFeatures.toString(), 2);
+                        try {
+                            final Map<String, Boolean> supportedFeatures = getSupportedFeatures(functionSupport);
+                            int watchDataDay = functionSupport.getWathcDay();
+                            dashBoardViewModel.setWatchData(watchDataDay);
+                            Log.d(TAG, "onFunctionSupportDataChange: " + functionSupport);
+                            sendMsg(supportedFeatures.toString(), 2);
 
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-
-
-                int contactMsgLength = functionSupport.getContactMsgLength();
-                int allMsgLenght = functionSupport.getAllMsgLength();
-                boolean isSleepPrecision = functionSupport.getPrecisionSleep() == SUPPORT;
+                        } catch (InvocationTargetException | IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
 
 
-            }
-        }, new ISocialMsgDataListener() {
-            @Override
-            public void onSocialMsgSupportDataChange(FunctionSocailMsgData socailMsgData) {
-                String message = "FunctionSocailMsgData:\n" + socailMsgData.toString();
-                Logger.t(TAG).i(message);
-                sendMsg(message, 3);
-            }
+                        int contactMsgLength = functionSupport.getContactMsgLength();
+                        int allMsgLenght = functionSupport.getAllMsgLength();
+                        boolean isSleepPrecision = functionSupport.getPrecisionSleep() == SUPPORT;
 
-            @Override
-            public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
 
-            }
-        }, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
-                String message = "FunctionCustomSettingData:\n" + customSettingData.toString();
-                Logger.t(TAG).i(message);
-                sendMsg(message, 4);
-            }
-        }, "0000", is24Hourmodel);
+                    }
+                },
+                new ISocialMsgDataListener() {
+                    @Override
+                    public void onSocialMsgSupportDataChange(FunctionSocailMsgData socailMsgData) {
+                        String message = "FunctionSocailMsgData:\n" + socailMsgData.toString();
+                        //Logger.t(TAG).i(message);
+                        sendMsg(message, 3);
+                    }
+
+                    @Override
+                    public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
+
+                    }
+                },
+                new ICustomSettingDataListener() {
+                    @Override
+                    public void OnSettingDataChange(CustomSettingData customSettingData) {
+                        String message = "FunctionCustomSettingData:\n" + customSettingData.toString();
+                        Log.d(TAG, "OnSettingDataChange: " + customSettingData);
+                        //Logger.t(TAG).i(message);
+                        sendMsg(message, 4);
+                    }
+                }, "0000", is24Hourmodel);
 
 
     }
 
-    public static void disconnectDevice(Context context){
+    public static void disconnectDevice(Context context) {
         VPOperateManager.getMangerInstance(context).disconnectWatch(writeResponse);
     }
 
@@ -166,7 +166,7 @@ public class DeviceConfig {
         Map<String, Boolean> availableFunctionsMap = new HashMap<>();
         Arrays.stream(FunctionDeviceSupportData.class.getDeclaredMethods())
                 .forEach(method -> {
-                    if(method.getName().contains("get")  && method.getReturnType()==EFunctionStatus.class){
+                    if (method.getName().contains("get") && method.getReturnType() == EFunctionStatus.class) {
                         try {
                             EFunctionStatus newFeature = (EFunctionStatus) method.invoke(functionSupport);
                             boolean isAvailable = newFeature != null && newFeature.equals(SUPPORT);
@@ -179,7 +179,7 @@ public class DeviceConfig {
                     }
                     int originProtcolVersion = functionSupport.getOriginProtcolVersion();
                     Log.d("originProtcolVersion", String.valueOf(originProtcolVersion));
-                    availableFunctionsMap.put("OriginProtcolVersion", originProtcolVersion>=3);
+                    availableFunctionsMap.put("OriginProtcolVersion", originProtcolVersion >= 3);
                     int watchDataDay = functionSupport.getWathcDay();
 
                 });
@@ -187,7 +187,7 @@ public class DeviceConfig {
         return availableFunctionsMap;
     }
 
-    public static void readSettings(){
+    public static void readSettings() {
         VPOperateManager.getMangerInstance(context).readCustomSetting(writeResponse, new ICustomSettingDataListener() {
             @Override
             public void OnSettingDataChange(CustomSettingData customSettingData) {
@@ -209,7 +209,7 @@ public class DeviceConfig {
     }
 
 
-    public static void customizeDevice(){
+    public static void customizeDevice() {
         boolean isHaveMetricSystem = true;
         boolean isMetric = true;
         boolean is24Hour = true;
@@ -257,13 +257,9 @@ public class DeviceConfig {
             @Override
             public void OnSettingDataChange(CustomSettingData customSettingData) {
                 String message = "settings changed:\n" + customSettingData.toString();
-                Logger.t(TAG).i(message);
-                sendMsg(message, 1);
             }
         }, customSetting);
     }
-
-
 
 
     private static void sendMsg(String message, int what) {

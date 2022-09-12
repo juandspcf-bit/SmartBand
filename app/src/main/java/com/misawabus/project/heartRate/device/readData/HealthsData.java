@@ -15,7 +15,7 @@ import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.device.entities.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.entities.HeartRateData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.entities.Spo2HData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.entities.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.entities.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.readData.utils.SleepDataUtils;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -33,6 +33,8 @@ import com.veepoo.protocol.model.datas.OriginData3;
 import com.veepoo.protocol.model.datas.OriginHalfHourData;
 import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.Spo2hOriginData;
+import com.veepoo.protocol.model.enums.ESpo2hDataType;
+import com.veepoo.protocol.util.Spo2hOriginUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -119,10 +121,10 @@ public class HealthsData {
                             .computeBloodPressureDataFiveMinAVR(originData3List,
                                     HealthsReadDataUtils.functionToSetFieldsInBloodPressure(),
                                     new BloodPressureDataFiveMinAvgDataContainer());
-                    DataFiveMinAvgDataContainer spo2HData5MinAvgAllIntervals = HealthsReadDataUtils
-                            .computeSpo2hDataFiveMinAVR(originData3List,
+                    DataFiveMinAvgDataContainer sop2DataFiveMinAvgDataContainer = HealthsReadDataUtils
+                            .computeSop2hDataFiveMinAVR(originData3List,
                                     HealthsReadDataUtils.functionToSetFieldsInSop2(),
-                                    new Spo2HData5MinAvgDataContainer());
+                                    new Sop2HData5MinAvgDataContainer());
 
                     Map<String, DataFiveMinAvgDataContainer> dataFiveMinAVGAllIntervalsMap = new HashMap<>();
                     dataFiveMinAVGAllIntervalsMap
@@ -135,8 +137,8 @@ public class HealthsData {
                             .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName(),
                                     bloodPressureDataFiveMinAvgDataContainer);
                     dataFiveMinAVGAllIntervalsMap
-                            .put(Spo2HData5MinAvgDataContainer.class.getSimpleName(),
-                                    spo2HData5MinAvgAllIntervals);
+                            .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
+                                    sop2DataFiveMinAvgDataContainer);
 
                     mHandler.post(() -> {
 
@@ -169,6 +171,10 @@ public class HealthsData {
                                 deviceViewModel.getMacAddress(),
                                 activity);
 
+                        DBops.updateSpo2Row(sop2DataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                                sop2DataFiveMinAvgDataContainer.getStringDate(),
+                                deviceViewModel.getMacAddress(),
+                                activity);
 
                     });
                 });
@@ -182,13 +188,12 @@ public class HealthsData {
 
             @Override
             public void onOriginHRVOriginListDataChange(List<HRVOriginData> originHrvDataList) {
-
-                //Logger.t(TAG).i("HRV DATA: " + originHrvDataList.toString());
+                Logger.t(TAG).i("HRV DATA: " + originHrvDataList.toString());
             }
 
             @Override
             public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> originSpo2hDataList) {
-                //Logger.t(TAG).i(originSpo2hDataList.toString());
+
             }
 
             @Override

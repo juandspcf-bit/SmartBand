@@ -180,9 +180,6 @@ public class SummaryBPFragment extends SummaryFragment {
 
         });
 
-
-
-
     }
 
     private void extracted(XYDataArraysForPlotting highValuesSampleContainer, XYDataArraysForPlotting lowValuesSampleContainer, List<String> stringsIntervalHours, int fullLengthSeries, Map<IdTypeDataTable, List<Double>> mapForHighPressureLowPressure, int maxIndex, String stringMax, int minIndex, String stringMin) {

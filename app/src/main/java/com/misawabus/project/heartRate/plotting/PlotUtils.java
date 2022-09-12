@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PlotUtils {
@@ -353,7 +354,57 @@ public class PlotUtils {
 
     }
 
+    public void plotSop2DoubleIntervalsData(String[] domainLabels, Double[] rangeDouble, XYPlot plot, Context context) {
+        plot.clear();
 
+        XYSeries series1 = new SimpleXYSeries(Arrays.asList(rangeDouble), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
+        LineAndPointFormatter series1Format = new LineAndPointFormatter(context, R.xml.line_point_formatter_with_labels_hr_summary);
+
+        series1Format.setInterpolationParams(
+                new CatmullRomInterpolator.Params(2, CatmullRomInterpolator.Type.Centripetal));
+        plot.addSeries(series1, series1Format);
+
+
+        double rangeUpperLimit = 100.0;
+        plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeUpperLimit / 10);
+        plot.setRangeUpperBoundary(rangeUpperLimit, BoundaryMode.FIXED);
+        plot.setRangeLowerBoundary(70, BoundaryMode.FIXED);
+        Paint p = new Paint();
+        p.setARGB(50, 0, 0, 255);
+        plot.getGraph().setRangeGridLinePaint(p);
+
+        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+            @Override
+            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                int i = Math.round(((Number) obj).floatValue());
+                return toAppendTo.append(domainLabels[i]);
+            }
+
+            @Override
+            public Object parseObject(String source, ParsePosition pos) {
+                return null;
+            }
+        });
+
+        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new Format() {
+            @Override
+            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                int i = Math.round(((Number) obj).floatValue());
+                Log.d(TAG, "format: i: " + i);
+                return toAppendTo.append(i);
+            }
+
+            @Override
+            public Object parseObject(String source, ParsePosition pos) {
+                return null;
+            }
+        });
+
+        plot.setVisibility(View.VISIBLE);
+        plot.redraw();
+
+
+    }
 
 
     public void processingDoublesIntervalsBP(String[] domainLabels, Double[] integerHPSeries, Double[] integerLPSeries, XYPlot plot, Context context) {

@@ -3,7 +3,6 @@ package com.misawabus.project.heartRate.fragments.daysFragments;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
@@ -11,13 +10,12 @@ import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.device.entities.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.entities.HeartRateData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.entities.Spo2HData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.entities.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.entities.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +123,7 @@ public class DaysFragmentUtil {
 
     public static void plotSpO2(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
         DataFiveMinAvgDataContainer spo2hData5MinAvgAllIntervals
-                = stringDataFiveMinAVGAllIntervalsMap.get(Spo2HData5MinAvgDataContainer
+                = stringDataFiveMinAVGAllIntervalsMap.get(Sop2HData5MinAvgDataContainer
                 .class.getSimpleName());
         Map<Integer, Map<String, Double>> spo2hData;
         if(spo2hData5MinAvgAllIntervals==null)return;

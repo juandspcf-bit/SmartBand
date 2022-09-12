@@ -31,7 +31,7 @@ public class PastYesterdayFragment extends DayFragment {
 
 
         dashBoardViewModel.getPastYesterdayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            if(sleepDataUIList==null) return;
+            if(sleepDataUIList==null || sleepDataUIList.size()==0) return;
             sleepDataList = sleepDataUIList;
             SleepDataUI sleepDataUI = sleepDataUIList.get(0);
             Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());

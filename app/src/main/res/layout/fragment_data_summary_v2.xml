@@ -586,8 +586,8 @@
                             app:domainLineColor="@color/ap_transparent"
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
-                            app:graphMarginLeft="10dp"
-                            app:graphMarginTop="20dp"
+                            app:graphMarginLeft="50dp"
+                            app:graphMarginTop="30dp"
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
@@ -601,7 +601,8 @@
 
                             app:lineLabelRotationBottom="-45"
                             app:lineLabelTextColorLeft="#4B1263"
-                            app:lineLabels="bottom"
+                            app:lineLabels="left|bottom"
+
                             app:rangeLineColor="#646D71"
                             app:rangeStep="2dp"
                             app:title="Spo2" />

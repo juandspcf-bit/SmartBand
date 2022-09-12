@@ -23,7 +23,7 @@ public class Sop2ViewModel extends AndroidViewModel {
         sop2Repository.insertSingleRow(sop2);
     }
 
-    public static LiveData<Sop2> getSingleRowForU(Date date, String macAddress){
+    public static LiveData<Sop2> getSingleRow(Date date, String macAddress){
         return sop2Repository.getSingleRow(date, macAddress);
     }
 

@@ -56,6 +56,9 @@ public class SummarySportsFragment extends SummaryFragment {
     private final DataViews dataViews = new DataViews();
     private DeviceViewModel deviceViewModel;
     private boolean isInitDone;
+    private Button backToMainFragButton;
+    private Button selectDateButton;
+    private Button shareButton;
 
     public SummarySportsFragment(){
 
@@ -85,25 +88,25 @@ public class SummarySportsFragment extends SummaryFragment {
         super.onViewCreated(view, savedInstanceState);
         binding.setSumData(dataViews);
 
-        Button backToMainFragButton = binding.buttonBackDailyActivities;
-        Button selectDateButton = binding.buttonDateSelection;
-        Button shareButton = binding.buttonShareFitness;
+        backToMainFragButton = binding.buttonBackDailyActivities;
+        selectDateButton = binding.buttonDateSelection;
+        shareButton = binding.buttonShareFitness;
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
         shareButton.setOnClickListener(this::shareScreen);
 
         Date todayFormattedDate = getTodayFormattedDate();
-        getDataFromDBv2(todayFormattedDate, dataFromDB -> setFragmentViewsv2(todayFormattedDate, dataFromDB));
+        getDataFromDB(todayFormattedDate, dataFromDB -> setFragmentViews(todayFormattedDate, dataFromDB));
 
         selectDateButton.setOnClickListener(view1 ->
-                getDateFromCalendar(selectedDate -> getDataFromDBv2(selectedDate,
-                        dataFromDB -> setFragmentViewsv2(selectedDate, dataFromDB))));
+                getDateFromCalendar(selectedDate -> getDataFromDB(selectedDate,
+                        dataFromDB -> setFragmentViews(selectedDate, dataFromDB))));
 
     }
 
-    private void setFragmentViewsv2(Date selectedDate, Sports singleDayFullDataList) {
-        setTextButtonDate(selectedDate, binding.buttonDateSelection);
-        if(singleDayFullDataList== null){
+    private void setFragmentViews(Date selectedDate, Sports data) {
+        setTextButtonDate(selectedDate, selectDateButton);
+        if(data== null){
             binding.groupDataSports.setVisibility(View.GONE);
             binding.imageViewSports.setVisibility(View.VISIBLE);
             return;
@@ -111,11 +114,11 @@ public class SummarySportsFragment extends SummaryFragment {
         binding.imageViewSports.setVisibility(View.GONE);
         binding.groupDataSports.setVisibility(View.VISIBLE);
 
-        String sportsData = singleDayFullDataList.getData();
+        String sportsData = data.getData();
 
         List<Map<String, Double>> sportsDataMap = FragmentUtil.parse5MinFieldData(sportsData);
         Map<String, List<Double>> mapFieldsWith30MinValues = FragmentUtil.getSportsMapFieldsWith30MinCountValues(sportsDataMap);
-        Log.d(TAG, "plotSports: summary" + mapFieldsWith30MinValues.get("stepValue"));
+
         Double[] stepDoubleArray = mapFieldsWith30MinValues.get("stepValue").toArray(new Double[0]);
         stepsDoubleList = Arrays.asList(stepDoubleArray);
         caloriesDoubleList = Arrays.asList(mapFieldsWith30MinValues.get("calValue").toArray(new Double[0]));
@@ -191,7 +194,7 @@ public class SummarySportsFragment extends SummaryFragment {
 
 
 
-    private void getDataFromDBv2(Date date, Consumer<Sports> listData) {
+    private void getDataFromDB(Date date, Consumer<Sports> listData) {
         SportsViewModel
                 .getSinglePDayRow(date, deviceViewModel.getMacAddress())
                 .observe(getViewLifecycleOwner(),

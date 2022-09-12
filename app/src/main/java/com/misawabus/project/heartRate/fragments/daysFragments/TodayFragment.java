@@ -35,7 +35,10 @@ public class TodayFragment extends DayFragment {
 
 
         dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            if(sleepDataUIList==null) return;
+            if(sleepDataUIList==null || sleepDataUIList.size()==0 ) {
+
+                return;
+            }
             sleepDataList = sleepDataUIList;
             Optional<SleepDataUI> max = sleepDataUIList.stream().
                     max(Comparator.comparingInt(SleepDataUI::getAllSleepTime));

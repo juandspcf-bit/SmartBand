@@ -3,11 +3,11 @@ package com.misawabus.project.heartRate.device.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Spo2HData5MinAvgDataContainer implements DataFiveMinAvgDataContainer {
+public class Sop2HData5MinAvgDataContainer implements DataFiveMinAvgDataContainer {
     private final Map<Integer, Map<String, Double>> doubleMap = new HashMap<>();
     private String stringDate;
 
-    public Spo2HData5MinAvgDataContainer() {
+    public Sop2HData5MinAvgDataContainer() {
     }
 
     public String getStringDate() {

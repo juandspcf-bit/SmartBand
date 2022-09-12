@@ -10,11 +10,13 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.misawabus.project.heartRate.Database.entities.BloodPressure;
 import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.Database.entities.Sop2;
 import com.misawabus.project.heartRate.Database.entities.Sports;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.viewModels.BloodPressureViewModel;
 import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
+import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
 import com.misawabus.project.heartRate.viewModels.SportsViewModel;
 
 import java.util.Date;
@@ -28,6 +30,7 @@ public class DBops {
 
     private SleepDataUIViewModel sleepDataUIViewModel;
     private SportsViewModel sportsViewModel;
+    private Sop2ViewModel spo2ViewModel;
 
     public DBops(){
 
@@ -39,6 +42,7 @@ public class DBops {
         heartRateViewModel = new ViewModelProvider(viewModelStoreOwner).get(HeartRateViewModel.class);
         bloodPressureViewModel = new ViewModelProvider(viewModelStoreOwner).get(BloodPressureViewModel.class);
         sleepDataUIViewModel = new ViewModelProvider(viewModelStoreOwner).get(SleepDataUIViewModel.class);
+        spo2ViewModel = new ViewModelProvider(viewModelStoreOwner).get(Sop2ViewModel.class);
     }
 
 
@@ -53,6 +57,12 @@ public class DBops {
     public static void insertBloodPressureRow(IdTypeDataTable idTypeDataTable, String data, String myDate, String macAddress){
         BloodPressureViewModel.insertSingleRow(getNewBloodPressureObject(idTypeDataTable, data, myDate, macAddress));
     }
+
+    public static void insertSop2Row(String data, String myDate, String macAddress){
+        Sop2ViewModel.insertSingleRow(getNewSop2Object(data, myDate, macAddress));
+    }
+
+
 
     public static void insertSportsRow(String data, String myDate, String macAddress){
         SportsViewModel.insertSingleRow(getNewSportsObject(data, myDate, macAddress));
@@ -142,6 +152,36 @@ public class DBops {
             }
         };
         singleBloodPressureRowForU.observe(lifecycleOwner, MyObserver);
+    }
+
+    public static void updateSpo2Row(String data, String myDate, String macAddress, LifecycleOwner lifecycleOwner){
+        Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
+
+        LiveData<Sop2> singleRow = Sop2ViewModel.getSingleRow(formattedDate, macAddress);
+        Observer<Sop2> MyObserver = new Observer<>() {
+            @Override
+            public void onChanged(Sop2 sop2) {
+                if (sop2 == null) {
+                    insertSop2Row(data, myDate, macAddress);
+                    singleRow.removeObserver(this);
+                } else if (!sop2.getData().equals(data)) {
+                    sop2.setData(data);
+                    Sop2ViewModel.updateSingleRow(sop2);
+                    singleRow.removeObserver(this);
+                }
+            }
+        };
+        singleRow.observe(lifecycleOwner, MyObserver);
+    }
+
+    private static Sop2 getNewSop2Object(String data, String myDate, String macAddress) {
+        Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
+        Sop2 sop2 = new Sop2();
+        sop2.setIdTypeDataTable(IdTypeDataTable.Spo2hFiveMin);
+        sop2.setMacAddress(macAddress);
+        sop2.setData(data);
+        sop2.setDateData(formattedDate);
+        return sop2;
     }
 
     private static Sports getNewSportsObject(String data, String myDate, String macAddress) {

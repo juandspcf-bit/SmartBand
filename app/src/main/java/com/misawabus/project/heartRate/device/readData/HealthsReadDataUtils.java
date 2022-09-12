@@ -43,7 +43,7 @@ public class HealthsReadDataUtils {
         return fieldDataFiveMinAVGAllIntervals;
     }
 
-    public static DataFiveMinAvgDataContainer computeSpo2hDataFiveMinAVR(List<OriginData3> originData3List,
+    public static DataFiveMinAvgDataContainer computeSop2hDataFiveMinAVR(List<OriginData3> originData3List,
                                                                          List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
 
         computeDataFiveMinAVG(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);

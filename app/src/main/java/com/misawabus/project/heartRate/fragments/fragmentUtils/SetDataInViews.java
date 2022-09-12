@@ -62,7 +62,7 @@ public class SetDataInViews {
 
     public static void plotSop2Data( XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot, Context context) {
         PlotUtils plotUtils = PlotUtils.getInstance();
-        plotUtils.plotHeartRateDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
+        plotUtils.plotSop2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
                 plot,
                 context
