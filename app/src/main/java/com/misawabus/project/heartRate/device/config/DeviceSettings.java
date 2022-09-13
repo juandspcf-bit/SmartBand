@@ -1,4 +1,4 @@
-package com.misawabus.project.heartRate.device.readData;
+package com.misawabus.project.heartRate.device.config;
 
 import android.content.Context;
 import android.os.Handler;

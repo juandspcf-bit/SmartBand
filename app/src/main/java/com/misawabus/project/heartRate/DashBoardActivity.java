@@ -23,7 +23,7 @@ import com.misawabus.project.heartRate.Utils.DBops;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.databinding.ActivityDashBoardV2Binding;
 import com.misawabus.project.heartRate.device.config.DeviceConfig;
-import com.misawabus.project.heartRate.device.readData.DeviceSettings;
+import com.misawabus.project.heartRate.device.config.DeviceSettings;
 import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
 import com.misawabus.project.heartRate.fragments.MainDashBoardFragment;
