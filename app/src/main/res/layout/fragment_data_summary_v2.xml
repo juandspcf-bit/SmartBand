@@ -611,7 +611,7 @@
                             android:id="@+id/noDataSop2ImageView"
                             android:layout_width="92dp"
                             android:layout_height="108dp"
-                            app:srcCompat="@drawable/ic_reshot_icon_sleeping_x2ekjbl3yq"
+                            app:srcCompat="@drawable/oxygen_saturation"
                             tools:layout_editor_absoluteX="464dp"
                             tools:layout_editor_absoluteY="130dp" />
 
