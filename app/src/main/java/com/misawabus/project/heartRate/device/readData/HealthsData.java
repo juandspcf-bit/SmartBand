@@ -1,11 +1,19 @@
 package com.misawabus.project.heartRate.device.readData;
 
+import static com.misawabus.project.heartRate.device.readData.HealthsReadDataUtils.computeBloodPressureDataFiveMinOrigin;
+import static com.misawabus.project.heartRate.device.readData.HealthsReadDataUtils.computeHeartRateDataFiveMinOrigin;
+import static com.misawabus.project.heartRate.device.readData.HealthsReadDataUtils.computeSportsDataFiveMinOrigin;
+import static com.misawabus.project.heartRate.device.readData.HealthsReadDataUtils.functionToSetFieldsInBloodPressureOrigin;
+import static com.misawabus.project.heartRate.device.readData.HealthsReadDataUtils.functionToSetFieldsInRateValueOrigin;
+import static com.misawabus.project.heartRate.device.readData.HealthsReadDataUtils.functionToSetFieldsInSportsOrigin;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,6 +21,11 @@ import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.Utils.DBops;
 import com.misawabus.project.heartRate.Utils.DateUtils;
+import com.misawabus.project.heartRate.constans.IdTypeDataTable;
+import com.misawabus.project.heartRate.device.entities.BloodPressureDataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.entities.HeartRateData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.entities.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.readData.utils.SleepDataUtils;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -31,14 +44,12 @@ import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.Spo2hOriginData;
 import com.veepoo.protocol.model.datas.TimeData;
 
-import org.apache.logging.log4j.util.PropertySource;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -65,6 +76,23 @@ public class HealthsData {
         }
     };
 
+    private List<OriginData> todayList5Min;
+    private List<OriginData> yesterdayList5Min;
+    private List<OriginData> pastYesterdayList5Min;
+
+    {
+
+        todayList5Min = Stream.generate(OriginData::new).limit(288)
+                .collect(Collectors.toList());
+
+        yesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
+                .collect(Collectors.toList());
+
+        pastYesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
+                .collect(Collectors.toList());
+
+    }
+
     public HealthsData(Context context, AppCompatActivity activity) {
         this.context = context;
         this.dashBoardViewModel = new ViewModelProvider(activity).get(DashBoardViewModel.class);
@@ -90,17 +118,39 @@ public class HealthsData {
             @Override
             public void onReadOriginComplete() {
 
+                getDataFiveMinAvgDataContainer(List.copyOf(todayList5Min));
+                getDataFiveMinAvgDataContainer(List.copyOf(yesterdayList5Min));
+                getDataFiveMinAvgDataContainer(List.copyOf(pastYesterdayList5Min));
+
+                todayList5Min = Stream.generate(OriginData::new).limit(288)
+                        .collect(Collectors.toList());
+
+                yesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
+                        .collect(Collectors.toList());
+
+                pastYesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
+                        .collect(Collectors.toList());
+
+                mHandler.post(() -> readSleepData());
             }
 
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
+                String stringDate = originData.getDate();
+                Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+                LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
 
                 TimeData timeData = originData.getmTime();
                 int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
                         timeData.getMinute());
 
-                Log.d(TAG, "onOringinFiveMinuteDataChange: " + interval);
-
+                if (localDate.compareTo(LocalDate.now()) == 0) {
+                    todayList5Min.set(interval-1, originData);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+                    yesterdayList5Min.set(interval-1, originData);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+                    pastYesterdayList5Min.set(interval-1, originData);
+                }
             }
 
             @Override
@@ -164,11 +214,80 @@ public class HealthsData {
         VPOperateManager.getMangerInstance(context).readOriginData(writeResponse, originDataListenerX, dashBoardViewModel.getWatchData());
     }
 
+    private void getDataFiveMinAvgDataContainer(List<OriginData> list5Min) {
+        DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinOrigin(list5Min,
+                functionToSetFieldsInSportsOrigin(),
+                new SportsData5MinAvgDataContainer());
+        DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHeartRateDataFiveMinOrigin(list5Min,
+                functionToSetFieldsInRateValueOrigin(),
+                new HeartRateData5MinAvgDataContainer());
+        DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer = computeBloodPressureDataFiveMinOrigin(list5Min,
+                functionToSetFieldsInBloodPressureOrigin(),
+                new HeartRateData5MinAvgDataContainer());
+
+
+        Map<String, DataFiveMinAvgDataContainer> dataFiveMinAVGAllIntervalsMap = new HashMap<>();
+        dataFiveMinAVGAllIntervalsMap
+                .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                        sportsDataFiveMinAvgDataContainer);
+        dataFiveMinAVGAllIntervalsMap
+                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                        heartRateDataFiveMinAvgDataContainer);
+        dataFiveMinAVGAllIntervalsMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName(),
+                        bloodPressureDataFiveMinAvgDataContainer);
+
+        String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
+        if(stringDate==null) return;
+        Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+        LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
+        if (localDate.compareTo(LocalDate.now()) == 0) {
+            dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(dataFiveMinAVGAllIntervalsMap);
+        } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+            dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(dataFiveMinAVGAllIntervalsMap);
+        } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+            dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(dataFiveMinAVGAllIntervalsMap);
+        }
+
+        DBops.updateHeartRateRow(IdTypeDataTable.HeartRateFiveMin,
+                heartRateDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                heartRateDataFiveMinAvgDataContainer.getStringDate(),
+                deviceViewModel.getMacAddress(),
+                activity
+        );
+        DBops.updateSportsRow(IdTypeDataTable.SportsFiveMin,
+                sportsDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                sportsDataFiveMinAvgDataContainer.getStringDate(),
+                deviceViewModel.getMacAddress(),
+                activity);
+
+        DBops.updateBloodPressureRow(IdTypeDataTable.BloodPressure,
+                bloodPressureDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                bloodPressureDataFiveMinAvgDataContainer.getStringDate(),
+                deviceViewModel.getMacAddress(),
+                activity);
+
+    }
+
     public void getSmartWatchDataSingleDay(int day) {
         IOriginProgressListener originDataListener = new IOriginDataListener() {
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
+                String stringDate = originData.getDate();
+                Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+                LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
 
+                TimeData timeData = originData.getmTime();
+                int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
+                        timeData.getMinute());
+
+                if (localDate.compareTo(LocalDate.now()) == 0) {
+                    todayList5Min.set(interval-1, originData);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+                    yesterdayList5Min.set(interval-1, originData);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+                    pastYesterdayList5Min.set(interval-1, originData);
+                }
 
             }
 
@@ -186,7 +305,21 @@ public class HealthsData {
 
             @Override
             public void onReadOriginComplete() {
-                mHandler.post(() -> dashBoardViewModel.setIsTodayFragmentRefreshing(false));
+                getDataFiveMinAvgDataContainer(List.copyOf(todayList5Min));
+                getDataFiveMinAvgDataContainer(List.copyOf(yesterdayList5Min));
+                getDataFiveMinAvgDataContainer(List.copyOf(pastYesterdayList5Min));
+
+               todayList5Min = Stream.generate(OriginData::new).limit(288)
+                        .collect(Collectors.toList());
+
+                yesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
+                        .collect(Collectors.toList());
+
+                pastYesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
+                        .collect(Collectors.toList());
+
+                mHandler.post(() -> readSleepData());
+
             }
         };
 

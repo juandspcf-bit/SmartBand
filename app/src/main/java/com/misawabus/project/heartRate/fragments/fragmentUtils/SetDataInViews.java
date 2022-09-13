@@ -28,8 +28,9 @@ public class SetDataInViews {
                 = stringDataFiveMinAVGAllIntervalsMap.get(SportsData5MinAvgDataContainer
                 .class.getSimpleName());
         Map<Integer, Map<String, Double>> sportsData = sportsDataFiveMinAvgDataContainer.getDoubleMap();
+        if(sportsData.get(1).isEmpty()) return;
         List<Map<String, Double>> sportsDataMap = FragmentUtil.parse5MinFieldData(sportsData.toString());
-        if(sportsDataMap.get(0).isEmpty()) return;
+
         Map<String, List<Double>> mapFieldsWith30MinValues = FragmentUtil.getSportsMapFieldsWith30MinCountValues(sportsDataMap);
 
 

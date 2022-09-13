@@ -80,7 +80,6 @@ public class TodayFragment extends DayFragment {
                         && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()){
                     return;
                 }
-                //dashBoardViewModel.getHealthsDataManager().getSmartWatchDataSingleDay(0);
                 dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
                 dashBoardViewModel.setIsTodayFragmentRefreshing(true);
                 binding.fragmentPlot.setEnabled(false);

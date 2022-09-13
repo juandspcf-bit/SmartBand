@@ -18,6 +18,7 @@ import com.misawabus.project.heartRate.device.entities.SportsData5MinAvgDataCont
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
+import com.veepoo.protocol.model.datas.OriginData;
 import com.veepoo.protocol.model.datas.OriginData3;
 import com.veepoo.protocol.model.datas.TimeData;
 
@@ -38,9 +39,33 @@ public class HealthsReadDataUtils {
 
     public static DataFiveMinAvgDataContainer computeSportsDataFiveMinAVR(List<OriginData3> originData3List,
                                                                           List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
-        computeDataFiveMinAVG(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
+        computeDataFiveMinAVGOrigin3(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
 
         return fieldDataFiveMinAVGAllIntervals;
+
+    }
+
+    public static DataFiveMinAvgDataContainer computeSportsDataFiveMinOrigin(List<OriginData> originDataList,
+                                                                             List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+        computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
+
+        return fieldDataFiveMinAllIntervals;
+
+    }
+
+    public static DataFiveMinAvgDataContainer computeHeartRateDataFiveMinOrigin(List<OriginData> originDataList,
+                                                                             List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+        computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
+
+        return fieldDataFiveMinAllIntervals;
+
+    }
+
+    public static DataFiveMinAvgDataContainer computeBloodPressureDataFiveMinOrigin(List<OriginData> originDataList,
+                                                                                List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+        computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
+
+        return fieldDataFiveMinAllIntervals;
 
     }
 
@@ -48,25 +73,25 @@ public class HealthsReadDataUtils {
                                                                             List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList,
                                                                             DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
 
-        computeDataFiveMinAVG(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
+        computeDataFiveMinAVGOrigin3(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
         return fieldDataFiveMinAVGAllIntervals;
 
     }
 
     public static DataFiveMinAvgDataContainer computeBloodPressureDataFiveMinAVR(List<OriginData3> originData3List,
                                                                                  List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
-        computeDataFiveMinAVG(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
+        computeDataFiveMinAVGOrigin3(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
         return fieldDataFiveMinAVGAllIntervals;
     }
 
     public static DataFiveMinAvgDataContainer computeSop2hDataFiveMinAVR(List<OriginData3> originData3List,
                                                                          List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
 
-        computeDataFiveMinAVG(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
+        computeDataFiveMinAVGOrigin3(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
         return fieldDataFiveMinAVGAllIntervals;
     }
 
-    private static void computeDataFiveMinAVG(List<OriginData3> originData3List, List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
+    private static void computeDataFiveMinAVGOrigin3(List<OriginData3> originData3List, List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
         fieldDataFiveMinAVGAllIntervals.setStringDate(originData3List.get(0).getDate());
         originData3List
                 .forEach(data -> {
@@ -80,6 +105,19 @@ public class HealthsReadDataUtils {
     }
 
 
+    private static void computeDataFiveMinOrigin(List<OriginData> originDataList, List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+        fieldDataFiveMinAllIntervals.setStringDate(originDataList.get(0).getDate());
+        originDataList
+                .forEach(data -> {
+                    TimeData timeData = data.getmTime();
+                    if(timeData == null) return;
+                    int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
+                            timeData.getMinute());
+                    Map<String, Double> mapValues = new HashMap<>();
+                    biConsumerList.forEach(bi -> bi.accept(mapValues, data));
+                    fieldDataFiveMinAllIntervals.getDoubleMap().put(interval, mapValues);
+                });
+    }
 
     private static OptionalDouble get5MinAVG(int[] results) {
         return stream(results)
@@ -132,7 +170,25 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSports(){
+    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInRateValueOrigin(){
+
+        List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList = new ArrayList<>();
+
+        biConsumerList.add((doubleMap, originData) -> doubleMap.put("Ppgs",
+                (double) originData.getRateValue()));
+
+        // TODO: 2022/09/02 add the activity zone to the excel file
+        biConsumerList.add((doubleMap, originData) -> {
+            double v = (double) originData.getRateValue();
+
+            UtilsSummaryFrag.ZoneObject zoneObject = UtilsSummaryFrag.testZone(0, v);
+            doubleMap.put("Activity",
+                    (double) zoneObject.getZoneInteger());
+        });
+        return biConsumerList;
+    }
+
+    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSportsOrigin3(){
 
         List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList = new ArrayList<>();
 
@@ -144,6 +200,22 @@ public class HealthsReadDataUtils {
 
         biConsumerList.add((doubleMap, originData3) -> doubleMap.put("disValue",
                 originData3.getDisValue()));
+
+        return biConsumerList;
+    }
+
+    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInSportsOrigin(){
+
+        List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList = new ArrayList<>();
+
+        biConsumerList.add((doubleMap, originData) -> doubleMap.put("stepValue",
+                (double) originData.getStepValue()));
+
+        biConsumerList.add((doubleMap, originData) -> doubleMap.put("calValue",
+                originData.getCalValue()));
+
+        biConsumerList.add((doubleMap, originData) -> doubleMap.put("disValue",
+                originData.getDisValue()));
 
         return biConsumerList;
     }
@@ -160,6 +232,18 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
+    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInBloodPressureOrigin(){
+
+        List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList = new ArrayList<>();
+
+        biConsumerList.add((doubleMap, originData) -> doubleMap.put("highValue",
+                (double) originData.getHighValue()));
+
+        biConsumerList.add((doubleMap, originData) -> doubleMap.put("lowVaamlue",
+                (double) originData.getLowValue()));
+        return biConsumerList;
+    }
+
 
     static void processOriginData3List(List<OriginData3> originData3List,
                                        ExecutorService databaseWriteExecutor,
@@ -169,7 +253,7 @@ public class HealthsReadDataUtils {
                                        DeviceViewModel deviceViewModel) {
         databaseWriteExecutor.execute(() -> {
             DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinAVR(originData3List,
-                            functionToSetFieldsInSports(),
+                            functionToSetFieldsInSportsOrigin3(),
                             new SportsData5MinAvgDataContainer());
             DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHearRateDataFiveMinAVR(originData3List,
                             functionToSetFieldsInPpgs(),

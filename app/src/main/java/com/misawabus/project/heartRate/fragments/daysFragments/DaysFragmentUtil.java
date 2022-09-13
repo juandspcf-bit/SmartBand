@@ -3,6 +3,7 @@ package com.misawabus.project.heartRate.fragments.daysFragments;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
@@ -24,23 +25,22 @@ public class DaysFragmentUtil {
     private static final String TAG = DaysFragmentUtil.class.getSimpleName();
 
     static void plotSports(Map<String, DataFiveMinAvgDataContainer> fullDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding) {
+        DataFiveMinAvgDataContainer dataIntervalsMapContainer
+                = fullDataFiveMinAVGAllIntervalsMap.get(SportsData5MinAvgDataContainer
+                        .class.getSimpleName());
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        if(dataIntervalsMapContainer==null)return;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        Log.d(TAG, "plotSports: " + dataIntervalsMap);
+        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
+        if(singleFieldMap == null || singleFieldMap.isEmpty()) return;
 
-        DataFiveMinAvgDataContainer avgDataForFiveMinContainer;
-        avgDataForFiveMinContainer = fullDataFiveMinAVGAllIntervalsMap
-                .get(SportsData5MinAvgDataContainer
-        .class.getSimpleName());
-        Map<Integer, Map<String, Double>> avgDataForFiveMinForAllIntervals;
-        if(avgDataForFiveMinContainer==null)return;
-        avgDataForFiveMinForAllIntervals = avgDataForFiveMinContainer.getDoubleMap();
-        Map<String, Double> map = avgDataForFiveMinForAllIntervals.get(1);
-        if(map == null || map.isEmpty()) return;
-
-        List<Map<String, Double>> heartRavgDataForFiveMinForAllIntervalsList;
-        heartRavgDataForFiveMinForAllIntervalsList = FragmentUtil.mapToList(avgDataForFiveMinForAllIntervals);
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
         Map<String, List<Double>> dataGroupByFieldsWith30MinSumValues;
         dataGroupByFieldsWith30MinSumValues = FragmentUtil
-                .getSportsMapFieldsWith30MinCountValues(heartRavgDataForFiveMinForAllIntervalsList);
+                .getSportsMapFieldsWith30MinCountValues(dataIntervalsList);
         List<Double> stepValueList = dataGroupByFieldsWith30MinSumValues.get("stepValue");
         if (stepValueList == null) return;
         Double[] seriesSteps = stepValueList.toArray(new Double[0]);
@@ -58,19 +58,19 @@ public class DaysFragmentUtil {
     }
 
     public static void plotHeartRate(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
-        DataFiveMinAvgDataContainer heartRateData5MinAVGAllIntervals
+        DataFiveMinAvgDataContainer dataIntervalsMapContainer
                 = stringDataFiveMinAVGAllIntervalsMap.get(HeartRateData5MinAvgDataContainer
                 .class.getSimpleName());
-        Map<Integer, Map<String, Double>> heartRateData;
-        if(heartRateData5MinAVGAllIntervals==null)return;
-        heartRateData = heartRateData5MinAVGAllIntervals.getDoubleMap();
-        Map<String, Double> map = heartRateData.get(1);
-        if (map == null || map.isEmpty()) return;
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        if(dataIntervalsMapContainer==null)return;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
+        if (singleFieldMap == null || singleFieldMap.isEmpty() || dataIntervalsMap.size()<3) return;
 
-        List<Map<String, Double>> heartRateDataMap;
-        heartRateDataMap = FragmentUtil.mapToList(heartRateData);
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(heartRateDataMap, "Ppgs");
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "Ppgs");
         int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
         String[] timeAxisSubArray =IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
 
@@ -86,20 +86,20 @@ public class DaysFragmentUtil {
     }
 
     public static void plotBloodPressure(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
-        DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer
+        DataFiveMinAvgDataContainer dataIntervalsMapContainer
                 = stringDataFiveMinAVGAllIntervalsMap.get(BloodPressureDataFiveMinAvgDataContainer
                 .class.getSimpleName());
-        Map<Integer, Map<String, Double>> bloodPressure;
-        if(bloodPressureDataFiveMinAvgDataContainer==null)return;
-        bloodPressure = bloodPressureDataFiveMinAvgDataContainer.getDoubleMap();
-        Map<String, Double> map = bloodPressure.get(1);
-        if(map == null || map.isEmpty()) return;
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        if(dataIntervalsMapContainer==null)return;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
+        if (singleFieldMap == null || singleFieldMap.isEmpty() || dataIntervalsMap.size()<3) return;
 
-        List<Map<String, Double>> bloodPressureMap;
-        bloodPressureMap = FragmentUtil.mapToList(bloodPressure);
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
         List<Map<String, Double>> bloodPressureMapFieldsWith30Min;
-        bloodPressureMapFieldsWith30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(bloodPressureMap);
+        bloodPressureMapFieldsWith30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(dataIntervalsList);
 
         Double[] subArrayHPWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "highValue");
         String[] timeAxisSubArrayHP =IntervalUtils.hoursInterval;
@@ -122,19 +122,19 @@ public class DaysFragmentUtil {
     }
 
     public static void plotSpO2(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
-        DataFiveMinAvgDataContainer spo2hData5MinAvgAllIntervals
+        DataFiveMinAvgDataContainer dataIntervalsMapContainer
                 = stringDataFiveMinAVGAllIntervalsMap.get(Sop2HData5MinAvgDataContainer
                 .class.getSimpleName());
-        Map<Integer, Map<String, Double>> spo2hData;
-        if(spo2hData5MinAvgAllIntervals==null)return;
-        spo2hData = spo2hData5MinAvgAllIntervals.getDoubleMap();
-        Map<String, Double> map = spo2hData.get(1);
-        if (map == null || map.isEmpty()) return;
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        if(dataIntervalsMapContainer==null)return;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
+        if (singleFieldMap == null || singleFieldMap.isEmpty() || dataIntervalsMap.size()<3) return;
 
-        List<Map<String, Double>> mapsSop2;
-        mapsSop2 = FragmentUtil.mapToList(spo2hData);
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(mapsSop2, "oxygenValue");
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "oxygenValue");
         int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
         String[] timeAxisSubArray =IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
 
