@@ -114,7 +114,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         dashBoardViewModel = new ViewModelProvider(this).get(DashBoardViewModel.class);
         dashBoardViewModel.setHealthsReadDataManager(healthsData);
-        dashBoardViewModel.setHealthsDataManager(deviceSettings);
+        dashBoardViewModel.setDeviceSettingManager(deviceSettings);
         dashBoardViewModel.setRealTimeTesterClass(realTimeTesterClass);
         DeviceViewModel deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         deviceViewModel.setMacAddress(macAddress);

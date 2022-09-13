@@ -35,6 +35,7 @@ import com.veepoo.protocol.model.enums.EBPDetectModel;
 import com.veepoo.protocol.model.settings.BpSetting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,9 +161,13 @@ public class RealTimeTesterClass {
         VPOperateManager.getMangerInstance(context).startDetectTempture(writeResponse, new ITemptureDetectDataListener() {
             @Override
             public void onDataChange(TemptureDetectData temptureDetectData) {
+                Map<String, Double> map = new HashMap<>();
+                map.put("BodyTemp", (double) temptureDetectData.getTempture());
+                map.put("SkinTemp", (double) temptureDetectData.getTemptureBase());
+                map.put("Progress", (double) temptureDetectData.getProgress());
+                dashBoardViewModel.getRealTimeTempData().setValue(map);
                 String message = "Temperature" + temptureDetectData.toString();
                 Logger.t(TAG).i(message);
-
             }
         });
 
@@ -174,7 +179,6 @@ public class RealTimeTesterClass {
             public void onDataChange(TemptureDetectData temptureDetectData) {
                 String message = "stopDetectTempture temptureDetectData:\n" + temptureDetectData.toString();
                 Logger.t(TAG).i(message);
-                sendMsg(message, 1);
             }
         });
 

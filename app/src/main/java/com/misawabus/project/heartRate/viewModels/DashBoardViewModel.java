@@ -12,6 +12,7 @@ import com.misawabus.project.heartRate.device.config.DeviceSettings;
 import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
 
+import java.net.HttpCookie;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,10 +47,11 @@ public class DashBoardViewModel extends ViewModel {
 
 
 
-    private DeviceSettings healthsDataManager;
+    private DeviceSettings deviceSettings;
     private RealTimeTesterClass realTimeTesterClass;
     private List<int[]> dataEcg;
     private HealthsData healthsReadDataManager;
+    private final MutableLiveData<Map<String, Double>> realTimeTempData = new MutableLiveData<>();
 
 
     public DashBoardViewModel() {
@@ -82,12 +84,12 @@ public class DashBoardViewModel extends ViewModel {
         isWiFiEnable = wiFiEnable;
     }
 
-    public DeviceSettings getHealthsDataManager() {
-        return healthsDataManager;
+    public DeviceSettings getDeviceSettingsManager() {
+        return deviceSettings;
     }
 
-    public void setHealthsDataManager(DeviceSettings healthsDataManager) {
-        this.healthsDataManager = healthsDataManager;
+    public void setDeviceSettingManager(DeviceSettings healthsDataManager) {
+        this.deviceSettings = healthsDataManager;
     }
 
     public HealthsData getHealthsReadDataManager() {
@@ -197,6 +199,12 @@ public class DashBoardViewModel extends ViewModel {
         this.realTimeBPData.setValue(realTimeBPData);
     }
 
+    public MutableLiveData<Map<String, Double>> getRealTimeTempData() {
+        return realTimeTempData;
+    }
+    public void setRealTimeTempData(Map<String, Double> realTimeTempData){
+        this.realTimeTempData.setValue(realTimeTempData);
+    }
 
     public int getIsFetching() {
         return isFetching;

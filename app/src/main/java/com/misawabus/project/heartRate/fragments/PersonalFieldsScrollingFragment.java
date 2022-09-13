@@ -92,7 +92,7 @@ public class PersonalFieldsScrollingFragment extends Fragment {
                     int offset = i >= 0 ? 0 : -1;
                     int ageYears = LocalDate.now().getYear() + offset - bii.getYear();
                     Log.d("YEAR", String.valueOf(ageYears));
-                    dashBoardViewModel.getHealthsDataManager().synchronizePersonalData(eSex,
+                    dashBoardViewModel.getDeviceSettingsManager().synchronizePersonalData(eSex,
                             (int) height,
                             (int) weight,
                             ageYears,
@@ -206,7 +206,7 @@ public class PersonalFieldsScrollingFragment extends Fragment {
                                 int ageYears = LocalDate.now().getYear() + offset - bii.getYear();
 
                                 dashBoardViewModel.setDevice(device);
-                                dashBoardViewModel.getHealthsDataManager().synchronizePersonalData(eSex,
+                                dashBoardViewModel.getDeviceSettingsManager().synchronizePersonalData(eSex,
                                         (int) height,
                                         (int) weight,
                                         ageYears,

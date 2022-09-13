@@ -74,6 +74,7 @@ public class DeviceConfig {
                         final String[] splitKeyVal = keyVal.split("=");
                         availableFunctionsMap.put(splitKeyVal[0], Boolean.parseBoolean(splitKeyVal[1]));
                     });
+                    Log.d(TAG, "handleMessage: " + availableFunctionsMap);
                     deviceViewModel.setDeviceFeatures(availableFunctionsMap);
                     dashBoardViewModel.getRealTimeTesterClass().readSportSteps();
                     break;

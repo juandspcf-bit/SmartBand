@@ -61,6 +61,7 @@ public class SummaryActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dashBoardViewModel.getRealTimeTesterClass().startTemperatureDetection();
+                //dashBoardViewModel.getDeviceSettingsManager().readDeviceSettings();
             }
         });
 
