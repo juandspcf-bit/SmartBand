@@ -120,11 +120,13 @@ public class SummarySop2Fragment extends SummaryFragment {
 
 
         double oxygenValue = sop2DataMap.stream()
+                .limit(84) //limit to 7:00 am
                 .map(sop2Data -> sop2Data.get("oxygenValue"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
 
         double respirationRate = sop2DataMap.stream()
+                .limit(84) //limit to 7:00 am
                 .map(sop2Data -> sop2Data.get("respirationRate"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
@@ -135,11 +137,13 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .collect(Collectors.averagingDouble(Double::doubleValue));
 
         double cardiacLoad = sop2DataMap.stream()
+                .limit(84) //limit to 7:00 am
                 .map(sop2Data -> sop2Data.get("cardiacLoad"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
 
         double sleepActivity = sop2DataMap.stream()
+                .limit(84) //limit to 7:00 am
                 .map(sop2Data -> sop2Data.get("SleepActivity"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
@@ -172,7 +176,13 @@ public class SummarySop2Fragment extends SummaryFragment {
         binding.sleepActivityProgressBar.setProgress((int) roundSleepActivity);
 
         binding.resultBloodOxygenTextView.setText(roundOxygenValue >= 95 ? "Normal" : "Low");
-
+        String resultResRate = "";
+        if(roundRespirationRate<=16 && roundRespirationRate>=15){
+            resultResRate = "Normal";
+        }else if(roundRespirationRate<=13){
+            resultResRate = "Low";
+        }
+        binding.resultRespirationRateTextView.setText(resultResRate);
 
 
 

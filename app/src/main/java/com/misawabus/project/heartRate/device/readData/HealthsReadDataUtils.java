@@ -125,6 +125,12 @@ public class HealthsReadDataUtils {
                 .average();
     }
 
+    private static OptionalDouble get5MinAVGSpo2(int[] results) {
+        return stream(results)
+                .filter(value -> (value > 0 && value<50))
+                .average();
+    }
+
 
     public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSop2(){
 
@@ -137,7 +143,7 @@ public class HealthsReadDataUtils {
                 get5MinAVG(originData3.getOxygens()).orElse(0)));
 
         biConsumerList.add((doubleMap, originData3) -> doubleMap.put("respirationRate",
-                get5MinAVG(originData3.getResRates()).orElse(0)));
+                get5MinAVGSpo2(originData3.getResRates()).orElse(0)));
 
         biConsumerList.add((doubleMap, originData3) -> doubleMap.put("isHypoxia",
                 get5MinAVG(originData3.getHypoxiaTimes()).orElse(0)));

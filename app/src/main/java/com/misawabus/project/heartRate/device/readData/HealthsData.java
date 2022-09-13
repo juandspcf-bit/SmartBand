@@ -46,6 +46,7 @@ import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -161,7 +162,15 @@ public class HealthsData {
         IOriginProgressListener originData3Listener = new IOriginData3Listener() {
             @Override
             public void onOriginFiveMinuteListDataChange(List<OriginData3> originData3List) {
+                String stringDate = originData3List.get(0).getDate();
+                Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+                LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
+                if (localDate.compareTo(LocalDate.now()) == 0) {
+                    originData3List.forEach(originData3 -> {
+                        Log.d(TAG, "onOriginFiveMinuteListDataChange: " + originData3.getmTime() + " : " + Arrays.toString(originData3.getCorrects()));
+                    });
 
+                }
                 HealthsReadDataUtils.processOriginData3List(originData3List,
                         databaseWriteExecutor,
                         mHandler,
