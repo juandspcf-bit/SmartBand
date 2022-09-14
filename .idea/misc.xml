@@ -94,7 +94,7 @@
         <entry key="app/src/main/res/layout/fragment_sports_summary_sub.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/fragment_summary_activity.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/fragment_summary_bp.xml" value="0.3625" />
-        <entry key="app/src/main/res/layout/fragment_summary_hr.xml" value="0.30782385634886705" />
+        <entry key="app/src/main/res/layout/fragment_summary_hr.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_summary_sleep.xml" value="0.346636259977195" />
         <entry key="app/src/main/res/layout/fragment_summary_sop2.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_tabs_daily_activity.xml" value="0.27704147071398033" />

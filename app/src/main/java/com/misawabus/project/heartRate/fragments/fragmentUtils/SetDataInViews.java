@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import com.androidplot.xy.XYPlot;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.entities.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 

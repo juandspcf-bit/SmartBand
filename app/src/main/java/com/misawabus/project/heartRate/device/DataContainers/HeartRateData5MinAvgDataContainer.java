@@ -1,13 +1,13 @@
-package com.misawabus.project.heartRate.device.entities;
+package com.misawabus.project.heartRate.device.DataContainers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BloodPressureDataFiveMinAvgDataContainer implements DataFiveMinAvgDataContainer {
+public class HeartRateData5MinAvgDataContainer implements DataFiveMinAvgDataContainer {
     private final Map<Integer, Map<String, Double>> doubleMap = new HashMap<>();
     private String stringDate;
 
-    public BloodPressureDataFiveMinAvgDataContainer(){
+    public HeartRateData5MinAvgDataContainer(){
     }
 
     public String getStringDate() {
@@ -23,4 +23,5 @@ public class BloodPressureDataFiveMinAvgDataContainer implements DataFiveMinAvgD
     public Map<Integer, Map<String, Double>> getDoubleMap() {
         return doubleMap;
     }
+
 }

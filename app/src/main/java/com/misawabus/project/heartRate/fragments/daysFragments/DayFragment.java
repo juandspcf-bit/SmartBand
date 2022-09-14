@@ -17,7 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.ExcelConversionUtils;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
-import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryBPFragment;

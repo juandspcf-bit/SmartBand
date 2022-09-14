@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.misawabus.project.heartRate.device.entities.BloodPressureDataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.entities.HeartRateData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.entities.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;

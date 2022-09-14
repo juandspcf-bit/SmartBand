@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.config.DeviceSettings;
 import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;

@@ -1,4 +1,4 @@
-package com.misawabus.project.heartRate.device.entities;
+package com.misawabus.project.heartRate.device.DataContainers;
 
 import java.util.HashMap;
 import java.util.Map;
