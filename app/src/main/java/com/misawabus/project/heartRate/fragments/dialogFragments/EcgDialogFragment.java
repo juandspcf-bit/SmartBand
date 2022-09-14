@@ -20,6 +20,7 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
+import com.veepoo.protocol.listener.data.IECGDetectListener;
 import com.veepoo.protocol.listener.data.IPttDetectListener;
 import com.veepoo.protocol.model.datas.EcgDetectInfo;
 import com.veepoo.protocol.model.datas.EcgDetectResult;
@@ -31,7 +32,7 @@ import java.util.List;
 public class EcgDialogFragment extends DialogFragment {
     private final static String TAG = EcgDialogFragment.class.getSimpleName();
     private final WriteResponse writeResponse = new WriteResponse();
-    private IPttDetectListener iPttDetectListener;
+    private IECGDetectListener iPttDetectListener;
     private EcgHeartRealthView ecgHeartRealthView;
     private final List<int[]> dataEcg = new ArrayList<>();
     private DashBoardViewModel dashBoardViewModel;
@@ -67,7 +68,7 @@ public class EcgDialogFragment extends DialogFragment {
 
         ecgHeartRealthView = view.findViewById(R.id.ptt_real_view);
 
-        iPttDetectListener = new IPttDetectListener() {
+        iPttDetectListener = new IECGDetectListener() {
             @Override
             public void onEcgDetectInfoChange(EcgDetectInfo ecgDetectInfo) {
                 Log.d("ECG测量基本信息(波形频率,采样频率):", ecgDetectInfo.toString());
@@ -97,23 +98,13 @@ public class EcgDialogFragment extends DialogFragment {
                     @Override
                     public void run() {
                         dataEcg.add(data);
-                        ecgHeartRealthView.changeData(data, 25);
+                        ecgHeartRealthView.changeData(data, 20);
                     }
                 });
 
             }
 
-            @Override
-            public void inPttModel() {
-                Logger.t(TAG).i("进入ptt模式");
 
-            }
-
-            @Override
-            public void outPttModel() {
-                Logger.t(TAG).i("退出ptt模式");
-
-            }
         };
 
         listenModel();
@@ -139,7 +130,7 @@ public class EcgDialogFragment extends DialogFragment {
     }
 
     private void listenModel() {
-        VPOperateManager.getMangerInstance(getContext()).settingPttModelListener(iPttDetectListener);
+        VPOperateManager.getMangerInstance(getContext()).startDetectECG(writeResponse, true , iPttDetectListener);
     }
 
 

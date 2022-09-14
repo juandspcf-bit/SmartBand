@@ -93,7 +93,7 @@ public class DeviceConfig {
         VPOperateManager.getMangerInstance(context).confirmDevicePwd(writeResponse, new IPwdDataListener() {
                     @Override
                     public void onPwdDataChange(PwdData pwdData) {
-                        mHandler.post(healthsData::readOriginData);
+                        mHandler.postDelayed(healthsData::readOriginData,500);
 
                     }
                 },
@@ -137,10 +137,8 @@ public class DeviceConfig {
                 new ICustomSettingDataListener() {
                     @Override
                     public void OnSettingDataChange(CustomSettingData customSettingData) {
-                        String message = "FunctionCustomSettingData:\n" + customSettingData.toString();
                         Log.d(TAG, "OnSettingDataChange: " + customSettingData);
-                        //Logger.t(TAG).i(message);
-                        sendMsg(message, 4);
+                        deviceViewModel.setCustomSettingsDataObject(customSettingData);
                     }
                 }, "0000", is24Hourmodel);
 

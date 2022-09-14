@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.misawabus.project.heartRate.fragments.dialogFragments.BloodPressureDi
 import com.misawabus.project.heartRate.fragments.dialogFragments.EcgDialogFragment;
 import com.misawabus.project.heartRate.fragments.dialogFragments.HeartRateDialogFragment;
 import com.misawabus.project.heartRate.fragments.dialogFragments.StepsDialogFragment;
+import com.veepoo.protocol.model.enums.EFunctionStatus;
+import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.util.Map;
 
@@ -64,6 +67,28 @@ public class RealTimeInfoFragment extends Fragment {
                 binding.imageButtonBloodP.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("BP")));
                 binding.imageButtonHeartRate.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("HEARTDETECT")));
                 binding.imageButtonRunner.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("SPORTMODEL")));
+                binding.imageButtonEcg.setEnabled(false);
+                CustomSettingData value = deviceViewModel
+                        .getCustomSettingDataObject()
+                        .getValue();
+                if(value!=null){
+                    Log.d("TAG", "onChanged: not nullll");
+                    EFunctionStatus autoTemperatureDetect = value.getAutoTemperatureDetect();
+                    EFunctionStatus autoHeartDetect = value.getAutoHeartDetect();
+                    EFunctionStatus autoBpDetect = value.getAutoBpDetect();
+                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);
+                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);
+                    binding.imageButtonBloodP.setEnabled(EFunctionStatus.SUPPORT == autoBpDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoBpDetect);
+                }else {
+                    binding.imageButtonTemp.setEnabled(false);
+                    binding.imageButtonHeartRate.setEnabled(false);
+                    binding.imageButtonBloodP.setEnabled(false);
+                    binding.imageButtonEcg.setEnabled(false);
+                }
+
 
             }
         });

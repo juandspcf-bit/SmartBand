@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.misawabus.project.heartRate.datasource.DeviceRepository;
 import com.misawabus.project.heartRate.Database.entities.Device;
+import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class DeviceViewModel extends AndroidViewModel {
     private static LiveData<List<Device>> allDeviceData;
     private final MutableLiveData<String> macAddress= new MutableLiveData<>();
     private final MutableLiveData<Map<String, Boolean>> deviceFeatures= new MutableLiveData<>();
+    private MutableLiveData<CustomSettingData> customSettingData = new MutableLiveData<>();
 
     public DeviceViewModel(@NonNull Application application) {
         super(application);
@@ -62,5 +64,13 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void setDeviceFeatures(Map<String, Boolean> deviceFeatures) {
         this.deviceFeatures.setValue(deviceFeatures);
+    }
+
+    public void setCustomSettingsDataObject(CustomSettingData customSettingData){
+        this.customSettingData.setValue(customSettingData);
+    }
+
+    public MutableLiveData<CustomSettingData> getCustomSettingDataObject(){
+        return this.customSettingData;
     }
 }
