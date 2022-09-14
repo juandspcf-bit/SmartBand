@@ -21,10 +21,6 @@ public class SleepDataUIRepository {
         //allData = sleepDataUIDao.getAllData();
     }
 
-/*    public LiveData<List<SleepDataUI>> getAllData(){
-        return allData;
-    }*/
-
     public LiveData<List<SleepDataUI>> getListRows(Date date, String macAddress){
         return sleepDataUIDao.getListRows(date, macAddress);
     }

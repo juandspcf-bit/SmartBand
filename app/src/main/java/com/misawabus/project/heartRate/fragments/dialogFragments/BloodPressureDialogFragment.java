@@ -27,7 +27,6 @@ import java.util.concurrent.Executors;
 public class BloodPressureDialogFragment extends DialogFragment {
     private ExecutorService executor;
     private DashBoardViewModel dashBoardViewModel;
-    private final boolean isEnable = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +52,7 @@ public class BloodPressureDialogFragment extends DialogFragment {
     }
 
     /** The system calls this only when creating the layout in a dialog. */
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);

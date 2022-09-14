@@ -78,7 +78,7 @@ public class SummarySleepFragment  extends SummaryFragment {
         Button shareButton = binding.buttonShareSleep;
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
-        shareButton.setOnClickListener(this::shareScreen);
+        shareButton.setOnClickListener(viewToShare -> shareScreen());
 
         Date todayFormattedDate = DateUtils.getTodayFormattedDate();
         getDataFromDB(todayFormattedDate, dataFromDB -> setFragmentViews(todayFormattedDate, dataFromDB));

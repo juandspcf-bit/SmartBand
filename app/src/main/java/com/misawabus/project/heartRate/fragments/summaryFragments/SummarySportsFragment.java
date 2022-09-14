@@ -93,7 +93,7 @@ public class SummarySportsFragment extends SummaryFragment {
         shareButton = binding.buttonShareFitness;
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
-        shareButton.setOnClickListener(this::shareScreen);
+        shareButton.setOnClickListener(viewToShare -> shareScreen());
 
         Date todayFormattedDate = getTodayFormattedDate();
         getDataFromDB(todayFormattedDate, dataFromDB -> setFragmentViews(todayFormattedDate, dataFromDB));

@@ -21,8 +21,6 @@ public class HeartRateViewModel extends AndroidViewModel {
     public HeartRateViewModel(@NonNull Application application) {
         super(application);
         heartRateRepository = new HeartRateRepository(application);
-        //allHeartRateData = heartRateRepository.getAllHeartRateData();
-        //countHeartRateData = heartRateRepository.getCountHeartRateData();
     }
 
     public static LiveData<List<HeartRate>> getAllHeartRateData(){

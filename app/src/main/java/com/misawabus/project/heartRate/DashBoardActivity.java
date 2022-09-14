@@ -39,7 +39,6 @@ import java.util.Map;
 public class DashBoardActivity extends AppCompatActivity {
     private final static String TAG = DashBoardActivity.class.getSimpleName();
     private ActivityDashBoardV2Binding binding;
-    private String macAddress;
     private DashBoardViewModel dashBoardViewModel;
 
 
@@ -69,7 +68,7 @@ public class DashBoardActivity extends AppCompatActivity {
         binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Bundle extras = getIntent().getExtras();
-        macAddress = extras.getString("deviceAddress");
+        String macAddress = extras.getString("deviceAddress");
 
         WindowInsetsControllerCompat windowInsetsController =
                 WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
@@ -91,14 +90,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("keep", false);
                 //ActivityCompat.finishAffinity(DashBoardActivity.this);
-/*                mVpoperateManager.disconnectWatch(new IBleWriteResponse() {
-                    @Override
-                    public void onResponse(int i) {
-
-                    }
-                });*/
-                //startActivity(intent);
-                //finish();
 
 
             }

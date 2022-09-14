@@ -50,7 +50,7 @@ public class RealTimeInfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_realt_time_data, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -67,7 +67,7 @@ public class RealTimeInfoFragment extends Fragment {
                 binding.imageButtonBloodP.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("BP")));
                 binding.imageButtonHeartRate.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("HEARTDETECT")));
                 binding.imageButtonRunner.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("SPORTMODEL")));
-                binding.imageButtonEcg.setEnabled(false);
+                //binding.imageButtonEcg.setEnabled(false);
                 CustomSettingData value = deviceViewModel
                         .getCustomSettingDataObject()
                         .getValue();

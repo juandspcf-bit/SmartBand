@@ -19,7 +19,6 @@ import com.androidplot.xy.XYSeries;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentGeneralSummaryBinding;
-import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 
@@ -145,6 +144,7 @@ public class SummaryActivityFragment extends Fragment {
             this.date = date;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "RowContainer{" +

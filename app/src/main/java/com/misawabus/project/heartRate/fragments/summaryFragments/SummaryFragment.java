@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 
-import android.graphics.Canvas;
-
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -43,8 +41,8 @@ public class SummaryFragment extends Fragment {
                 .commit();
     }
 
-    protected void shareScreen(View viewToShare){
-        viewToShare = getActivity().getWindow().getDecorView().getRootView();
+    protected void shareScreen(){
+        View viewToShare = getActivity().getWindow().getDecorView().getRootView();
         //viewToShare = getView().getRootView();
 
         String filename = "screen.jpg";

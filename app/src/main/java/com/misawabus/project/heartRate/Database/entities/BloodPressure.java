@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.Database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -72,6 +73,7 @@ public class BloodPressure {
 
 
 
+    @NonNull
     @Override
     public String toString() {
         return "BloodPressure{" +

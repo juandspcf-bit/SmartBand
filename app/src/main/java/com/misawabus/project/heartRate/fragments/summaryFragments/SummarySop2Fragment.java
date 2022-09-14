@@ -80,7 +80,7 @@ public class SummarySop2Fragment extends SummaryFragment {
         shareButton = binding.buttonShareSop2;
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
-        shareButton.setOnClickListener(this::shareScreen);
+        shareButton.setOnClickListener(viewToShare -> shareScreen());
 
         Date todayFormattedDate = getTodayFormattedDate();
         getDataFromDB(todayFormattedDate, dataFromDB -> setFragmentViews(todayFormattedDate, dataFromDB));

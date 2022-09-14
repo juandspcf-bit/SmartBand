@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.device.entities.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
@@ -115,12 +116,13 @@ public class TodayFragment extends DayFragment {
         });
 
 
-        addClickObserversToPlotsWidgets();
+        addClickObserversToPlotsWidgets(binding);
 
     }
 
 
-    private void addClickObserversToPlotsWidgets() {
+    private void addClickObserversToPlotsWidgets(FragmentDataSummaryV2Binding binding) {
+        if(binding ==null) return;
         binding.fragmentPlot.setOnClickListener(this::onClickCardFitnessArea);
         binding.fragmentStepsPlotCardView.setOnClickListener(this::onClickCardFitnessArea);
 
@@ -131,10 +133,14 @@ public class TodayFragment extends DayFragment {
         binding.fragmentBloodPressureCardView.setOnClickListener(this::onClickCardBloodPressureArea);
 
         binding.fragmentRatePlot.setOnClickListener(this::onClickCardHeartRateArea);
-        binding.fragmentRatePlotCardView.setOnClickListener(this::onClickCardHeartRateArea);
+        this.binding.fragmentRatePlotCardView.setOnClickListener(this::onClickCardHeartRateArea);
 
-        binding.fragmentSop2Plot.setOnClickListener(this::onClickCardSop2Area);
-        binding.fragmentSop2PlotCardView.setOnClickListener(this::onClickCardSop2Area);
+        if (binding.fragmentSop2Plot != null) {
+            binding.fragmentSop2Plot.setOnClickListener(this::onClickCardSop2Area);
+        }
+        if (binding.fragmentSop2PlotCardView != null) {
+            binding.fragmentSop2PlotCardView.setOnClickListener(this::onClickCardSop2Area);
+        }
     }
 
     @Override

@@ -20,10 +20,6 @@ public class BloodPressureViewModel extends AndroidViewModel {
         bloodPressureRepository = new BloodPressureRepository(application);
     }
 
-    //public LiveData<List<BloodPressure>> getAllData(){
-        //return allBloodPressure;
-    //}
-
     public static void insertSingleRow(BloodPressure bloodPressure){
         bloodPressureRepository.insertSingleRow(bloodPressure);
     }
@@ -38,14 +34,6 @@ public class BloodPressureViewModel extends AndroidViewModel {
 
     public static void updateSingleRow(BloodPressure bloodPressure){
         bloodPressureRepository.updateSingleRow(bloodPressure);
-    }
-
-    public static void deleteSingleRow(BloodPressure bloodPressure){
-        bloodPressureRepository.deleteSingleRow(bloodPressure);
-    }
-
-    public static void deleteAllData(){
-        bloodPressureRepository.deleteAllData();
     }
 
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -30,8 +31,9 @@ public class BleScanViewAdapter extends RecyclerView.Adapter<BleScanViewAdapter.
         mLayoutInflater = LayoutInflater.from(context);
     }
 
+    @NonNull
     @Override
-    public NormalTextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NormalTextViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new NormalTextViewHolder(mLayoutInflater.inflate(R.layout.item_main, parent, false));
     }
 

@@ -58,6 +58,7 @@ public class HeartRateDialogFragment extends DialogFragment {
     }
 
     /** The system calls this only when creating the layout in a dialog. */
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

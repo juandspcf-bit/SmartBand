@@ -19,7 +19,6 @@ import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentRealTimeTemperatureBinding;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -56,23 +55,23 @@ public class TemperatureDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dashBoardViewModel.getRealTimeTempData().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
+        dashBoardViewModel.getRealTimeTempData().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(Map<String, Double> doubleMap) {
-                doubleMap.get("Progress");
-                int progress = (int) Math.round(doubleMap.get("Progress"));
-                double skinTemp = doubleMap.get("SkinTemp");
-                double bodyTemp = doubleMap.get("BodyTemp");
+                Double doubleProgress = doubleMap.get("Progress");
+                Double skinTemp = doubleMap.get("SkinTemp");
+                Double bodyTemp = doubleMap.get("BodyTemp");
+                if(doubleProgress==null || skinTemp==null || bodyTemp==null) return;
+                int progress = (int) Math.round(doubleProgress);
 
-                Log.d(TAG, "onChanged: " + progress);
                 binding.tempCircularProgress.setProgress(progress);
-                if(progress!=100) return;
+                if (progress != 100) return;
                 binding.tempReadButton.setEnabled(true);
                 binding.tempCircularProgress.setProgress(0);
                 binding.tempSkinResultTextView
-                        .setText(String.format(Locale.getDefault(), "%.1f", skinTemp));
+                        .setText(String.format(Locale.getDefault(), "%.1f °C", skinTemp));
                 binding.tempBodyResultTexView
-                        .setText(String.format(Locale.getDefault(), "%.1f", bodyTemp));
+                        .setText(String.format(Locale.getDefault(), "%.1f °C", bodyTemp));
 
             }
         });
@@ -82,8 +81,6 @@ public class TemperatureDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 dashBoardViewModel.getRealTimeTesterClass().startTemperatureDetection();
                 binding.tempReadButton.setEnabled(false);
-
-                Log.d(TAG, "onClick: " + "clicked");
             }
         });
     }

@@ -87,7 +87,7 @@ public class SummaryHRFragment extends SummaryFragment {
         Button shareButton = binding.buttonShareHeartRate;
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
-        shareButton.setOnClickListener(this::shareScreen);
+        shareButton.setOnClickListener(viewToShare -> shareScreen());
 
         Date todayFormattedDate = DateUtils.getTodayFormattedDate();
         getDataFromDB(todayFormattedDate, dataFromDB -> setFragmentViews(todayFormattedDate, dataFromDB));

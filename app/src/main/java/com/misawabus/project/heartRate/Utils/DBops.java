@@ -22,7 +22,6 @@ import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
 import com.misawabus.project.heartRate.viewModels.SportsViewModel;
 
 import java.util.Date;
-import java.util.HashMap;
 
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class DBops {

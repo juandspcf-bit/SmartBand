@@ -183,12 +183,6 @@ public class DeviceConfig {
                 customSettingData.setAutoHrv(SUPPORT_OPEN);
                 customSettingData.setPpg(SUPPORT_OPEN);
 
-                /*VPOperateManager.getMangerInstance(context).changeCustomSetting(writeResponse, new ICustomSettingDataListener() {
-                    @Override
-                    public void OnSettingDataChange(CustomSettingData customSettingData) {
-
-                    }
-                }, customSettingData);*/
                 Logger.t(TAG).i(message);
                 sendMsg(message, 1);
             }

@@ -21,8 +21,6 @@ public class HeartRateRepository {
     public HeartRateRepository(Application application){
         AppRoomDataBase db = AppRoomDataBase.getDatabase(application);
         heartRateDao = db.getHeartRateDao();
-        //allHeartRateData = heartRateDao.getAllHeartRateData();
-        //countHeartRateData = heartRateDao.getCountHeartRateData();
     }
 
     public LiveData<List<HeartRate>> getAllHeartRateData(){

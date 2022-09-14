@@ -3,25 +3,15 @@ package com.misawabus.project.heartRate.fragments.summaryFragments.utils;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 
-import androidx.annotation.NonNull;
-
-import com.misawabus.project.heartRate.Intervals.IntervalUtils;
-import com.misawabus.project.heartRate.Utils.DateUtils;
-
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 public class UtilsSummaryFrag {
 

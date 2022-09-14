@@ -22,9 +22,6 @@ public interface BloodPressureDao {
     @Query("DELETE FROM bp_table")
     void deleteAllData();
 
-    @Query("SELECT * FROM bp_table")
-    LiveData<List<BloodPressure>> getAllData();
-
     @Query("SELECT * FROM bp_table WHERE bp_table.date_data == :dateData AND bp_table.mac_address == :macAddress AND bp_table.id_table == :idTypeDataTable")
     LiveData<BloodPressure> getSingleRowForU(Date dateData, String macAddress, IdTypeDataTable idTypeDataTable);
 

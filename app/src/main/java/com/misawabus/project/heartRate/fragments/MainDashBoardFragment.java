@@ -60,20 +60,14 @@ public class MainDashBoardFragment extends Fragment{
 
         binding.bottomNavigationV2.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.page_1){
-/*                    binding.statusSynchronizingBluetooth.setVisibility(isFetching);
-                binding.progressBar.setVisibility(isFetching);*/
                 getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new TabsDailyActivityFragment())
                         .addToBackStack(null).commit();
                 isInTabsDailyActivityFragment = true;
             }else if(item.getItemId()==R.id.page_2){
-/*                    binding.statusSynchronizingBluetooth.setVisibility(View.INVISIBLE);
-                binding.progressBar.setVisibility(View.INVISIBLE);*/
                 getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new RealTimeInfoFragment())
                         .addToBackStack(null).commit();
                 isInTabsDailyActivityFragment = false;
             }else if(item.getItemId()==R.id.page_3){
-/*                    binding.statusSynchronizingBluetooth.setVisibility(View.INVISIBLE);
-                binding.progressBar.setVisibility(View.INVISIBLE);*/
                 getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new PersonalFieldsScrollingFragment())
                         .addToBackStack(null).commit();
                 isInTabsDailyActivityFragment = false;

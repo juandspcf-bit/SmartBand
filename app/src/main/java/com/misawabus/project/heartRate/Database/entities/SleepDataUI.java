@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.Database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -53,6 +54,7 @@ public class SleepDataUI {
     @ColumnInfo(name = "sleepUp")
     public String sleepUp;
 
+    @NonNull
     @Override
     public String toString() {
         return "SleepDataUI{" +

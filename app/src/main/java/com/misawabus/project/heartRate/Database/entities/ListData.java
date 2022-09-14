@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.Database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
@@ -75,6 +76,7 @@ public class ListData {
         this.data = data;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ListData{" +

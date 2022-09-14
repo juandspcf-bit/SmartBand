@@ -12,7 +12,6 @@ import com.misawabus.project.heartRate.device.config.DeviceSettings;
 import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
 
-import java.net.HttpCookie;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
