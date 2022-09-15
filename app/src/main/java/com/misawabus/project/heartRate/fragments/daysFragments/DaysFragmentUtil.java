@@ -31,9 +31,7 @@ public class DaysFragmentUtil {
         Map<Integer, Map<String, Double>> dataIntervalsMap;
         if(dataIntervalsMapContainer==null)return;
         dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
-        Log.d(TAG, "plotSports: " + dataIntervalsMap);
-        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
-        if(singleFieldMap == null || singleFieldMap.isEmpty()) return;
+        if(dataIntervalsMap.size()==0) return;
 
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
@@ -41,6 +39,7 @@ public class DaysFragmentUtil {
         Map<String, List<Double>> dataGroupByFieldsWith30MinSumValues;
         dataGroupByFieldsWith30MinSumValues = FragmentUtil
                 .getSportsMapFieldsWith30MinCountValues(dataIntervalsList);
+        SetDataInViews.setSportsDashBoardSection(binding, dataGroupByFieldsWith30MinSumValues);
         List<Double> stepValueList = dataGroupByFieldsWith30MinSumValues.get("stepValue");
         if (stepValueList == null) return;
         Double[] seriesSteps = stepValueList.toArray(new Double[0]);
@@ -64,8 +63,7 @@ public class DaysFragmentUtil {
         Map<Integer, Map<String, Double>> dataIntervalsMap;
         if(dataIntervalsMapContainer==null)return;
         dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
-        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
-        if (singleFieldMap == null || singleFieldMap.isEmpty() || dataIntervalsMap.size()<3) return;
+        if(dataIntervalsMap.size()==0 || dataIntervalsMap.size()<3) return;
 
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
@@ -92,8 +90,7 @@ public class DaysFragmentUtil {
         Map<Integer, Map<String, Double>> dataIntervalsMap;
         if(dataIntervalsMapContainer==null)return;
         dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
-        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
-        if (singleFieldMap == null || singleFieldMap.isEmpty() || dataIntervalsMap.size()<3) return;
+        if(dataIntervalsMap.size()==0) return;
 
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
@@ -128,8 +125,7 @@ public class DaysFragmentUtil {
         Map<Integer, Map<String, Double>> dataIntervalsMap;
         if(dataIntervalsMapContainer==null)return;
         dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
-        Map<String, Double> singleFieldMap = dataIntervalsMap.get(1);
-        if (singleFieldMap == null || singleFieldMap.isEmpty() || dataIntervalsMap.size()<3) return;
+        if(dataIntervalsMap.size()==0 || dataIntervalsMap.size()<3) return;
 
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);

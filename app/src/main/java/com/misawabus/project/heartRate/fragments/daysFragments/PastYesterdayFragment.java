@@ -7,10 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
+import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
 import java.util.List;
 import java.util.Map;
@@ -43,18 +48,20 @@ public class PastYesterdayFragment extends DayFragment {
                     binding);
         });
 
-
-        dashBoardViewModel.getPastYesterdayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
+        dashBoardViewModel.getPastYesterdaySummary().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
             @Override
-            public void onChanged(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap) {
-                PastYesterdayFragment.this.stringDataFiveMinAVGAllIntervalsMap = stringDataFiveMinAVGAllIntervalsMap;
-                SetDataInViews.setSportsValues(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
-                DaysFragmentUtil.plotSports(stringDataFiveMinAVGAllIntervalsMap, binding);
-                DaysFragmentUtil.plotHeartRate(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
-                DaysFragmentUtil.plotBloodPressure(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
-                DaysFragmentUtil.plotSpO2(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
+            public void onChanged(Map<String, Double> doubleMap) {
+                setSummaryViews(doubleMap);
             }
         });
+
+        dashBoardViewModel.getPastYesterdayArray5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
+            @Override
+            public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+                setAllPlots(stringXYDataArraysForPlottingMap);
+            }
+        });
+
 
 
     }

@@ -23,17 +23,7 @@ public class SetDataInViews {
     private static final String TAG = SetDataInViews.class.getSimpleName();
 
 
-    public static void setSportsValues(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
-        DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer
-                = stringDataFiveMinAVGAllIntervalsMap.get(SportsData5MinAvgDataContainer
-                .class.getSimpleName());
-        Map<Integer, Map<String, Double>> sportsData = sportsDataFiveMinAvgDataContainer.getDoubleMap();
-        if(sportsData.get(1).isEmpty()) return;
-        List<Map<String, Double>> sportsDataMap = FragmentUtil.parse5MinFieldData(sportsData.toString());
-
-        Map<String, List<Double>> mapFieldsWith30MinValues = FragmentUtil.getSportsMapFieldsWith30MinCountValues(sportsDataMap);
-
-
+    public static void setSportsDashBoardSection(FragmentDataSummaryV2Binding binding, Map<String, List<Double>> mapFieldsWith30MinValues) {
         long stepsCount = (long) mapFieldsWith30MinValues.get("stepValue").stream().mapToDouble(Double::doubleValue).sum();
         double caloriesCount =  mapFieldsWith30MinValues.get("calValue").stream().mapToDouble(Double::doubleValue).sum();
         double distancesCount = mapFieldsWith30MinValues.get("disValue").stream().mapToDouble(Double::doubleValue).sum();

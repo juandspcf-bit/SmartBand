@@ -14,21 +14,28 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.misawabus.project.heartRate.Database.entities.Device;
+import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.ExcelConversionUtils;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
+import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
-import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
+import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryBPFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryHRFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragment;
+import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySportsFragment;
+import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
-import com.misawabus.project.heartRate.Database.entities.Device;
-import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -134,4 +141,80 @@ public class DayFragment extends Fragment {
     }
 
 
+    protected void setSummaryViews(Map<String, Double> doubleMap) {
+        Double stepCountDouble = doubleMap.get("stepCount");
+        if (stepCountDouble != null) {
+            long stepCount = Math.round(stepCountDouble);
+            String stepsS = String.valueOf(stepCount);
+            binding.fragmentCounterSteps.setText(stepsS);
+        }
+
+        Double caloriesCountDouble = doubleMap.get("caloriesCount");
+        if (caloriesCountDouble != null) {
+            String caloriesS = String.format(Locale.getDefault(), "%.1f Kcal", caloriesCountDouble);
+            binding.textViewCaloriesCounter.setText(caloriesS);
+        }
+
+        Double distanceCountDouble = doubleMap.get("distanceCount");
+        if (distanceCountDouble != null) {
+            String distance = String.format(Locale.getDefault(), "%.1f Km", distanceCountDouble);
+            binding.textViewDistanceCounter.setText(distance);
+        }
+    }
+
+    protected void setAllPlots(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+        XYDataArraysForPlotting sportsXYDataArraysForPlotting;
+        sportsXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
+                .get(SportsData5MinAvgDataContainer.class.getSimpleName());
+        if (sportsXYDataArraysForPlotting != null && sportsXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+            binding.fragmentPlot.setVisibility(View.VISIBLE);
+            binding.flowNoStepsData.setVisibility(View.GONE);
+            SetDataInViews.plotStepsData(sportsXYDataArraysForPlotting,
+                    binding.fragmentPlot);
+        }
+
+        XYDataArraysForPlotting heartRateXYDataArraysForPlotting;
+        heartRateXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
+                .get(HeartRateData5MinAvgDataContainer.class.getSimpleName());
+        if (heartRateXYDataArraysForPlotting != null && heartRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+            binding.fragmentRatePlot.setVisibility(View.VISIBLE);
+            binding.flowNoHeartRateData.setVisibility(View.GONE);
+            SetDataInViews.plotHeartRateData(heartRateXYDataArraysForPlotting,
+                    binding.fragmentRatePlot,
+                    getContext());
+        }
+
+
+        XYDataArraysForPlotting highBPRateXYDataArraysForPlotting;
+        highBPRateXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
+                .get(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High");
+        XYDataArraysForPlotting lowBPRateXYDataArraysForPlotting;
+        lowBPRateXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
+                .get(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "Low");
+        if (highBPRateXYDataArraysForPlotting != null
+                && highBPRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null
+                && lowBPRateXYDataArraysForPlotting != null
+                && lowBPRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+            binding.fragmentBloodPressurePlot.setVisibility(View.VISIBLE);
+            binding.flowNoBPData.setVisibility(View.GONE);
+            SetDataInViews.plotBloodPressureData(highBPRateXYDataArraysForPlotting,
+                    lowBPRateXYDataArraysForPlotting,
+                    binding.fragmentBloodPressurePlot,
+                    getContext());
+        }
+
+
+        XYDataArraysForPlotting sop2XYDataArraysForPlotting = stringXYDataArraysForPlottingMap.get(Sop2HData5MinAvgDataContainer.class.getSimpleName());
+        if (sop2XYDataArraysForPlotting != null
+                && sop2XYDataArraysForPlotting.getSeriesDoubleAVR() != null
+                && binding.fragmentSop2Plot != null
+                && binding.flowNoSop2Data != null) {
+            binding.fragmentSop2Plot.setVisibility(View.VISIBLE);
+            binding.flowNoSop2Data.setVisibility(View.GONE);
+            SetDataInViews.plotSop2Data(sop2XYDataArraysForPlotting,
+                    binding.fragmentSop2Plot,
+                    getContext());
+        }
+
+    }
 }

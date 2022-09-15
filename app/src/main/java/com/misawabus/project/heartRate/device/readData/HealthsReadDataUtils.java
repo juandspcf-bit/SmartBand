@@ -1,9 +1,11 @@
 package com.misawabus.project.heartRate.device.readData;
 
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 import static java.util.Arrays.stream;
 
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
@@ -15,12 +17,16 @@ import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataC
 import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag;
+import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.datas.OriginData;
 import com.veepoo.protocol.model.datas.OriginData3;
 import com.veepoo.protocol.model.datas.TimeData;
+
+import org.jetbrains.annotations.Contract;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,7 +60,7 @@ public class HealthsReadDataUtils {
     }
 
     public static DataFiveMinAvgDataContainer computeHeartRateDataFiveMinOrigin(List<OriginData> originDataList,
-                                                                             List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+                                                                                List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
         computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
 
         return fieldDataFiveMinAllIntervals;
@@ -62,7 +68,7 @@ public class HealthsReadDataUtils {
     }
 
     public static DataFiveMinAvgDataContainer computeBloodPressureDataFiveMinOrigin(List<OriginData> originDataList,
-                                                                                List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+                                                                                    List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
         computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
 
         return fieldDataFiveMinAllIntervals;
@@ -110,7 +116,7 @@ public class HealthsReadDataUtils {
         originDataList
                 .forEach(data -> {
                     TimeData timeData = data.getmTime();
-                    if(timeData == null) return;
+                    if (timeData == null) return;
                     int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
                             timeData.getMinute());
                     Map<String, Double> mapValues = new HashMap<>();
@@ -127,12 +133,12 @@ public class HealthsReadDataUtils {
 
     private static OptionalDouble get5MinAVGSpo2(int[] results) {
         return stream(results)
-                .filter(value -> (value > 0 && value<50))
+                .filter(value -> (value > 0 && value < 50))
                 .average();
     }
 
 
-    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSop2(){
+    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSop2() {
 
         List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList = new ArrayList<>();
 
@@ -158,7 +164,7 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInPpgs(){
+    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInPpgs() {
 
         List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList = new ArrayList<>();
 
@@ -176,16 +182,15 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInRateValueOrigin(){
+    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInRateValueOrigin() {
 
         List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList = new ArrayList<>();
 
         biConsumerList.add((doubleMap, originData) -> doubleMap.put("Ppgs",
                 (double) originData.getRateValue()));
 
-        // TODO: 2022/09/02 add the activity zone to the excel file
         biConsumerList.add((doubleMap, originData) -> {
-            double v = (double) originData.getRateValue();
+            double v = originData.getRateValue();
 
             UtilsSummaryFrag.ZoneObject zoneObject = UtilsSummaryFrag.testZone(0, v);
             doubleMap.put("Activity",
@@ -194,7 +199,7 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSportsOrigin3(){
+    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInSportsOrigin3() {
 
         List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList = new ArrayList<>();
 
@@ -210,7 +215,7 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInSportsOrigin(){
+    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInSportsOrigin() {
 
         List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList = new ArrayList<>();
 
@@ -226,19 +231,19 @@ public class HealthsReadDataUtils {
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInBloodPressure(){
+    public static List<BiConsumer<Map<String, Double>, OriginData3>> functionToSetFieldsInBloodPressure() {
 
         List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList = new ArrayList<>();
 
         biConsumerList.add((doubleMap, originData3) -> doubleMap.put("highValue",
                 (double) originData3.getHighValue()));
-        
+
         biConsumerList.add((doubleMap, originData3) -> doubleMap.put("lowVaamlue",
                 (double) originData3.getLowValue()));
         return biConsumerList;
     }
 
-    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInBloodPressureOrigin(){
+    public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInBloodPressureOrigin() {
 
         List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList = new ArrayList<>();
 
@@ -259,43 +264,50 @@ public class HealthsReadDataUtils {
                                        DeviceViewModel deviceViewModel) {
         databaseWriteExecutor.execute(() -> {
             DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinAVR(originData3List,
-                            functionToSetFieldsInSportsOrigin3(),
-                            new SportsData5MinAvgDataContainer());
+                    functionToSetFieldsInSportsOrigin3(),
+                    new SportsData5MinAvgDataContainer());
             DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHearRateDataFiveMinAVR(originData3List,
-                            functionToSetFieldsInPpgs(),
-                            new HeartRateData5MinAvgDataContainer());
+                    functionToSetFieldsInPpgs(),
+                    new HeartRateData5MinAvgDataContainer());
             DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer = computeBloodPressureDataFiveMinAVR(originData3List,
-                            functionToSetFieldsInBloodPressure(),
-                            new BloodPressureDataFiveMinAvgDataContainer());
+                    functionToSetFieldsInBloodPressure(),
+                    new BloodPressureDataFiveMinAvgDataContainer());
             DataFiveMinAvgDataContainer sop2DataFiveMinAvgDataContainer = computeSop2hDataFiveMinAVR(originData3List,
-                            functionToSetFieldsInSop2(),
-                            new Sop2HData5MinAvgDataContainer());
+                    functionToSetFieldsInSop2(),
+                    new Sop2HData5MinAvgDataContainer());
 
-            Map<String, DataFiveMinAvgDataContainer> dataFiveMinAVGAllIntervalsMap = new HashMap<>();
-            dataFiveMinAVGAllIntervalsMap
-                    .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
-                            sportsDataFiveMinAvgDataContainer);
-            dataFiveMinAVGAllIntervalsMap
-                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
-                            heartRateDataFiveMinAvgDataContainer);
-            dataFiveMinAVGAllIntervalsMap
-                    .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName(),
-                            bloodPressureDataFiveMinAvgDataContainer);
-            dataFiveMinAVGAllIntervalsMap
-                    .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
-                            sop2DataFiveMinAvgDataContainer);
+            Map<String, Double> mapSummary = getSummarySportsMap(sportsDataFiveMinAvgDataContainer);
+
+
+            XYDataArraysForPlotting sportsArraysForPlotting = getSportsArraysForPlotting(sportsDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting heartRateArraysForPlotting = getHearRateArraysForPlotting(heartRateDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting highBPArraysForPlotting = getHighBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting lowBPArraysForPlotting = getLowBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting spo2PArraysForPlotting = getSpo2PArraysForPlotting(sop2DataFiveMinAvgDataContainer);
+
+
+            Map<String, XYDataArraysForPlotting> arraysMap;
+            arraysMap = getStringXYDataArraysForPlottingMap(sportsArraysForPlotting,
+                    heartRateArraysForPlotting,
+                    highBPArraysForPlotting,
+                    lowBPArraysForPlotting,
+                    spo2PArraysForPlotting);
+
 
             mHandler.post(() -> {
 
-                String stringDate = heartRateDataFiveMinAvgDataContainer.getStringDate();
+                String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
                 Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
                 LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
                 if (localDate.compareTo(LocalDate.now()) == 0) {
-                    dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(dataFiveMinAVGAllIntervalsMap);
+                    dashBoardViewModel.setTodaySummary(mapSummary);
+                    dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                    dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(dataFiveMinAVGAllIntervalsMap);
+                    dashBoardViewModel.setYesterdaySummary(mapSummary);
+                    dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                    dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(dataFiveMinAVGAllIntervalsMap);
+                    dashBoardViewModel.setPastYesterdaySummary(mapSummary);
+                    dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
                 }
 
                 DBops.updateHeartRateRow(IdTypeDataTable.HeartRateFiveMin,
@@ -324,4 +336,277 @@ public class HealthsReadDataUtils {
             });
         });
     }
+
+    static void processOriginDataList(List<OriginData> list5Min,
+                                      DashBoardViewModel dashBoardViewModel,
+                                      DeviceViewModel deviceViewModel,
+                                      AppCompatActivity activity) {
+        DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinOrigin(list5Min,
+                functionToSetFieldsInSportsOrigin(),
+                new SportsData5MinAvgDataContainer());
+        DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHeartRateDataFiveMinOrigin(list5Min,
+                functionToSetFieldsInRateValueOrigin(),
+                new HeartRateData5MinAvgDataContainer());
+        DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer = computeBloodPressureDataFiveMinOrigin(list5Min,
+                functionToSetFieldsInBloodPressureOrigin(),
+                new BloodPressureDataFiveMinAvgDataContainer());
+
+        Map<String, Double> mapSummary = getSummarySportsMap(sportsDataFiveMinAvgDataContainer);
+
+
+        XYDataArraysForPlotting sportsArraysForPlotting = getSportsArraysForPlotting(sportsDataFiveMinAvgDataContainer);
+        XYDataArraysForPlotting heartRateArraysForPlotting = getHearRateArraysForPlotting(heartRateDataFiveMinAvgDataContainer);
+        XYDataArraysForPlotting highBPArraysForPlotting = getHighBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
+        XYDataArraysForPlotting lowBPArraysForPlotting = getLowBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
+
+
+        Map<String, XYDataArraysForPlotting> arraysMap;
+        arraysMap = getStringXYOriginDataArraysForPlottingMap(sportsArraysForPlotting,
+                heartRateArraysForPlotting,
+                highBPArraysForPlotting,
+                lowBPArraysForPlotting);
+
+        String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
+        Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+        LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
+        if (localDate.compareTo(LocalDate.now()) == 0) {
+            dashBoardViewModel.setTodaySummary(mapSummary);
+            dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
+        } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+            dashBoardViewModel.setYesterdaySummary(mapSummary);
+            dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
+        } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+            dashBoardViewModel.setPastYesterdaySummary(mapSummary);
+            dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
+        }
+
+        DBops.updateHeartRateRow(IdTypeDataTable.HeartRateFiveMin,
+                heartRateDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                heartRateDataFiveMinAvgDataContainer.getStringDate(),
+                deviceViewModel.getMacAddress(),
+                activity
+        );
+        DBops.updateSportsRow(IdTypeDataTable.SportsFiveMin,
+                sportsDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                sportsDataFiveMinAvgDataContainer.getStringDate(),
+                deviceViewModel.getMacAddress(),
+                activity);
+
+        DBops.updateBloodPressureRow(IdTypeDataTable.BloodPressure,
+                bloodPressureDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                bloodPressureDataFiveMinAvgDataContainer.getStringDate(),
+                deviceViewModel.getMacAddress(),
+                activity);
+
+    }
+
+
+    @NonNull
+    private static Map<String, XYDataArraysForPlotting> getStringXYDataArraysForPlottingMap(XYDataArraysForPlotting sportsArraysForPlotting, XYDataArraysForPlotting heartRateArraysForPlotting, XYDataArraysForPlotting highBPArraysForPlotting, XYDataArraysForPlotting lowBPArraysForPlotting, XYDataArraysForPlotting spo2PArraysForPlotting) {
+        Map<String, XYDataArraysForPlotting> arraysMap = new HashMap<>();
+        arraysMap
+                .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                        sportsArraysForPlotting);
+        arraysMap
+                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                        heartRateArraysForPlotting);
+        arraysMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                        highBPArraysForPlotting);
+        arraysMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "Low",
+                        lowBPArraysForPlotting);
+        arraysMap
+                .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
+                        spo2PArraysForPlotting);
+        return arraysMap;
+    }
+
+    @NonNull
+    private static Map<String, XYDataArraysForPlotting> getStringXYOriginDataArraysForPlottingMap(XYDataArraysForPlotting sportsArraysForPlotting,
+                                                                                                  XYDataArraysForPlotting heartRateArraysForPlotting,
+                                                                                                  XYDataArraysForPlotting highBPArraysForPlotting,
+                                                                                                  XYDataArraysForPlotting lowBPArraysForPlotting) {
+        Map<String, XYDataArraysForPlotting> arraysMap = new HashMap<>();
+        arraysMap
+                .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                        sportsArraysForPlotting);
+        arraysMap
+                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                        heartRateArraysForPlotting);
+        arraysMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                        highBPArraysForPlotting);
+        arraysMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "Low",
+                        lowBPArraysForPlotting);
+
+        return arraysMap;
+    }
+
+    @NonNull
+    private static Map<String, Double> getSummarySportsMap(DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer) {
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = sportsDataFiveMinAvgDataContainer.getDoubleMap();
+        if (dataIntervalsMap.size() == 0) {
+            Map<String, Double> mapSummary = new HashMap<>();
+            mapSummary.put("stepCount", 0.0);
+            mapSummary.put("caloriesCount", 0.0);
+            mapSummary.put("distanceCount", 0.0);
+            return mapSummary;
+        }
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        Map<String, List<Double>> dataGroupByFieldsWith30MinSumValues;
+        dataGroupByFieldsWith30MinSumValues = FragmentUtil
+                .getSportsMapFieldsWith30MinCountValues(dataIntervalsList);
+
+        double stepsCount = 0.0;
+        List<Double> stepValue = dataGroupByFieldsWith30MinSumValues.get("stepValue");
+        if (stepValue != null)
+            stepsCount = stepValue.stream().mapToDouble(Double::doubleValue).sum();
+
+        double caloriesCount = 0.0;
+        List<Double> calValue = dataGroupByFieldsWith30MinSumValues.get("calValue");
+        if (calValue != null)
+            caloriesCount = calValue.stream().mapToDouble(Double::doubleValue).sum();
+
+        double distancesCount = 0.0;
+        List<Double> disValue = dataGroupByFieldsWith30MinSumValues.get("disValue");
+        if (disValue != null)
+            distancesCount = disValue.stream().mapToDouble(Double::doubleValue).sum();
+
+        Map<String, Double> mapSummary = new HashMap<>();
+        mapSummary.put("stepCount", stepsCount);
+        mapSummary.put("caloriesCount", caloriesCount);
+        mapSummary.put("distanceCount", distancesCount);
+        return mapSummary;
+    }
+
+    @NonNull
+    @Contract("null -> new")
+    private static XYDataArraysForPlotting getSportsArraysForPlotting(DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer) {
+        if (sportsDataFiveMinAvgDataContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = sportsDataFiveMinAvgDataContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        Map<String, List<Double>> dataGroupByFieldsWith30MinSumValues;
+        dataGroupByFieldsWith30MinSumValues = FragmentUtil
+                .getSportsMapFieldsWith30MinCountValues(dataIntervalsList);
+        List<Double> stepValueList = dataGroupByFieldsWith30MinSumValues.get("stepValue");
+        if (stepValueList == null) return new XYDataArraysForPlotting();
+        Double[] seriesSteps = stepValueList.toArray(new Double[0]);
+        String[] domainLabels = IntervalUtils.hoursInterval;
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(domainLabels,
+                seriesSteps);
+        return xyDataArraysForPlotting;
+    }
+
+
+    @NonNull
+    @Contract("null -> new")
+    private static XYDataArraysForPlotting getHearRateArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
+        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "Ppgs");
+        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
+                subArrayWithReplacedZeroValuesAsAvg);
+        return xyDataArraysForPlotting;
+    }
+
+    @NonNull
+    @Contract("null -> new")
+    private static XYDataArraysForPlotting getHighBPArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
+        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        List<Map<String, Double>> bloodPressureMapFieldsWith30Min;
+        bloodPressureMapFieldsWith30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(dataIntervalsList);
+
+        Double[] subArrayHPWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "highValue");
+        String[] timeAxisSubArrayHP = IntervalUtils.hoursInterval;
+
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArrayHP,
+                subArrayHPWithReplacedZeroValuesAsAvg);
+
+        return xyDataArraysForPlotting;
+    }
+
+    @NonNull
+    @Contract("null -> new")
+    private static XYDataArraysForPlotting getLowBPArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
+        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        List<Map<String, Double>> bloodPressureMapFieldsWith30Min;
+        bloodPressureMapFieldsWith30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(dataIntervalsList);
+
+        Double[] subArrayHPWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "lowVaamlue");
+        String[] timeAxisSubArrayHP = IntervalUtils.hoursInterval;
+
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArrayHP,
+                subArrayHPWithReplacedZeroValuesAsAvg);
+
+        return xyDataArraysForPlotting;
+    }
+
+    @NonNull
+    @Contract("null -> new")
+    private static XYDataArraysForPlotting getSpo2PArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
+        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "oxygenValue");
+        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
+                subArrayWithReplacedZeroValuesAsAvg);
+
+        return xyDataArraysForPlotting;
+    }
+
 }

@@ -127,11 +127,11 @@ public class PlotUtils {
 
         Double average = Arrays
                 .stream(subArray)
-                .filter(value -> value>20.0)
+                .filter(value -> value!=null && value>20.0)
                 .collect(averagingDouble(Double::doubleValue));
 
         subArray = Arrays.stream(subArray)
-                .map(value -> value > 20.0 ? value : average)
+                .map(value -> value!=null && value>20.0 ? value : average)
                 .collect(toList()).toArray(new Double[lengthSubArray]);
 
         Double[] numericalTimeAxisSubArray = new Double[lengthSubArray];

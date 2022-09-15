@@ -10,9 +10,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
-import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
+import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,8 +36,8 @@ public class TodayFragment extends DayFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            if(sleepDataUIList==null || sleepDataUIList.size()==0 ) {
+        dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
+            if (sleepDataUIList == null || sleepDataUIList.size() == 0) {
 
                 return;
             }
@@ -51,24 +55,25 @@ public class TodayFragment extends DayFragment {
         });
 
 
-
-
-        dashBoardViewModel.getTodayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
+        dashBoardViewModel.getTodaySummary().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
             @Override
-            public void onChanged(Map<String, DataFiveMinAvgDataContainer> dataFiveMinAVGContainers) {
-                TodayFragment.this.stringDataFiveMinAVGAllIntervalsMap = dataFiveMinAVGContainers;
-                SetDataInViews.setSportsValues(dataFiveMinAVGContainers, binding, getContext());
+            public void onChanged(Map<String, Double> doubleMap) {
+                setSummaryViews(doubleMap);
+            }
+        });
 
-                DaysFragmentUtil.plotSports(dataFiveMinAVGContainers, TodayFragment.this.binding);
-                DaysFragmentUtil.plotHeartRate(dataFiveMinAVGContainers, TodayFragment.this.binding, TodayFragment.this.getContext());
-                DaysFragmentUtil.plotBloodPressure(dataFiveMinAVGContainers, TodayFragment.this.binding, TodayFragment.this.getContext());
-                DaysFragmentUtil.plotSpO2(dataFiveMinAVGContainers, TodayFragment.this.binding, TodayFragment.this.getContext());
+
+        dashBoardViewModel.getTodayArray5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
+            @Override
+            public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+                setAllPlots(stringXYDataArraysForPlottingMap);
+
             }
         });
 
 
         dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {
-            if(isDeviceConnected) return;
+            if (isDeviceConnected) return;
             binding.refreshLayout.setRefreshing(false);
             binding.refreshLayout.setEnabled(false);
         });
@@ -77,8 +82,8 @@ public class TodayFragment extends DayFragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()!=null
-                        && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()){
+                if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null
+                        && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
                     return;
                 }
                 dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
@@ -92,17 +97,16 @@ public class TodayFragment extends DayFragment {
         };
         binding.refreshLayout.setOnRefreshListener(onRefreshListener);
 
-        if(dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()!=null && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()){
-            binding.refreshLayout.post(()-> binding.refreshLayout.setRefreshing(true));
+        if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
+            binding.refreshLayout.post(() -> binding.refreshLayout.setRefreshing(true));
         }
-
 
 
         dashBoardViewModel
                 .getIsTodayFragmentRefreshing()
                 .observe(getViewLifecycleOwner(),
                         aBoolean -> {
-                            if(aBoolean) return;
+                            if (aBoolean) return;
                             binding.refreshLayout.setRefreshing(false);
                             binding.fragmentPlot.setEnabled(true);
                             binding.fragmentSleepPlot.setEnabled(true);
@@ -110,7 +114,7 @@ public class TodayFragment extends DayFragment {
                         });
 
         dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(), isEnabled -> {
-            if(!isEnabled) return;
+            if (!isEnabled) return;
             binding.refreshLayout.setRefreshing(false);
             binding.refreshLayout.setEnabled(true);
         });
@@ -122,7 +126,7 @@ public class TodayFragment extends DayFragment {
 
 
     private void addClickObserversToPlotsWidgets(FragmentDataSummaryV2Binding binding) {
-        if(binding ==null) return;
+        if (binding == null) return;
         binding.fragmentPlot.setOnClickListener(this::onClickCardFitnessArea);
         binding.fragmentStepsPlotCardView.setOnClickListener(this::onClickCardFitnessArea);
 
@@ -150,10 +154,11 @@ public class TodayFragment extends DayFragment {
     }
 
     @Override
-    public void onResume() {super.onResume();
+    public void onResume() {
+        super.onResume();
 
-        if(dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()!=null
-                && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()){
+        if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null
+                && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
             binding.refreshLayout.setRefreshing(false);
             binding.refreshLayout.setRefreshing(true);
             onRefreshListener.onRefresh();

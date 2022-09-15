@@ -11,6 +11,7 @@ import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataC
 import com.misawabus.project.heartRate.device.config.DeviceSettings;
 import com.misawabus.project.heartRate.device.readData.HealthsData;
 import com.misawabus.project.heartRate.device.readRealTimeData.RealTimeTesterClass;
+import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,12 @@ public class DashBoardViewModel extends ViewModel {
     private List<int[]> dataEcg;
     private HealthsData healthsReadDataManager;
     private final MutableLiveData<Map<String, Double>> realTimeTempData = new MutableLiveData<>();
-
+    private final MutableLiveData<Map<String, XYDataArraysForPlotting>> todayArray5MinAvgAllIntervals = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, XYDataArraysForPlotting>> yesterdayArrays5MinAvgAllIntervals = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, XYDataArraysForPlotting>> pastYesterdayArrays5MinAvgAllIntervals = new MutableLiveData<>();
+    private MutableLiveData<Map<String, Double>> mapTodaySummary = new MutableLiveData<>();
+    private MutableLiveData<Map<String, Double>> mapYesterdaySummary = new MutableLiveData<>();
+    private MutableLiveData<Map<String, Double>> mapPastYesterdaySummary = new MutableLiveData<>();
 
     public DashBoardViewModel() {
         isEnableFeatures.setValue(false);
@@ -247,6 +253,59 @@ public class DashBoardViewModel extends ViewModel {
     public void setPastYesterdayFullData5MinAvgAllIntervals(Map<String, DataFiveMinAvgDataContainer> pastYesterdayFullData5MinAvgAllIntervals) {
         this.pastYesterdayFullData5MinAvgAllIntervals.setValue(pastYesterdayFullData5MinAvgAllIntervals);
     }
+
+
+
+
+
+    public MutableLiveData<Map<String, XYDataArraysForPlotting>> getTodayArray5MinAvgAllIntervals() {
+        return todayArray5MinAvgAllIntervals;
+    }
+    public void setTodayArray5MinAvgAllIntervals(Map<String, XYDataArraysForPlotting> todayFullData5MinAvgAllIntervals) {
+        this.todayArray5MinAvgAllIntervals.setValue(todayFullData5MinAvgAllIntervals);
+    }
+
+    public MutableLiveData<Map<String, XYDataArraysForPlotting>> getYesterdayArray5MinAvgAllIntervals() {
+        return yesterdayArrays5MinAvgAllIntervals;
+    }
+
+    public void setYesterdayArray5MinAvgAllIntervals(Map<String, XYDataArraysForPlotting> yesterdayArray5MinAvgAllIntervals) {
+        this.yesterdayArrays5MinAvgAllIntervals.setValue(yesterdayArray5MinAvgAllIntervals);
+    }
+
+    public MutableLiveData<Map<String, XYDataArraysForPlotting>> getPastYesterdayArray5MinAvgAllIntervals() {
+        return pastYesterdayArrays5MinAvgAllIntervals;
+    }
+
+    public void setPastYesterdayArray5MinAvgAllIntervals(Map<String, XYDataArraysForPlotting> pastYesterdayArrays5MinAvgAllIntervals) {
+        this.pastYesterdayArrays5MinAvgAllIntervals.setValue(pastYesterdayArrays5MinAvgAllIntervals);
+    }
+
+
+    public void setTodaySummary(Map<String, Double> mapSummary) {
+        this.mapTodaySummary.setValue(mapSummary);
+    }
+
+    public MutableLiveData<Map<String, Double>> getTodaySummary() {
+        return this.mapTodaySummary;
+    }
+
+    public void setYesterdaySummary(Map<String, Double> mapSummary) {
+        this.mapYesterdaySummary.setValue(mapSummary);
+    }
+
+    public MutableLiveData<Map<String, Double>> getYesterdaySummary() {
+        return this.mapYesterdaySummary;
+    }
+
+    public void setPastYesterdaySummary(Map<String, Double> mapSummary) {
+        this.mapPastYesterdaySummary.setValue(mapSummary);
+    }
+
+    public MutableLiveData<Map<String, Double>> getPastYesterdaySummary() {
+        return this.mapPastYesterdaySummary;
+    }
+
 
 
 }

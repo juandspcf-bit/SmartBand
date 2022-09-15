@@ -67,12 +67,11 @@ public class RealTimeInfoFragment extends Fragment {
                 binding.imageButtonBloodP.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("BP")));
                 binding.imageButtonHeartRate.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("HEARTDETECT")));
                 binding.imageButtonRunner.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("SPORTMODEL")));
-                //binding.imageButtonEcg.setEnabled(false);
                 CustomSettingData value = deviceViewModel
                         .getCustomSettingDataObject()
                         .getValue();
                 if(value!=null){
-                    Log.d("TAG", "onChanged: not nullll");
+
                     EFunctionStatus autoTemperatureDetect = value.getAutoTemperatureDetect();
                     EFunctionStatus autoHeartDetect = value.getAutoHeartDetect();
                     EFunctionStatus autoBpDetect = value.getAutoBpDetect();

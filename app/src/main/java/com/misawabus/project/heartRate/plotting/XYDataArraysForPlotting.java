@@ -9,6 +9,9 @@ public class XYDataArraysForPlotting {
         this.seriesDoubleAVR = seriesDoubleAVR;
     }
 
+    public XYDataArraysForPlotting() {
+    }
+
     public String[] getPeriodIntervalsArray() {
         return periodIntervalsArray;
     }
