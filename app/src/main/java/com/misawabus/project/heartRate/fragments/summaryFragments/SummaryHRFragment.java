@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.inuker.bluetooth.library.Code;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
@@ -36,6 +39,7 @@ import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSum
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.veepoo.protocol.model.datas.HeartWaringData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +58,8 @@ public class SummaryHRFragment extends SummaryFragment {
     private DeviceViewModel deviceViewModel;
     private HeartRateViewModel hearRateViewModel;
     private DashBoardViewModel dashBoardViewModel;
+    private int heartHigh;
+    private int heartLow;
 
     public SummaryHRFragment(){
 
@@ -95,6 +101,8 @@ public class SummaryHRFragment extends SummaryFragment {
         selectDateButton.setOnClickListener(view1 ->
                 getDateFromCalendar(selectedDate -> getDataFromDB(selectedDate,
                         dataFromDB -> setFragmentViews(selectedDate, dataFromDB))));
+
+
     }
 
     private void setFragmentViews(Date selectedDate, HeartRate dataFromDB) {
@@ -105,6 +113,35 @@ public class SummaryHRFragment extends SummaryFragment {
             return;
         }
 
+        binding.heartRateAlertSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dashBoardViewModel
+                        .getRealTimeTesterClass()
+                        .setHeartRateAlert(heartHigh, heartLow, isChecked, code->{
+
+                });
+            }
+        });
+
+        dashBoardViewModel.getRealTimeTesterClass().readHeartRateAlertSettings(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) {
+                if(integer!= Code.REQUEST_SUCCESS) {
+                    Snackbar.make(binding.selectDateHRButton, "No", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                Snackbar.make(binding.selectDateHRButton, "Yes", Snackbar.LENGTH_SHORT).show();
+            }
+        }, new Consumer<HeartWaringData>() {
+            @Override
+            public void accept(HeartWaringData heartWaringData) {
+                heartHigh = heartWaringData.getHeartHigh();
+                heartLow = heartWaringData.getHeartLow();
+                boolean isOpen = heartWaringData.isOpen();
+                binding.heartRateAlertSwitch.setChecked(isOpen);
+            }
+        });
 
         String heartRateData = dataFromDB.getData();
 

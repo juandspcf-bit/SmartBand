@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentRealtTimeDataBinding;
 import com.misawabus.project.heartRate.fragments.dialogFragments.TemperatureDialogFragment;
+import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.fragments.dialogFragments.BloodPressureDialogFragment;
 import com.misawabus.project.heartRate.fragments.dialogFragments.EcgDialogFragment;
@@ -32,19 +33,17 @@ import java.util.Map;
 public class RealTimeInfoFragment extends Fragment {
     FragmentRealtTimeDataBinding binding;
     DeviceViewModel deviceViewModel;
+    private DashBoardViewModel dashBoardViewModel;
 
     public RealTimeInfoFragment() {
         // Required empty public constructor
-    }
-
-    public static RealTimeInfoFragment newInstance(String param1, String param2) {
-        return new RealTimeInfoFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
 
 
     }
@@ -61,36 +60,31 @@ public class RealTimeInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        deviceViewModel.getDeviceFeatures().observe(getViewLifecycleOwner(), new Observer<>() {
-            @Override
-            public void onChanged(Map<String, Boolean> stringBooleanMap) {
-                binding.imageButtonBloodP.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("BP")));
-                binding.imageButtonHeartRate.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("HEARTDETECT")));
-                binding.imageButtonRunner.setEnabled(Boolean.TRUE.equals(stringBooleanMap.get("SPORTMODEL")));
-                CustomSettingData value = deviceViewModel
-                        .getCustomSettingDataObject()
-                        .getValue();
-                if(value!=null){
-
-                    EFunctionStatus autoTemperatureDetect = value.getAutoTemperatureDetect();
-                    EFunctionStatus autoHeartDetect = value.getAutoHeartDetect();
-                    EFunctionStatus autoBpDetect = value.getAutoBpDetect();
-                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);
-                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);
-                    binding.imageButtonBloodP.setEnabled(EFunctionStatus.SUPPORT == autoBpDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoBpDetect);
-                }else {
-                    binding.imageButtonTemp.setEnabled(false);
-                    binding.imageButtonHeartRate.setEnabled(false);
-                    binding.imageButtonBloodP.setEnabled(false);
-                    binding.imageButtonEcg.setEnabled(false);
-                }
-
-
+        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(),  isBluetoothConnected-> {
+            if(!isBluetoothConnected) {
+                disableAllButtons();
+                return;
             }
+            deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
+                @Override
+                public void onChanged(CustomSettingData customSettingData) {
+                    if(customSettingData!=null){
+                        EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
+                        EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
+                        EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
+                        binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
+                                || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);
+                        binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
+                                || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);
+                        binding.imageButtonBloodP.setEnabled(EFunctionStatus.SUPPORT == autoBpDetect
+                                || EFunctionStatus.SUPPORT_OPEN == autoBpDetect);
+                    }else {
+                        disableAllButtons();
+                    }
+                }
+            });
         });
+
 
 
         binding.imageButtonRunner.setOnClickListener(new View.OnClickListener() {
@@ -137,5 +131,13 @@ public class RealTimeInfoFragment extends Fragment {
                 newFragment.show(fragmentManager, "dialog");
             }
         });
+    }
+
+    private void disableAllButtons() {
+        binding.imageButtonRunner.setEnabled(false);
+        binding.imageButtonTemp.setEnabled(false);
+        binding.imageButtonHeartRate.setEnabled(false);
+        binding.imageButtonBloodP.setEnabled(false);
+        binding.imageButtonEcg.setEnabled(false);
     }
 }

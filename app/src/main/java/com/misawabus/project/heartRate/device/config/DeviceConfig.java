@@ -74,7 +74,6 @@ public class DeviceConfig {
                         final String[] splitKeyVal = keyVal.split("=");
                         availableFunctionsMap.put(splitKeyVal[0], Boolean.parseBoolean(splitKeyVal[1]));
                     });
-                    Log.d(TAG, "handleMessage: " + availableFunctionsMap);
                     deviceViewModel.setDeviceFeatures(availableFunctionsMap);
                     dashBoardViewModel.getRealTimeTesterClass().readSportSteps();
                     break;
@@ -174,73 +173,10 @@ public class DeviceConfig {
         return availableFunctionsMap;
     }
 
-    public static void readSettings() {
-        VPOperateManager.getMangerInstance(context).readCustomSetting(writeResponse, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
-
-                String message = "个性化状态-公英制/时制(12/24)/5分钟测量开关(心率/血压)-读取:\n" + customSettingData.toString();
-                customSettingData.setAutoHrv(SUPPORT_OPEN);
-                customSettingData.setPpg(SUPPORT_OPEN);
-
-                Logger.t(TAG).i(message);
-                sendMsg(message, 1);
-            }
-        });
-    }
 
 
-    public static void customizeDevice() {
-        boolean isHaveMetricSystem = true;
-        boolean isMetric = true;
-        boolean is24Hour = true;
-        boolean isOpenAutoHeartDetect = true;
-        boolean isOpenAutoBpDetect = true;
-        boolean isCelsius = true;
-        EFunctionStatus isOpenSportRemain = SUPPORT_OPEN;
-        EFunctionStatus isOpenVoiceBpHeart = SUPPORT_OPEN;
-        EFunctionStatus isOpenFindPhoneUI = SUPPORT_OPEN;
-        EFunctionStatus isOpenStopWatch = SUPPORT_OPEN;
-        EFunctionStatus isOpenSpo2hLowRemind = SUPPORT_OPEN;
-        EFunctionStatus isOpenWearDetectSkin = SUPPORT_OPEN;
-        EFunctionStatus isOpenAutoInCall = SUPPORT_OPEN;
-        EFunctionStatus isOpenAutoHRV = SUPPORT_OPEN;
-        EFunctionStatus isOpenDisconnectRemind = SUPPORT_OPEN;
-        EFunctionStatus isAutoTemperatureDetect = SUPPORT_OPEN;
-        boolean isSupportSettingsTemperatureUnit = VpSpGetUtil.getVpSpVariInstance(context).isSupportSettingsTemperatureUnit();//是否支持温度单位设置
-        boolean isSupportSleep = VpSpGetUtil.getVpSpVariInstance(context).isSupportPreciseSleep();//是否支持精准睡眠
-
-        boolean isCanReadTempture = VpSpGetUtil.getVpSpVariInstance(context).isSupportReadTempture();//是否支持读取温度
-        boolean isCanDetectTempByApp = VpSpGetUtil.getVpSpVariInstance(context).isSupportCheckTemptureByApp();//是否可以通过app监测体温
 
 
-        Logger.t(TAG).i("是否可以读取体温：" + isCanReadTempture + " 是否可以通过app自动检测体温");
-
-        CustomSetting customSetting = new CustomSetting(isHaveMetricSystem, isMetric, is24Hour, isOpenAutoHeartDetect,
-                isOpenAutoBpDetect, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch,
-                isOpenSpo2hLowRemind, isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind
-        );
-        customSetting.setIsOpenLongClickLockScreen(SUPPORT_CLOSE);
-        if (isSupportSettingsTemperatureUnit) {
-            customSetting.setTemperatureUnit(VpSpGetUtil.getVpSpVariInstance(context).getTemperatureUnit()
-                    == ETemperatureUnit.CELSIUS ? ETemperatureUnit.FAHRENHEIT : ETemperatureUnit.CELSIUS);
-        } else {
-            customSetting.setTemperatureUnit(ETemperatureUnit.NONE);
-        }
-        if (isCanDetectTempByApp) {
-            boolean isOpenTempDetect = VpSpGetUtil.getVpSpVariInstance(context).isOpenTemperatureDetectByApp();
-            customSetting.setIsOpenAutoTemperatureDetect(isOpenTempDetect ? SUPPORT_CLOSE : SUPPORT_OPEN);
-        } else {
-            customSetting.setIsOpenAutoTemperatureDetect(UNSUPPORT);
-        }
-
-        VPOperateManager.getMangerInstance(context).changeCustomSetting(writeResponse, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
-                String message = "settings changed:\n" + customSettingData.toString();
-            }
-        }, customSetting);
-    }
 
 
     private static void sendMsg(String message, int what) {

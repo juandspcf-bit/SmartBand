@@ -16,10 +16,11 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="48dp"
             app:flow_verticalBias="0.01"
             app:icon="@drawable/ic_baseline_arrow_back_24"
-            app:layout_constraintEnd_toEndOf="parent"
 
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.01"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -113,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="92dp"
             tools:layout_editor_absoluteY="424dp" />
@@ -123,35 +124,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="452dp"
             tools:layout_editor_absoluteY="424dp" />
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/heartRateAlertSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:minHeight="5dp"
+            android:text="heart rate\n alert"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/guideline20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline58"
+            app:layout_constraintTop_toBottomOf="@+id/flow5" />
+
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/highestHRTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Highest Value"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="77dp"
             tools:layout_editor_absoluteY="383dp" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/avgHRTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Average"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="441dp"
             tools:layout_editor_absoluteY="383dp" />
 
+
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/lowesHRTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lowest value"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="251dp"
             tools:layout_editor_absoluteY="421dp" />
 
@@ -160,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="301dp"
             tools:layout_editor_absoluteY="421dp" />
@@ -181,27 +196,28 @@
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow3"
-            android:layout_width="0dp"
-            android:layout_height="91dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:constraint_referenced_ids="textView19,lowestHR"
+            app:constraint_referenced_ids="lowesHRTitle,lowestHR"
             app:flow_verticalAlign="center"
             app:flow_verticalStyle="spread"
             app:layout_constraintBottom_toTopOf="@+id/guideline20"
-            app:layout_constraintEnd_toStartOf="@+id/guideline16"
-            app:layout_constraintStart_toStartOf="@+id/guideline17"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRatePlotCardViewSummary" />
+            app:layout_constraintEnd_toStartOf="@+id/guideline58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flow4" />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow4"
-            android:layout_width="0dp"
-            android:layout_height="91dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:constraint_referenced_ids="textView16,highestHR"
-            app:layout_constraintBottom_toTopOf="@+id/guideline20"
-            app:layout_constraintEnd_toStartOf="@+id/guideline17"
-            app:layout_constraintStart_toStartOf="@+id/guideline18"
-            app:layout_constraintTop_toTopOf="@+id/guideline21" />
+            app:constraint_referenced_ids="highestHRTitle,highestHR"
+            app:flow_verticalStyle="packed"
+            app:layout_constraintBottom_toTopOf="@+id/flow3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRatePlotCardViewSummary" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline18"
@@ -219,22 +235,22 @@
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow5"
-            android:layout_width="0dp"
-            android:layout_height="91dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:constraint_referenced_ids="textView18,averageHR"
+            app:constraint_referenced_ids="avgHRTitle,averageHR"
             app:flow_verticalStyle="spread"
-            app:layout_constraintBottom_toTopOf="@+id/guideline20"
-            app:layout_constraintEnd_toStartOf="@+id/guideline19"
-            app:layout_constraintStart_toStartOf="@+id/guideline16"
-            app:layout_constraintTop_toTopOf="@+id/guideline21" />
+            app:layout_constraintBottom_toTopOf="@+id/heartRateAlertSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline58"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRatePlotCardViewSummary" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.45" />
+            app:layout_constraintGuide_percent="0.5" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline21"
@@ -283,6 +299,14 @@
             app:layout_constraintTop_toBottomOf="@+id/selectDateHRButton"
             app:layout_constraintVertical_bias="0.100000024"
             app:srcCompat="@drawable/ic_reshot_icon_heart_rate_p82mhqkrxl" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline58"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -31,16 +31,6 @@ public class Device {
 
     }
 
-    public Device(long deviceId, String macAddress, String name, String weight, String gender, Date birthDate, String height) {
-        this.deviceId = deviceId;
-        this.macAddress = macAddress;
-        this.name = name;
-        this.weight = weight;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.height = height;
-    }
-
     public long getDeviceId() {
         return deviceId;
     }

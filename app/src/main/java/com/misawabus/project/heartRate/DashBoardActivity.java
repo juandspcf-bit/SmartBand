@@ -63,12 +63,14 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
         Bundle extras = getIntent().getExtras();
         String macAddress = extras.getString("deviceAddress");
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
         WindowInsetsControllerCompat windowInsetsController =
                 WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
@@ -115,14 +117,14 @@ public class DashBoardActivity extends AppCompatActivity {
             dashBoardViewModel.setDevice(device);
         });
 
-        dashBoardViewModel.getIsConnected().observe(this, aBoolean -> {
+/*        dashBoardViewModel.getIsConnected().observe(this, aBoolean -> {
             if(aBoolean) return;
             final Map<String, Boolean> value = deviceViewModel.getDeviceFeatures().getValue();
             value.replace("BP", false);
             value.replace("HEARTDETECT", false);
             value.replace("SPORTMODEL", false);
             deviceViewModel.setDeviceFeatures(value);
-        });
+        });*/
 
 
         VPOperateManager.getMangerInstance(this).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {

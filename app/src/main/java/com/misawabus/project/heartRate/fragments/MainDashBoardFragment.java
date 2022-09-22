@@ -22,7 +22,6 @@ public class MainDashBoardFragment extends Fragment{
     private FragmentMainDashboardBinding binding;
     private DashBoardViewModel dashBoardViewModel;
     private DeviceViewModel deviceViewModel;
-    private boolean isInTabsDailyActivityFragment;
 
     public MainDashBoardFragment(){
 
@@ -62,15 +61,15 @@ public class MainDashBoardFragment extends Fragment{
             if(item.getItemId() == R.id.page_1){
                 getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new TabsDailyActivityFragment())
                         .addToBackStack(null).commit();
-                isInTabsDailyActivityFragment = true;
             }else if(item.getItemId()==R.id.page_2){
                 getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new RealTimeInfoFragment())
                         .addToBackStack(null).commit();
-                isInTabsDailyActivityFragment = false;
             }else if(item.getItemId()==R.id.page_3){
                 getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new PersonalFieldsScrollingFragment())
                         .addToBackStack(null).commit();
-                isInTabsDailyActivityFragment = false;
+            }else if(item.getItemId()==R.id.page_4){
+                getChildFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewData, new SettingsFragment())
+                        .addToBackStack(null).commit();
             }
 
             return true;

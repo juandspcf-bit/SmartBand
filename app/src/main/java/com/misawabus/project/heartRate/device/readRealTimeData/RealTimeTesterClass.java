@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,18 +21,22 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IBPDetectDataListener;
 import com.veepoo.protocol.listener.data.IBPSettingDataListener;
 import com.veepoo.protocol.listener.data.IHeartDataListener;
+import com.veepoo.protocol.listener.data.IHeartWaringDataListener;
 import com.veepoo.protocol.listener.data.ISportDataListener;
 import com.veepoo.protocol.listener.data.ITemptureDetectDataListener;
 import com.veepoo.protocol.model.datas.BpData;
 import com.veepoo.protocol.model.datas.BpSettingData;
 import com.veepoo.protocol.model.datas.HeartData;
+import com.veepoo.protocol.model.datas.HeartWaringData;
 import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TemptureDetectData;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
 import com.veepoo.protocol.model.settings.BpSetting;
+import com.veepoo.protocol.model.settings.HeartWaringSetting;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class RealTimeTesterClass {
     private final Context context;
@@ -151,7 +156,7 @@ public class RealTimeTesterClass {
 
 
 
-    public void startTemperatureDetection(){
+    public void startTemperatureDetection(Consumer<Map<String, Double>> consumer){
         VPOperateManager.getMangerInstance(context).startDetectTempture(writeResponse, new ITemptureDetectDataListener() {
             @Override
             public void onDataChange(TemptureDetectData temptureDetectData) {
@@ -159,9 +164,8 @@ public class RealTimeTesterClass {
                 map.put("BodyTemp", (double) temptureDetectData.getTempture());
                 map.put("SkinTemp", (double) temptureDetectData.getTemptureBase());
                 map.put("Progress", (double) temptureDetectData.getProgress());
-                dashBoardViewModel.getRealTimeTempData().setValue(map);
-                String message = "Temperature" + temptureDetectData.toString();
-                Logger.t(TAG).i(message);
+                consumer.accept(map);
+
             }
         });
 
@@ -178,6 +182,20 @@ public class RealTimeTesterClass {
 
     }
 
+    public void setHeartRateAlert(int higValue, int lowValue, boolean isChecked, Consumer<Integer> code){
+        VPOperateManager.getMangerInstance(context).settingHeartWarning(writeResponse, new IHeartWaringDataListener() {
+            @Override
+            public void onHeartWaringDataChange(HeartWaringData heartWaringData) {
+                String message = "心率报警-打开:\n" + heartWaringData.toString();
+                Logger.t(TAG).i(message);
+                sendMsg(message, 1);
+            }
+        }, new HeartWaringSetting(higValue, lowValue, isChecked));
+    }
+
+    public void readHeartRateAlertSettings(@NonNull Consumer<Integer> receivingCode, @NonNull Consumer<HeartWaringData> receivingSettings){
+        VPOperateManager.getMangerInstance(context).readHeartWarning(receivingCode::accept, receivingSettings::accept);
+    }
 
 
     private void sendMsg(String message, int what) {
@@ -197,11 +215,6 @@ public class RealTimeTesterClass {
         }
     }
 
-    static class MyThread extends Thread {
 
-        public MyThread(@Nullable Runnable target) {
-            super(target);
-        }
-    }
 }
 

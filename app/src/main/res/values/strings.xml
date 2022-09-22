@@ -91,4 +91,7 @@
     <string name="temperature">Temperature</string>
     <string name="body_temperature">Body temperature</string>
     <string name="skin_temperature">Skin temperature</string>
+    <string name="set_heart_rate_values">Set Heart Rate\n values</string>
+    <string name="heart_rate_n_alert">Heart Rate\n Alert Values</string>
+    <string name="settings_title">Settings</string>
 </resources>

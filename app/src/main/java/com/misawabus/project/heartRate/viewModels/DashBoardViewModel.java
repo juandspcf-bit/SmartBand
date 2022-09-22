@@ -51,13 +51,12 @@ public class DashBoardViewModel extends ViewModel {
     private RealTimeTesterClass realTimeTesterClass;
     private List<int[]> dataEcg;
     private HealthsData healthsReadDataManager;
-    private final MutableLiveData<Map<String, Double>> realTimeTempData = new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> todayArray5MinAvgAllIntervals = new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> yesterdayArrays5MinAvgAllIntervals = new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> pastYesterdayArrays5MinAvgAllIntervals = new MutableLiveData<>();
-    private MutableLiveData<Map<String, Double>> mapTodaySummary = new MutableLiveData<>();
-    private MutableLiveData<Map<String, Double>> mapYesterdaySummary = new MutableLiveData<>();
-    private MutableLiveData<Map<String, Double>> mapPastYesterdaySummary = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, Double>> mapTodaySummary = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, Double>> mapYesterdaySummary = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, Double>> mapPastYesterdaySummary = new MutableLiveData<>();
 
     public DashBoardViewModel() {
         isEnableFeatures.setValue(false);
@@ -202,13 +201,6 @@ public class DashBoardViewModel extends ViewModel {
     }
     public void setRealTimeBPData(String realTimeBPData){
         this.realTimeBPData.setValue(realTimeBPData);
-    }
-
-    public MutableLiveData<Map<String, Double>> getRealTimeTempData() {
-        return realTimeTempData;
-    }
-    public void setRealTimeTempData(Map<String, Double> realTimeTempData){
-        this.realTimeTempData.setValue(realTimeTempData);
     }
 
     public int getIsFetching() {
