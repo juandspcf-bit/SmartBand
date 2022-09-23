@@ -340,7 +340,8 @@ public class HealthsData {
                         String fullData = SleepDataUtils.processingSleepData(sleepData);
                         if (fullData.isEmpty()) return;
 
-                        SleepDataUI sleepDataUIObject = SleepDataUtils.getSleepDataUIObject(fullData);
+                        SleepDataUI sleepDataUIObject = //SleepDataUtils.getSleepDataUIObject(fullData);
+                        SleepDataUtils.getSleepDataUIObject(sleepData, deviceViewModel.getMacAddress());
                         sleepDataUIObject.setMacAddress(deviceViewModel.getMacAddress());
                         LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
 

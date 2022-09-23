@@ -6,10 +6,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
-import com.veepoo.protocol.model.datas.InsomniaTimeData;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity(tableName = "SleepDataUI_table")
 public class SleepDataUI {
@@ -113,7 +111,7 @@ public class SleepDataUI {
     private int insomniaLength;
 
     @ColumnInfo(name = "insomniaBeanList")
-    private List<InsomniaTimeData> insomniaBeanList;
+    private /*List<InsomniaTimeData>*/ String insomniaBeanList;
 
     @ColumnInfo(name = "startInsomniaTime")
     public String startInsomniaTime;
@@ -125,6 +123,7 @@ public class SleepDataUI {
     private int insomniaDuration;
 
 
+    @NonNull
     @Override
     public String toString() {
         return "SleepDataUI{" +
@@ -423,11 +422,11 @@ public class SleepDataUI {
         this.insomniaLength = insomniaLength;
     }
 
-    public List<InsomniaTimeData> getInsomniaBeanList() {
+    public String getInsomniaBeanList() {
         return insomniaBeanList;
     }
 
-    public void setInsomniaBeanList(List<InsomniaTimeData> insomniaBeanList) {
+    public void setInsomniaBeanList(String insomniaBeanList) {
         this.insomniaBeanList = insomniaBeanList;
     }
 
