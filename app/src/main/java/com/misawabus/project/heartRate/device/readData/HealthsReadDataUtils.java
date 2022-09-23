@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalDouble;
-import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 
 public class HealthsReadDataUtils {
@@ -257,12 +256,11 @@ public class HealthsReadDataUtils {
 
 
     static void processOriginData3List(List<OriginData3> originData3List,
-                                       ExecutorService databaseWriteExecutor,
                                        Handler mHandler,
                                        DashBoardViewModel dashBoardViewModel,
                                        AppCompatActivity activity,
                                        DeviceViewModel deviceViewModel) {
-        databaseWriteExecutor.execute(() -> {
+        HealthsData.databaseWriteExecutor.execute(() -> {
             DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinAVR(originData3List,
                     functionToSetFieldsInSportsOrigin3(),
                     new SportsData5MinAvgDataContainer());
@@ -347,74 +345,84 @@ public class HealthsReadDataUtils {
     }
 
     static void processOriginDataList(List<OriginData> list5Min,
+                                      Handler mHandler,
                                       DashBoardViewModel dashBoardViewModel,
                                       DeviceViewModel deviceViewModel,
                                       AppCompatActivity activity) {
-        DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinOrigin(list5Min,
-                functionToSetFieldsInSportsOrigin(),
-                new SportsData5MinAvgDataContainer());
-        DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHeartRateDataFiveMinOrigin(list5Min,
-                functionToSetFieldsInRateValueOrigin(),
-                new HeartRateData5MinAvgDataContainer());
-        DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer = computeBloodPressureDataFiveMinOrigin(list5Min,
-                functionToSetFieldsInBloodPressureOrigin(),
-                new BloodPressureDataFiveMinAvgDataContainer());
+        HealthsData.databaseWriteExecutor.execute(() -> {
+            DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinOrigin(list5Min,
+                    functionToSetFieldsInSportsOrigin(),
+                    new SportsData5MinAvgDataContainer());
+            DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHeartRateDataFiveMinOrigin(list5Min,
+                    functionToSetFieldsInRateValueOrigin(),
+                    new HeartRateData5MinAvgDataContainer());
+            DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer = computeBloodPressureDataFiveMinOrigin(list5Min,
+                    functionToSetFieldsInBloodPressureOrigin(),
+                    new BloodPressureDataFiveMinAvgDataContainer());
 
-        Map<String, Double> mapSummary = getSummarySportsMap(sportsDataFiveMinAvgDataContainer);
+            Map<String, Double> mapSummary = getSummarySportsMap(sportsDataFiveMinAvgDataContainer);
 
-        Map<String, DataFiveMinAvgDataContainer> mapDataForExcel = new HashMap<>();
+            Map<String, DataFiveMinAvgDataContainer> mapDataForExcel = new HashMap<>();
 
-        mapDataForExcel.put(SportsData5MinAvgDataContainer.class.getSimpleName(), sportsDataFiveMinAvgDataContainer);
-        mapDataForExcel.put(HeartRateData5MinAvgDataContainer.class.getSimpleName(), heartRateDataFiveMinAvgDataContainer);
-        mapDataForExcel.put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName(), bloodPressureDataFiveMinAvgDataContainer);
-
-
-        XYDataArraysForPlotting sportsArraysForPlotting = getSportsArraysForPlotting(sportsDataFiveMinAvgDataContainer);
-        XYDataArraysForPlotting heartRateArraysForPlotting = getHearRateArraysForPlotting(heartRateDataFiveMinAvgDataContainer);
-        XYDataArraysForPlotting highBPArraysForPlotting = getHighBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
-        XYDataArraysForPlotting lowBPArraysForPlotting = getLowBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
+            mapDataForExcel.put(SportsData5MinAvgDataContainer.class.getSimpleName(), sportsDataFiveMinAvgDataContainer);
+            mapDataForExcel.put(HeartRateData5MinAvgDataContainer.class.getSimpleName(), heartRateDataFiveMinAvgDataContainer);
+            mapDataForExcel.put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName(), bloodPressureDataFiveMinAvgDataContainer);
 
 
-        Map<String, XYDataArraysForPlotting> arraysMap;
-        arraysMap = getStringXYOriginDataArraysForPlottingMap(sportsArraysForPlotting,
-                heartRateArraysForPlotting,
-                highBPArraysForPlotting,
-                lowBPArraysForPlotting);
+            XYDataArraysForPlotting sportsArraysForPlotting = getSportsArraysForPlotting(sportsDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting heartRateArraysForPlotting = getHearRateArraysForPlotting(heartRateDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting highBPArraysForPlotting = getHighBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
+            XYDataArraysForPlotting lowBPArraysForPlotting = getLowBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
 
-        String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
-        Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
-        LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
-        if (localDate.compareTo(LocalDate.now()) == 0) {
-            dashBoardViewModel.setTodaySummary(mapSummary);
-            dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
-            dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(mapDataForExcel);
-        } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-            dashBoardViewModel.setYesterdaySummary(mapSummary);
-            dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
-            dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
-        } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-            dashBoardViewModel.setPastYesterdaySummary(mapSummary);
-            dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
-            dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
-        }
 
-        DBops.updateHeartRateRow(IdTypeDataTable.HeartRateFiveMin,
-                heartRateDataFiveMinAvgDataContainer.getDoubleMap().toString(),
-                heartRateDataFiveMinAvgDataContainer.getStringDate(),
-                deviceViewModel.getMacAddress(),
-                activity
-        );
-        DBops.updateSportsRow(IdTypeDataTable.SportsFiveMin,
-                sportsDataFiveMinAvgDataContainer.getDoubleMap().toString(),
-                sportsDataFiveMinAvgDataContainer.getStringDate(),
-                deviceViewModel.getMacAddress(),
-                activity);
+            Map<String, XYDataArraysForPlotting> arraysMap;
+            arraysMap = getStringXYOriginDataArraysForPlottingMap(sportsArraysForPlotting,
+                    heartRateArraysForPlotting,
+                    highBPArraysForPlotting,
+                    lowBPArraysForPlotting);
 
-        DBops.updateBloodPressureRow(IdTypeDataTable.BloodPressure,
-                bloodPressureDataFiveMinAvgDataContainer.getDoubleMap().toString(),
-                bloodPressureDataFiveMinAvgDataContainer.getStringDate(),
-                deviceViewModel.getMacAddress(),
-                activity);
+            mHandler.post(() -> {
+
+                String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
+                Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+                LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
+                if (localDate.compareTo(LocalDate.now()) == 0) {
+                    dashBoardViewModel.setTodaySummary(mapSummary);
+                    dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(mapDataForExcel);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+                    dashBoardViewModel.setYesterdaySummary(mapSummary);
+                    dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+                    dashBoardViewModel.setPastYesterdaySummary(mapSummary);
+                    dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
+                }
+
+                DBops.updateHeartRateRow(IdTypeDataTable.HeartRateFiveMin,
+                        heartRateDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                        heartRateDataFiveMinAvgDataContainer.getStringDate(),
+                        deviceViewModel.getMacAddress(),
+                        activity
+                );
+                DBops.updateSportsRow(IdTypeDataTable.SportsFiveMin,
+                        sportsDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                        sportsDataFiveMinAvgDataContainer.getStringDate(),
+                        deviceViewModel.getMacAddress(),
+                        activity);
+
+                DBops.updateBloodPressureRow(IdTypeDataTable.BloodPressure,
+                        bloodPressureDataFiveMinAvgDataContainer.getDoubleMap().toString(),
+                        bloodPressureDataFiveMinAvgDataContainer.getStringDate(),
+                        deviceViewModel.getMacAddress(),
+                        activity);
+
+
+            });
+
+        });
+
 
     }
 

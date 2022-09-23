@@ -103,9 +103,21 @@ public class HealthsData {
             @Override
             public void onReadOriginComplete() {
 
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min), HealthsData.this.dashBoardViewModel, HealthsData.this.deviceViewModel, HealthsData.this.activity);
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min), HealthsData.this.dashBoardViewModel, HealthsData.this.deviceViewModel, HealthsData.this.activity);
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min), HealthsData.this.dashBoardViewModel, HealthsData.this.deviceViewModel, HealthsData.this.activity);
+                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
+                        mHandler,
+                        HealthsData.this.dashBoardViewModel,
+                        HealthsData.this.deviceViewModel,
+                        HealthsData.this.activity);
+                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
+                        mHandler,
+                        HealthsData.this.dashBoardViewModel,
+                        HealthsData.this.deviceViewModel,
+                        HealthsData.this.activity);
+                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
+                        mHandler,
+                        HealthsData.this.dashBoardViewModel,
+                        HealthsData.this.deviceViewModel,
+                        HealthsData.this.activity);
 
                 todayList5Min = Stream.generate(OriginData::new).limit(288)
                         .collect(Collectors.toList());
@@ -156,7 +168,6 @@ public class HealthsData {
 
                 }
                 HealthsReadDataUtils.processOriginData3List(originData3List,
-                        databaseWriteExecutor,
                         mHandler,
                         dashBoardViewModel,
                         activity,
@@ -243,9 +254,21 @@ public class HealthsData {
 
             @Override
             public void onReadOriginComplete() {
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min), HealthsData.this.dashBoardViewModel, HealthsData.this.deviceViewModel, HealthsData.this.activity);
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min), HealthsData.this.dashBoardViewModel, HealthsData.this.deviceViewModel, HealthsData.this.activity);
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min), HealthsData.this.dashBoardViewModel, HealthsData.this.deviceViewModel, HealthsData.this.activity);
+                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
+                        mHandler,
+                        HealthsData.this.dashBoardViewModel,
+                        HealthsData.this.deviceViewModel,
+                        HealthsData.this.activity);
+                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
+                        mHandler,
+                        HealthsData.this.dashBoardViewModel,
+                        HealthsData.this.deviceViewModel,
+                        HealthsData.this.activity);
+                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
+                        mHandler,
+                        HealthsData.this.dashBoardViewModel,
+                        HealthsData.this.deviceViewModel,
+                        HealthsData.this.activity);
 
                todayList5Min = Stream.generate(OriginData::new).limit(288)
                         .collect(Collectors.toList());
@@ -265,7 +288,6 @@ public class HealthsData {
             @Override
             public void onOriginFiveMinuteListDataChange(List<OriginData3> originData3List) {
                 HealthsReadDataUtils.processOriginData3List(originData3List,
-                        databaseWriteExecutor,
                         mHandler,
                         dashBoardViewModel,
                         activity,
