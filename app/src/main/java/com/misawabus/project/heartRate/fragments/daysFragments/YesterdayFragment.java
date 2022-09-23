@@ -52,17 +52,12 @@ public class YesterdayFragment extends DayFragment {
                     binding);
         });
 
-/*        dashBoardViewModel.getYesterdayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
+       dashBoardViewModel.getYesterdayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
-            public void onChanged(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap) {
-                YesterdayFragment.this.stringDataFiveMinAVGAllIntervalsMap = stringDataFiveMinAVGAllIntervalsMap;
-                //SetDataInViews.setSportsValues(stringDataFiveMinAVGAllIntervalsMap, binding);
-                DaysFragmentUtil.plotSports(stringDataFiveMinAVGAllIntervalsMap, binding);
-                DaysFragmentUtil.plotHeartRate(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
-                DaysFragmentUtil.plotBloodPressure(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
-                DaysFragmentUtil.plotSpO2(stringDataFiveMinAVGAllIntervalsMap, binding, getContext());
+            public void onChanged(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAvgDataContainerMap) {
+                stringDataFiveMinAVGAllIntervalsMap = stringDataFiveMinAvgDataContainerMap;
             }
-        });*/
+       });
 
         dashBoardViewModel.getYesterdaySummary().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
             @Override

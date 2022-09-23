@@ -60,8 +60,10 @@ public class ExcelConversionUtils {
                                       Device device) {
 
         Workbook workbook = new HSSFWorkbook();
-        String date = stringDataFiveMinAVGAllIntervalsMap
-                .get(SportsData5MinAvgDataContainer.class.getSimpleName())
+        DataFiveMinAvgDataContainer dataFiveMinAvgDataContainer = stringDataFiveMinAVGAllIntervalsMap
+                .get(SportsData5MinAvgDataContainer.class.getSimpleName());
+        if(dataFiveMinAvgDataContainer == null) return;
+        String date = dataFiveMinAvgDataContainer
                 .getStringDate();
 
         Sheet sheet = workbook

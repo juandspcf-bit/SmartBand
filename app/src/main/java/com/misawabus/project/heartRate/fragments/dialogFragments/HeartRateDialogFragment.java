@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -70,7 +71,7 @@ public class HeartRateDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SwitchMaterial heartRateCounterSwitch = view.findViewById(R.id.heartRateReadSwitchDialog);
+        MaterialSwitch heartRateCounterSwitch = view.findViewById(R.id.heartRateReadSwitchDialog);
         ImageView imageViewHR = view.findViewById(R.id.imageViewHeartRate);
         animation = ValueAnimator.ofFloat(0f, 1f);
         animation.setDuration(2000);

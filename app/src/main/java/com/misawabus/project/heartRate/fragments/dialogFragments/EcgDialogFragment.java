@@ -8,13 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.misawabus.project.heartRate.R;
+import com.misawabus.project.heartRate.databinding.FragmentRealTimeEcgBinding;
 import com.misawabus.project.heartRate.device.readRealTimeData.EcgHeartRealthView;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.orhanobut.logger.Logger;
@@ -26,18 +29,23 @@ import com.veepoo.protocol.model.datas.EcgDetectResult;
 import com.veepoo.protocol.model.datas.EcgDetectState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EcgDialogFragment extends DialogFragment {
+    private FragmentRealTimeEcgBinding binding;
     private final static String TAG = EcgDialogFragment.class.getSimpleName();
     private final WriteResponse writeResponse = new WriteResponse();
+    private final List<int[]> dataEcg = new ArrayList<>();
     private IECGDetectListener iPttDetectListener;
     private EcgHeartRealthView ecgHeartRealthView;
-    private final List<int[]> dataEcg = new ArrayList<>();
     private DashBoardViewModel dashBoardViewModel;
     private Boolean inProgress = false;
+    private EcgDetectState currentEcgDetectState;
 
-    public EcgDialogFragment(){
+
+
+    public EcgDialogFragment() {
 
     }
 
@@ -50,10 +58,14 @@ public class EcgDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_real_time_ecg, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_real_time_ecg, container, false);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        return binding.getRoot();
     }
 
-    /** The system calls this only when creating the layout in a dialog. */
+    /**
+     * The system calls this only when creating the layout in a dialog.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -66,7 +78,7 @@ public class EcgDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ecgHeartRealthView = view.findViewById(R.id.ptt_real_view);
+
 
         iPttDetectListener = new IECGDetectListener() {
             @Override
@@ -76,15 +88,11 @@ public class EcgDialogFragment extends DialogFragment {
 
             @Override
             public void onEcgDetectStateChange(EcgDetectState ecgDetectState) {
-                Logger.t(TAG).i("ECG测量过程中的状态,设置顶部文本:" + ecgDetectState.toString());
+                currentEcgDetectState = ecgDetectState;
                 Log.d("PTT_INFO", ecgDetectState.toString());
-                if(ecgDetectState.getProgress()==100){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            inProgress=false;
-                        }
-                    });
+
+                if (ecgDetectState.getProgress() == 100) {
+                    inProgress = false;
                 }
             }
 
@@ -94,33 +102,43 @@ public class EcgDialogFragment extends DialogFragment {
 
             @Override
             public void onEcgADCChange(final int[] data) {
+                if (currentEcgDetectState.getWear() == 1 && currentEcgDetectState.getProgress() >= 1)
+                    return;
+                if (getActivity() == null || data == null || data.length == 0) return;
+
+                int[] data2 = Arrays.stream(data).filter(value -> Math.abs(value) < 2000).toArray();
+                dataEcg.add(data2);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        dataEcg.add(data);
-                        ecgHeartRealthView.changeData(data, 20);
+                        binding.hPulseValueTextView.setText(String.valueOf(currentEcgDetectState.getHr1()));
+                        binding.qtcValueTextView.setText(String.valueOf(currentEcgDetectState.getQtc()));
+                        binding.hrvEcgValueTextView.setText(String.valueOf(currentEcgDetectState.getHrv()));
+                        binding.linearProgressIndicator.setProgress(currentEcgDetectState.getProgress());
+                        binding.pttRealView.changeData(data2, data2.length);
                     }
                 });
+
+
 
             }
 
 
         };
 
-        listenModel();
 
-        Button startDetectECG = view.findViewById(R.id.startDetectECG);
-        Button stopDetectECG = view.findViewById(R.id.stopDetectECG);
-        ecgHeartRealthView.clearData();
 
-        startDetectECG.setOnClickListener(new View.OnClickListener() {
+        binding.pttRealView.clearData();
+
+
+        binding.startDetectECG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 enter();
             }
         });
 
-        stopDetectECG.setOnClickListener(new View.OnClickListener() {
+        binding.stopDetectECG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 exitModel();
@@ -129,29 +147,25 @@ public class EcgDialogFragment extends DialogFragment {
 
     }
 
-    private void listenModel() {
-        VPOperateManager.getMangerInstance(getContext()).startDetectECG(writeResponse, true , iPttDetectListener);
-    }
-
-
-
     public void enter() {
-        ecgHeartRealthView.clearData();
+        binding.pttRealView.clearData();
+        if (getContext() == null) return;
         VPOperateManager.getMangerInstance(getContext()).startDetectECG(writeResponse, true, iPttDetectListener);
-        inProgress=true;
+        inProgress = true;
     }
 
 
     public void exitModel() {
-        inProgress=false;
+        inProgress = false;
+        if (getContext() == null) return;
         VPOperateManager.getMangerInstance(getContext()).stopDetectECG(writeResponse, true, iPttDetectListener);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(inProgress) exitModel();
-        if(dataEcg.size()==0)return;
+        if (inProgress) exitModel();
+        if (dataEcg.size() == 0) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

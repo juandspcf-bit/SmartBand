@@ -278,6 +278,12 @@ public class HealthsReadDataUtils {
 
             Map<String, Double> mapSummary = getSummarySportsMap(sportsDataFiveMinAvgDataContainer);
 
+            Map<String, DataFiveMinAvgDataContainer> mapDataForExcel = new HashMap<>();
+
+            mapDataForExcel.put(SportsData5MinAvgDataContainer.class.getSimpleName(), sportsDataFiveMinAvgDataContainer);
+            mapDataForExcel.put(HeartRateData5MinAvgDataContainer.class.getSimpleName(), heartRateDataFiveMinAvgDataContainer);
+            mapDataForExcel.put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName(), bloodPressureDataFiveMinAvgDataContainer);
+            mapDataForExcel.put(Sop2HData5MinAvgDataContainer.class.getSimpleName(), sop2DataFiveMinAvgDataContainer);
 
             XYDataArraysForPlotting sportsArraysForPlotting = getSportsArraysForPlotting(sportsDataFiveMinAvgDataContainer);
             XYDataArraysForPlotting heartRateArraysForPlotting = getHearRateArraysForPlotting(heartRateDataFiveMinAvgDataContainer);
@@ -302,12 +308,15 @@ public class HealthsReadDataUtils {
                 if (localDate.compareTo(LocalDate.now()) == 0) {
                     dashBoardViewModel.setTodaySummary(mapSummary);
                     dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(mapDataForExcel);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
                     dashBoardViewModel.setYesterdaySummary(mapSummary);
                     dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
                     dashBoardViewModel.setPastYesterdaySummary(mapSummary);
                     dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
                 }
 
                 DBops.updateHeartRateRow(IdTypeDataTable.HeartRateFiveMin,

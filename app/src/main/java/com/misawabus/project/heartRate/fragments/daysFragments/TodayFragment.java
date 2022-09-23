@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
@@ -67,9 +68,16 @@ public class TodayFragment extends DayFragment {
             @Override
             public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
                 setAllPlots(stringXYDataArraysForPlottingMap);
-
             }
         });
+
+        dashBoardViewModel.getTodayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, DataFiveMinAvgDataContainer>>() {
+            @Override
+            public void onChanged(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAvgDataContainerMap) {
+                stringDataFiveMinAVGAllIntervalsMap = stringDataFiveMinAvgDataContainerMap;
+            }
+        });
+
 
 
         dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {

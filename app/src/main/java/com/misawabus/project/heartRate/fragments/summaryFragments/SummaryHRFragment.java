@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.inuker.bluetooth.library.Code;
+import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
@@ -31,14 +32,13 @@ import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentSummaryHrBinding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
-import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
-import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
-import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag;
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag.ZoneObject;
-import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
-import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
+import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
+import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.veepoo.protocol.model.datas.HeartWaringData;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class SummaryHRFragment extends SummaryFragment {
     private int heartHigh;
     private int heartLow;
 
-    public SummaryHRFragment(){
+    public SummaryHRFragment() {
 
     }
 
@@ -107,7 +107,7 @@ public class SummaryHRFragment extends SummaryFragment {
 
     private void setFragmentViews(Date selectedDate, HeartRate dataFromDB) {
 
-        if(dataFromDB == null || dataFromDB.getData()==null || dataFromDB.getData().isEmpty()){
+        if (dataFromDB == null || dataFromDB.getData() == null || dataFromDB.getData().isEmpty()) {
             binding.group.setVisibility(View.GONE);
             binding.imageView6.setVisibility(View.VISIBLE);
             return;
@@ -118,16 +118,16 @@ public class SummaryHRFragment extends SummaryFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 dashBoardViewModel
                         .getRealTimeTesterClass()
-                        .setHeartRateAlert(heartHigh, heartLow, isChecked, code->{
+                        .setHeartRateAlert(heartHigh, heartLow, isChecked, code -> {
 
-                });
+                        });
             }
         });
 
         dashBoardViewModel.getRealTimeTesterClass().readHeartRateAlertSettings(new Consumer<Integer>() {
             @Override
             public void accept(Integer integer) {
-                if(integer!= Code.REQUEST_SUCCESS) {
+                if (integer != Code.REQUEST_SUCCESS) {
                     Snackbar.make(binding.selectDateHRButton, "No", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
@@ -176,7 +176,6 @@ public class SummaryHRFragment extends SummaryFragment {
                 "%.1f",
                 average);
 
-        
 
         Double[] ppgs = heartRateGroupByFieldsWith30MinSumValues.get("Ppgs").toArray(new Double[0]);
         String[] domainLabels = IntervalUtils.hoursInterval;
@@ -195,7 +194,7 @@ public class SummaryHRFragment extends SummaryFragment {
         binding.averageHR.setText(averageString);
 
         List<String> intervals = new ArrayList<>();
-        Stream.iterate(0, i->++i).limit(domainLabels.length).forEach(position->{
+        Stream.iterate(0, i -> ++i).limit(domainLabels.length).forEach(position -> {
             String interval = position < (domainLabels.length - 1) ?
                     domainLabels[position] + " - " + domainLabels[position + 1] :
                     domainLabels[position] + "-" + "00:00";
@@ -203,17 +202,12 @@ public class SummaryHRFragment extends SummaryFragment {
         });
 
 
-
-
-        buildRecyclerView(Arrays.asList(ppgs)  ,
+        buildRecyclerView(Arrays.asList(ppgs),
                 intervals,
                 getContext(),
                 binding.recyclerViewSummHR,
                 R.layout.row_layou_hr,
                 new ViewsInHRRowHolder());
-
-
-
     }
 
 
@@ -235,7 +229,7 @@ public class SummaryHRFragment extends SummaryFragment {
 
                 viewsInHRRowHolder.intervalHR.setText(intervals.get(position));
 
-                viewsInHRRowHolder.valueHR.setText(String.format(Locale.getDefault(), "%.1f",data.get(position)));
+                viewsInHRRowHolder.valueHR.setText(String.format(Locale.getDefault(), "%.1f", data.get(position)));
 
                 ZoneObject zoneObject = UtilsSummaryFrag.testZone(age, data.get(position));
                 viewsInHRRowHolder.hrZoneTextView.setText(zoneObject.getZone());
@@ -256,7 +250,6 @@ public class SummaryHRFragment extends SummaryFragment {
     }
 
 
-
     private void getDataFromDB(Date date, Consumer<HeartRate> hearRateData) {
         HeartRateViewModel
                 .getSingleHeartRateRowForU(date, deviceViewModel.getMacAddress(), IdTypeDataTable.HeartRateFiveMin)
@@ -266,8 +259,6 @@ public class SummaryHRFragment extends SummaryFragment {
                             hearRateData.accept(dataFromDB);
                         });
     }
-
-
 
 
 }

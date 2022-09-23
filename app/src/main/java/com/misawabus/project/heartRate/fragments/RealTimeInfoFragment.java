@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -120,6 +121,7 @@ public class RealTimeInfoFragment extends Fragment {
                 FragmentManager fragmentManager = getChildFragmentManager();
                 EcgDialogFragment newFragment = new EcgDialogFragment();
                 newFragment.show(fragmentManager, "dialog");
+
             }
         });
 

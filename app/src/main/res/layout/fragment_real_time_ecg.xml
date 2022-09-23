@@ -1,35 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.misawabus.project.heartRate.device.readRealTimeData.EcgHeartRealthView
-        android:id="@+id/ptt_real_view"
-        android:layout_width="match_parent"
-        android:layout_height="400dp" />
+    <data>
 
-    <Button
-        android:id="@+id/startDetectECG"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="15dp"
-        android:text="start ECG detection"
-        tools:text="start ECG detection" />
+    </data>
 
-    <Button
-        android:id="@+id/stopDetectECG"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="15dp"
-        android:text="stop ECG detection"
-        tools:text="stop ECG detection" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <com.misawabus.project.heartRate.device.readRealTimeData.EcgHeartRealthView
+            android:id="@+id/ptt_real_view"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline65"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline62" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linearProgressIndicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progressTint="#BF4242"
+            tools:layout_editor_absoluteX="-76dp"
+            tools:layout_editor_absoluteY="538dp" />
+
+        <Button
+            android:id="@+id/startDetectECG"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/start_ecg_detection"
+            tools:layout_editor_absoluteX="109dp"
+            tools:layout_editor_absoluteY="323dp"
+            tools:text="start ECG detection" />
+
+        <Button
+            android:id="@+id/stopDetectECG"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_ecg_detection"
+            tools:layout_editor_absoluteX="95dp"
+            tools:layout_editor_absoluteY="52dp"
+            tools:text="stop ECG detection" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline62"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline65"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="startDetectECG,stopDetectECG"
+            app:flow_verticalGap="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearProgressIndicator" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/progress_ecg"
+            tools:layout_editor_absoluteX="168dp"
+            tools:layout_editor_absoluteY="320dp" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow13"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="textView15,linearProgressIndicator"
+            app:flow_verticalGap="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline65" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp"
+            tools:layout_editor_absoluteX="308dp"
+            tools:layout_editor_absoluteY="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#80CBC4"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/hrv_ecg"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/hrvEcgValueTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/_0_ecg" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/qtcTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#B39DDB"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/qtc"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/qtcValueTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/_0_ecg" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp"
+            tools:layout_editor_absoluteX="46dp"
+            tools:layout_editor_absoluteY="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/HPulseTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F48FB1"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/heart_rate_for_ecg_fragment"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/hPulseValueTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/_0_ecg" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow15"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:constraint_referenced_ids="cardView,cardView2,cardView3"
+            app:flow_horizontalGap="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline62"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

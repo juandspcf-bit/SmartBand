@@ -1,90 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout17"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#f2f2f2"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:paddingStart="100dp"
-    android:paddingEnd="100dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/textViewTitleBPDialog"
-        android:layout_width="203dp"
-        android:layout_height="86dp"
-        android:layout_gravity="center|center_vertical"
-        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
         android:gravity="center_horizontal|center_vertical"
         android:text="Blood Pressure"
         android:textSize="34sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewBPHigh"
-        android:layout_width="214dp"
-        android:layout_height="34dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="@string/HighPressureInit"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBPLow" />
 
     <TextView
         android:id="@+id/textViewBPLow"
-        android:layout_width="214dp"
-        android:layout_height="34dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="@string/LowPressureInit"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleBPDialog" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageViewBP"
-            android:layout_width="77dp"
-            android:layout_height="114dp"
-            android:contentDescription="TODO"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/progressInBP"
-            app:layout_constraintHorizontal_bias="0.42"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/progressInBP"
-            app:srcCompat="@drawable/_184202" />
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressInBP"
-            android:layout_width="134dp"
-            android:layout_height="112dp"
-            android:max="100"
-            android:min="0"
-            android:padding="30dp"
-            android:pointerIcon="none"
-            android:progress="0"
-            app:indicatorColor="#F06292"
-            app:indicatorSize="200dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:trackColor="#BAEBED"
-            app:trackThickness="8dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/imageViewBP"
+        android:layout_width="96dp"
+        android:layout_height="147dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toBottomOf="@+id/progressInBP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/progressInBP"
+        app:srcCompat="@drawable/_184202" />
 
     <Button
         android:id="@+id/bPReadButton"
-        android:layout_width="154dp"
-        android:layout_height="76dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
 
-        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:enabled="true"
         android:gravity="center"
-        android:text="@string/test_blood_pressure" />
+        android:rotationX="0"
+        android:text="@string/test_blood_pressure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressInBP" />
 
-</LinearLayout>
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressInBP"
+        android:layout_width="186dp"
+        android:layout_height="211dp"
+        android:layout_marginTop="16dp"
+        android:max="100"
+        android:min="0"
+        android:padding="30dp"
+        android:pointerIcon="none"
+        android:progress="0"
+        app:indicatorColor="#F06292"
+        app:indicatorSize="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBPHigh"
+        app:trackColor="#BAEBED"
+        app:trackThickness="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
