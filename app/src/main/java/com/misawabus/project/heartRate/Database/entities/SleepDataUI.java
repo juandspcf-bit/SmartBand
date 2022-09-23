@@ -6,8 +6,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
+import com.veepoo.protocol.model.datas.InsomniaTimeData;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity(tableName = "SleepDataUI_table")
 public class SleepDataUI {
@@ -21,14 +23,11 @@ public class SleepDataUI {
     @ColumnInfo(name = "mac_address")
     public String macAddress;
 
-    @ColumnInfo(name = "date_data")
-    public Date dateData;
-
     @ColumnInfo(name = "index_list")
     public int index;
 
-    @ColumnInfo(name = "data")
-    public String data;
+    @ColumnInfo(name = "date_data")
+    public Date dateData;
 
     @ColumnInfo(name = "caliFlag")
     public int caliFlag;
@@ -48,11 +47,85 @@ public class SleepDataUI {
     @ColumnInfo(name = "allSleepTime")
     public int allSleepTime;
 
+    @ColumnInfo(name = "data")
+    public String data;
+
     @ColumnInfo(name = "sleepDown")
     public String sleepDown;
 
     @ColumnInfo(name = "sleepUp")
     public String sleepUp;
+
+    //High precision sleep data
+
+    @ColumnInfo(name = "sleepTag")
+    private int sleepTag;
+
+    @ColumnInfo(name = "getUpScore")
+    private int getUpScore;
+
+    @ColumnInfo(name = "deepScore")
+    private int deepScore;
+
+    @ColumnInfo(name = "sleepEfficiencyScore")
+    private int sleepEfficiencyScore;
+
+    @ColumnInfo(name = "fallAsleepScore")
+    private int fallAsleepScore;
+
+    @ColumnInfo(name = "sleepTimeScore")
+    private int sleepTimeScore;
+
+    @ColumnInfo(name = "exitSleepMode")
+    private int exitSleepMode;
+
+    @ColumnInfo(name = "deepAndLightMode")
+    private int deepAndLightMode;
+
+    @ColumnInfo(name = "otherDuration")
+    private int otherDuration;
+
+    @ColumnInfo(name = "firstDeepDuration")
+    private int firstDeepDuration;
+
+    @ColumnInfo(name = "getUpDuration")
+    private int getUpDuration;
+
+    @ColumnInfo(name = "getUpToDeepAve")
+    private int getUpToDeepAve;
+
+    @ColumnInfo(name = "onePointDuration")
+    private int onePointDuration;
+
+    @ColumnInfo(name = "accurateType")
+    private int accurateType;
+
+    @ColumnInfo(name = "insomniaTag")
+    private int insomniaTag;
+
+    @ColumnInfo(name = "insomniaScore")
+    private int insomniaScore;
+
+    @ColumnInfo(name = "insomniaTimes")
+    private int insomniaTimes;
+
+    @ColumnInfo(name = "insomniaLength")
+    private int insomniaLength;
+
+    @ColumnInfo(name = "insomniaBeanList")
+    private List<InsomniaTimeData> insomniaBeanList;
+
+    @ColumnInfo(name = "startInsomniaTime")
+    public String startInsomniaTime;
+
+    @ColumnInfo(name = "stopInsomniaTime")
+    public String stopInsomniaTime;
+
+    @ColumnInfo(name = "insomniaDuration")
+    private int insomniaDuration;
+
+
+
 
     @NonNull
     @Override

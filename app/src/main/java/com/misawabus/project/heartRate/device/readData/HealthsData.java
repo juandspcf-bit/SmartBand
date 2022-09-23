@@ -28,6 +28,7 @@ import com.veepoo.protocol.model.datas.OriginData;
 import com.veepoo.protocol.model.datas.OriginData3;
 import com.veepoo.protocol.model.datas.OriginHalfHourData;
 import com.veepoo.protocol.model.datas.SleepData;
+import com.veepoo.protocol.model.datas.SleepPrecisionData;
 import com.veepoo.protocol.model.datas.Spo2hOriginData;
 import com.veepoo.protocol.model.datas.TimeData;
 
@@ -350,7 +351,7 @@ public class HealthsData {
                         } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
                             pastYesterdaySleepDataList.add(sleepDataUIObject);
                         }
-
+                        testSleepData(sleepData);
 
                     }
 
@@ -427,6 +428,10 @@ public class HealthsData {
                     }
                 }
                 , dashBoardViewModel.getWatchData());
+    }
+
+    private static void testSleepData(SleepData sleepData) {
+        if(sleepData instanceof SleepPrecisionData) Log.d(TAG, "testSleepData: It is indeed SleepPrecisionData");
     }
 
     private int getMinutes(SleepDataUI a) {
