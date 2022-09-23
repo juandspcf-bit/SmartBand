@@ -125,26 +125,45 @@ public class SleepDataUI {
     private int insomniaDuration;
 
 
-
-
-    @NonNull
     @Override
     public String toString() {
         return "SleepDataUI{" +
                 "Id=" + Id +
                 ", idTypeDataTable=" + idTypeDataTable +
                 ", macAddress='" + macAddress + '\'' +
-                ", dateData=" + dateData +
                 ", index=" + index +
-                ", data='" + data + '\'' +
+                ", dateData=" + dateData +
                 ", caliFlag=" + caliFlag +
                 ", sleepQuality=" + sleepQuality +
                 ", wakeCount=" + wakeCount +
                 ", deepSleepTime=" + deepSleepTime +
                 ", lowSleepTime=" + lowSleepTime +
                 ", allSleepTime=" + allSleepTime +
+                ", data='" + data + '\'' +
                 ", sleepDown='" + sleepDown + '\'' +
                 ", sleepUp='" + sleepUp + '\'' +
+                ", sleepTag=" + sleepTag +
+                ", getUpScore=" + getUpScore +
+                ", deepScore=" + deepScore +
+                ", sleepEfficiencyScore=" + sleepEfficiencyScore +
+                ", fallAsleepScore=" + fallAsleepScore +
+                ", sleepTimeScore=" + sleepTimeScore +
+                ", exitSleepMode=" + exitSleepMode +
+                ", deepAndLightMode=" + deepAndLightMode +
+                ", otherDuration=" + otherDuration +
+                ", firstDeepDuration=" + firstDeepDuration +
+                ", getUpDuration=" + getUpDuration +
+                ", getUpToDeepAve=" + getUpToDeepAve +
+                ", onePointDuration=" + onePointDuration +
+                ", accurateType=" + accurateType +
+                ", insomniaTag=" + insomniaTag +
+                ", insomniaScore=" + insomniaScore +
+                ", insomniaTimes=" + insomniaTimes +
+                ", insomniaLength=" + insomniaLength +
+                ", insomniaBeanList=" + insomniaBeanList +
+                ", startInsomniaTime='" + startInsomniaTime + '\'' +
+                ", stopInsomniaTime='" + stopInsomniaTime + '\'' +
+                ", insomniaDuration=" + insomniaDuration +
                 '}';
     }
 
@@ -258,5 +277,181 @@ public class SleepDataUI {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getSleepTag() {
+        return sleepTag;
+    }
+
+    public void setSleepTag(int sleepTag) {
+        this.sleepTag = sleepTag;
+    }
+
+    public int getGetUpScore() {
+        return getUpScore;
+    }
+
+    public void setGetUpScore(int getUpScore) {
+        this.getUpScore = getUpScore;
+    }
+
+    public int getDeepScore() {
+        return deepScore;
+    }
+
+    public void setDeepScore(int deepScore) {
+        this.deepScore = deepScore;
+    }
+
+    public int getSleepEfficiencyScore() {
+        return sleepEfficiencyScore;
+    }
+
+    public void setSleepEfficiencyScore(int sleepEfficiencyScore) {
+        this.sleepEfficiencyScore = sleepEfficiencyScore;
+    }
+
+    public int getFallAsleepScore() {
+        return fallAsleepScore;
+    }
+
+    public void setFallAsleepScore(int fallAsleepScore) {
+        this.fallAsleepScore = fallAsleepScore;
+    }
+
+    public int getSleepTimeScore() {
+        return sleepTimeScore;
+    }
+
+    public void setSleepTimeScore(int sleepTimeScore) {
+        this.sleepTimeScore = sleepTimeScore;
+    }
+
+    public int getExitSleepMode() {
+        return exitSleepMode;
+    }
+
+    public void setExitSleepMode(int exitSleepMode) {
+        this.exitSleepMode = exitSleepMode;
+    }
+
+    public int getDeepAndLightMode() {
+        return deepAndLightMode;
+    }
+
+    public void setDeepAndLightMode(int deepAndLightMode) {
+        this.deepAndLightMode = deepAndLightMode;
+    }
+
+    public int getOtherDuration() {
+        return otherDuration;
+    }
+
+    public void setOtherDuration(int otherDuration) {
+        this.otherDuration = otherDuration;
+    }
+
+    public int getFirstDeepDuration() {
+        return firstDeepDuration;
+    }
+
+    public void setFirstDeepDuration(int firstDeepDuration) {
+        this.firstDeepDuration = firstDeepDuration;
+    }
+
+    public int getGetUpDuration() {
+        return getUpDuration;
+    }
+
+    public void setGetUpDuration(int getUpDuration) {
+        this.getUpDuration = getUpDuration;
+    }
+
+    public int getGetUpToDeepAve() {
+        return getUpToDeepAve;
+    }
+
+    public void setGetUpToDeepAve(int getUpToDeepAve) {
+        this.getUpToDeepAve = getUpToDeepAve;
+    }
+
+    public int getOnePointDuration() {
+        return onePointDuration;
+    }
+
+    public void setOnePointDuration(int onePointDuration) {
+        this.onePointDuration = onePointDuration;
+    }
+
+    public int getAccurateType() {
+        return accurateType;
+    }
+
+    public void setAccurateType(int accurateType) {
+        this.accurateType = accurateType;
+    }
+
+    public int getInsomniaTag() {
+        return insomniaTag;
+    }
+
+    public void setInsomniaTag(int insomniaTag) {
+        this.insomniaTag = insomniaTag;
+    }
+
+    public int getInsomniaScore() {
+        return insomniaScore;
+    }
+
+    public void setInsomniaScore(int insomniaScore) {
+        this.insomniaScore = insomniaScore;
+    }
+
+    public int getInsomniaTimes() {
+        return insomniaTimes;
+    }
+
+    public void setInsomniaTimes(int insomniaTimes) {
+        this.insomniaTimes = insomniaTimes;
+    }
+
+    public int getInsomniaLength() {
+        return insomniaLength;
+    }
+
+    public void setInsomniaLength(int insomniaLength) {
+        this.insomniaLength = insomniaLength;
+    }
+
+    public List<InsomniaTimeData> getInsomniaBeanList() {
+        return insomniaBeanList;
+    }
+
+    public void setInsomniaBeanList(List<InsomniaTimeData> insomniaBeanList) {
+        this.insomniaBeanList = insomniaBeanList;
+    }
+
+    public String getStartInsomniaTime() {
+        return startInsomniaTime;
+    }
+
+    public void setStartInsomniaTime(String startInsomniaTime) {
+        this.startInsomniaTime = startInsomniaTime;
+    }
+
+    public String getStopInsomniaTime() {
+        return stopInsomniaTime;
+    }
+
+    public void setStopInsomniaTime(String stopInsomniaTime) {
+        this.stopInsomniaTime = stopInsomniaTime;
+    }
+
+    public int getInsomniaDuration() {
+        return insomniaDuration;
+    }
+
+    public void setInsomniaDuration(int insomniaDuration) {
+        this.insomniaDuration = insomniaDuration;
     }
 }
