@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class DeviceSettings {
     private static final String TAG = DeviceSettings.class.getSimpleName();
@@ -121,6 +122,16 @@ public class DeviceSettings {
         public void onResponse(int code) {
 
         }
+    }
+
+
+    public void disconnectDevice(Consumer<Integer> response){
+        VPOperateManager.getMangerInstance(context).disconnectWatch(new IBleWriteResponse() {
+            @Override
+            public void onResponse(int i) {
+                response.accept(i);
+            }
+        });
     }
 
 }

@@ -198,6 +198,8 @@ public class RealTimeTesterClass {
     }
 
 
+
+
     private void sendMsg(String message, int what) {
         msg = Message.obtain();
         msg.what = what;

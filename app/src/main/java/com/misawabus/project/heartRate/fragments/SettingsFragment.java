@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,6 +107,16 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.show();
+            }
+        });
+
+        binding.disconecctButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dashBoardViewModel.getDeviceSettingsManager().disconnectDevice(code -> {
+                    if(code==Code.REQUEST_SUCCESS)
+                        Toast.makeText(getContext(), "Successfully disconnected", Toast.LENGTH_SHORT).show();
+                });
             }
         });
 
