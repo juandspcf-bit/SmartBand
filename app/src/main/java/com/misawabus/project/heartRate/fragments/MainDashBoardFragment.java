@@ -125,7 +125,11 @@ public class MainDashBoardFragment extends Fragment{
                 binding.progressBar.setVisibility(View.INVISIBLE);
             }else if(isEnabled && dashBoardViewModel.getIsFetching()==View.VISIBLE && MainDashBoardFragment.this.isVisible()) {
                 hideProgressBar(animation);
+            }else if(!isEnabled && dashBoardViewModel.getIsFetching()==View.INVISIBLE){
+                binding.statusSynchronizingBluetooth.setVisibility(View.INVISIBLE);
+                binding.progressBar.setVisibility(View.INVISIBLE);
             }
+
 
 
 

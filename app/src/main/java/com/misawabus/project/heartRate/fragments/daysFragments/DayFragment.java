@@ -48,6 +48,7 @@ public class DayFragment extends Fragment {
     protected List<SleepDataUI> sleepDataList;
     protected Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +87,8 @@ public class DayFragment extends Fragment {
             binding.chipShareEmail.setEnabled(true);
 
         });
+
+
 
         binding.chipShareEmail.setOnClickListener(view12 -> {
             if (!dashBoardViewModel.isWiFiEnable()) {

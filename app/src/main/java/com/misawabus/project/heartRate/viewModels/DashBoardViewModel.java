@@ -3,6 +3,7 @@ package com.misawabus.project.heartRate.viewModels;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.misawabus.project.heartRate.Database.entities.Device;
@@ -33,8 +34,8 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isEnableFeatures = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isTodayFragmentRefreshing = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isConnected = new MutableLiveData<>();
-
-
+    private final MutableLiveData<Observer<Boolean>> observerMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Observer<Boolean>> observerEnabledMutableLiveData = new MutableLiveData<>();
 
     private final MutableLiveData<List<SleepDataUI>> todayUpdateSleepFullData = new MutableLiveData<>();
     private final MutableLiveData<List<SleepDataUI>> yesterdayUpdateSleepFullData = new MutableLiveData<>();
@@ -146,6 +147,9 @@ public class DashBoardViewModel extends ViewModel {
     public void setIsConnected(Boolean isConnected){
         this.isConnected.setValue(isConnected);
     }
+
+
+
 
 
 
@@ -299,5 +303,19 @@ public class DashBoardViewModel extends ViewModel {
     }
 
 
+    public MutableLiveData<Observer<Boolean>> getObserverMutableLiveData() {
+        return observerMutableLiveData;
+    }
 
+    public void setObserverMutableLiveData(Observer<Boolean> observer) {
+        this.observerMutableLiveData.setValue(observer);
+    }
+
+    public MutableLiveData<Observer<Boolean>> getObserverEnabledMutableLiveData() {
+        return observerEnabledMutableLiveData;
+    }
+
+    public void setObserverEnabledMutableLiveData(Observer<Boolean> observerEnabled) {
+        this.observerEnabledMutableLiveData.setValue(observerEnabled);
+    }
 }

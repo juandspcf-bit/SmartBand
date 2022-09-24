@@ -393,7 +393,7 @@ public class HealthsData {
                             dashBoardViewModel.setYesterdayUpdateSleepFullData(List.copyOf(sortedYesterday));
                             dashBoardViewModel.setPastYesterdayUpdateSleepFullData(List.copyOf(sortedPastYesterday));
 
-                            dashBoardViewModel.setIsEnableFeatures(true);
+
 
                             if (sortedToday.size() != 0) {
                                 for (int i = 0; i < sortedToday.size(); i++) {
@@ -421,6 +421,8 @@ public class HealthsData {
                             todaySleepDataList.clear();
                             yesterdaySleepDataList.clear();
                             pastYesterdaySleepDataList.clear();
+
+                            dashBoardViewModel.setIsEnableFeatures(true);
                             dashBoardViewModel.setIsTodayFragmentRefreshing(false);
 
                         });

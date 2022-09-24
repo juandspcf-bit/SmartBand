@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments.daysFragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
-import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
@@ -22,12 +19,14 @@ import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 
 public class TodayFragment extends DayFragment {
     public static final String TAG = DayFragment.class.getSimpleName();
-    SwipeRefreshLayout.OnRefreshListener onRefreshListener;
+    private boolean isDeviceConnected = false;
+
 
     public TodayFragment() {
         // Required empty public constructor
@@ -37,6 +36,7 @@ public class TodayFragment extends DayFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated: ");
         dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
             if (sleepDataUIList == null || sleepDataUIList.size() == 0) {
 
@@ -79,55 +79,6 @@ public class TodayFragment extends DayFragment {
         });
 
 
-
-        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {
-            if (isDeviceConnected) return;
-            binding.refreshLayout.setRefreshing(false);
-            binding.refreshLayout.setEnabled(false);
-        });
-
-
-        onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null
-                        && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
-                    return;
-                }
-                dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
-                dashBoardViewModel.setIsTodayFragmentRefreshing(true);
-                binding.fragmentPlot.setEnabled(false);
-                binding.fragmentSleepPlot.setEnabled(false);
-                binding.fragmentBloodPressurePlot.setEnabled(false);
-                binding.fragmentSleepPlot.setEnabled(false);
-
-            }
-        };
-        binding.refreshLayout.setOnRefreshListener(onRefreshListener);
-
-        if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
-            binding.refreshLayout.post(() -> binding.refreshLayout.setRefreshing(true));
-        }
-
-
-        dashBoardViewModel
-                .getIsTodayFragmentRefreshing()
-                .observe(getViewLifecycleOwner(),
-                        aBoolean -> {
-                            if (aBoolean) return;
-                            binding.refreshLayout.setRefreshing(false);
-                            binding.fragmentPlot.setEnabled(true);
-                            binding.fragmentSleepPlot.setEnabled(true);
-                            binding.fragmentBloodPressurePlot.setEnabled(true);
-                        });
-
-        dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(), isEnabled -> {
-            if (!isEnabled) return;
-            binding.refreshLayout.setRefreshing(false);
-            binding.refreshLayout.setEnabled(true);
-        });
-
-
         addClickObserversToPlotsWidgets(binding);
 
     }
@@ -155,27 +106,125 @@ public class TodayFragment extends DayFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null
-                && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
+        Log.d(TAG, "onResume: ");
+
+        SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null
+                        && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
+                    binding.refreshLayout.setRefreshing(true);
+                    Log.d(TAG, "onRefresh: already refreshing");
+                    return;
+                }
+
+                if (!isDeviceConnected) return;
+                Log.d(TAG, "onRefresh: connect anyways");
+                dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
+                dashBoardViewModel.setIsEnableFeatures(false);
+                dashBoardViewModel.setIsTodayFragmentRefreshing(true);
+                binding.fragmentPlot.setEnabled(false);
+                binding.fragmentSleepPlot.setEnabled(false);
+                binding.fragmentBloodPressurePlot.setEnabled(false);
+                binding.fragmentSleepPlot.setEnabled(false);
+
+            }
+        };
+
+        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {
+            if (isDeviceConnected) {
+                this.isDeviceConnected = true;
+                binding.refreshLayout.setEnabled(true);
+                binding.refreshLayout.setOnRefreshListener(onRefreshListener);
+                binding.refreshLayout.setRefreshing(false);
+
+                return;
+            }
+            dashBoardViewModel.setIsEnableFeatures(false);
+            this.isDeviceConnected = false;
             binding.refreshLayout.setRefreshing(false);
-            binding.refreshLayout.setRefreshing(true);
-            onRefreshListener.onRefresh();
+            binding.refreshLayout.setEnabled(false);
+        });
+
+        Observer<Boolean> booleanObserver = isTodayFragmentRefreshing -> {
+
+            if (isDeviceConnected && isTodayFragmentRefreshing) {
+                Log.d(TAG, "onViewCreated: dashBoardViewModel.getIsTodayFragmentRefreshing()   if (isDeviceConnected && isTodayFragmentRefreshing) ");
+                binding.refreshLayout.setRefreshing(true);
+                binding.fragmentPlot.setEnabled(false);
+
+                binding.fragmentSleepPlot.setEnabled(false);
+                binding.fragmentBloodPressurePlot.setEnabled(false);
+            } else if (isDeviceConnected) {
+
+                binding.fragmentPlot.setEnabled(true);
+                binding.fragmentSleepPlot.setEnabled(true);
+                binding.fragmentBloodPressurePlot.setEnabled(true);
+
+                binding.refreshLayout.setEnabled(true);
+                binding.refreshLayout.setRefreshing(false);
+
+                Log.d(TAG, "onViewCreated: dashBoardViewModel.getIsTodayFragmentRefreshing()   refreshing finished: ");
+
+            }
+        };
+
+        if (dashBoardViewModel.getObserverMutableLiveData().getValue() != null) {
+            dashBoardViewModel.getIsTodayFragmentRefreshing().removeObserver(dashBoardViewModel.getObserverMutableLiveData().getValue());
+            dashBoardViewModel.setObserverMutableLiveData(booleanObserver);
+            dashBoardViewModel.getIsTodayFragmentRefreshing().observe(getViewLifecycleOwner(),
+                    booleanObserver);
+        } else {
+            Log.d(TAG, "onResume:it does not have observers");
+            dashBoardViewModel.setObserverMutableLiveData(booleanObserver);
+            dashBoardViewModel.getIsTodayFragmentRefreshing().observe(getViewLifecycleOwner(),
+                    Objects.requireNonNull(dashBoardViewModel.getObserverMutableLiveData().getValue()));
         }
+
+        Observer<Boolean> booleanObserver1 = isEnabled -> {
+            if (isDeviceConnected && !isEnabled && dashBoardViewModel.getIsFetching() == View.VISIBLE) {
+                binding.refreshLayout.setRefreshing(false);
+                binding.refreshLayout.setEnabled(false);
+            } else if (!isDeviceConnected && !isEnabled) {
+                binding.refreshLayout.setRefreshing(false);
+                binding.refreshLayout.setEnabled(false);
+            }
+
+
+        };
+
+        if (dashBoardViewModel.getObserverEnabledMutableLiveData().getValue() != null) {
+            dashBoardViewModel.getIsEnableFeatures().removeObserver(dashBoardViewModel.getObserverEnabledMutableLiveData().getValue());
+            dashBoardViewModel.setObserverEnabledMutableLiveData(booleanObserver1);
+            dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(),
+                    booleanObserver1);
+        } else {
+            Log.d(TAG, "onResume:it does not have enabled observers");
+            dashBoardViewModel.setObserverEnabledMutableLiveData(booleanObserver1);
+            dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(),
+                    dashBoardViewModel.getObserverEnabledMutableLiveData().getValue());
+        }
+
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause: ");
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach: ");
+    }
+
+
 }

@@ -297,7 +297,6 @@ public class HealthsReadDataUtils {
                     lowBPArraysForPlotting,
                     spo2PArraysForPlotting);
 
-
             mHandler.post(() -> {
 
                 String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();

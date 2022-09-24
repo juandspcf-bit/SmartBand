@@ -109,6 +109,8 @@ public class DashBoardActivity extends AppCompatActivity {
         dashBoardViewModel.setHealthsReadDataManager(healthsData);
         dashBoardViewModel.setDeviceSettingManager(deviceSettings);
         dashBoardViewModel.setRealTimeTesterClass(realTimeTesterClass);
+        dashBoardViewModel.setIsConnected(true);
+        dashBoardViewModel.setIsEnableFeatures(false);
         DeviceViewModel deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         deviceViewModel.setMacAddress(macAddress);
 
@@ -116,15 +118,6 @@ public class DashBoardActivity extends AppCompatActivity {
             Device device = deviceDB == null ? new Device() : deviceDB;
             dashBoardViewModel.setDevice(device);
         });
-
-/*        dashBoardViewModel.getIsConnected().observe(this, aBoolean -> {
-            if(aBoolean) return;
-            final Map<String, Boolean> value = deviceViewModel.getDeviceFeatures().getValue();
-            value.replace("BP", false);
-            value.replace("HEARTDETECT", false);
-            value.replace("SPORTMODEL", false);
-            deviceViewModel.setDeviceFeatures(value);
-        });*/
 
 
         VPOperateManager.getMangerInstance(this).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {
