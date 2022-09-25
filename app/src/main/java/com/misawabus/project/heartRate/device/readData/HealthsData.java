@@ -104,21 +104,25 @@ public class HealthsData {
             @Override
             public void onReadOriginComplete() {
 
+
                 HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity);
+                        HealthsData.this.activity,
+                        DateUtils.getLocalDate(DateUtils.getTodayFormattedDate(), "/").toString());
                 HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity);
+                        HealthsData.this.activity,
+                        DateUtils.getLocalDate(DateUtils.getYesterdayFormattedDate(), "/").toString());
                 HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity);
+                        HealthsData.this.activity,
+                        DateUtils.getLocalDate(DateUtils.getPastYesterdayFormattedDate(), "/").toString());
 
                 todayList5Min = Stream.generate(OriginData::new).limit(288)
                         .collect(Collectors.toList());
@@ -255,21 +259,25 @@ public class HealthsData {
 
             @Override
             public void onReadOriginComplete() {
+
                 HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity);
+                        HealthsData.this.activity,
+                        DateUtils.getLocalDate(DateUtils.getTodayFormattedDate(), "/").toString());
                 HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity);
+                        HealthsData.this.activity,
+                        DateUtils.getLocalDate(DateUtils.getYesterdayFormattedDate(), "/").toString());
                 HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity);
+                        HealthsData.this.activity,
+                        DateUtils.getLocalDate(DateUtils.getPastYesterdayFormattedDate(), "/").toString());
 
                todayList5Min = Stream.generate(OriginData::new).limit(288)
                         .collect(Collectors.toList());

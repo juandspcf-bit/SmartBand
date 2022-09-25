@@ -41,10 +41,14 @@ import java.util.Objects;
 
 public class DayFragment extends Fragment {
     protected DeviceViewModel deviceViewModel;
+
+    public FragmentDataSummaryV2Binding getBinding() {
+        return binding;
+    }
+
     protected FragmentDataSummaryV2Binding binding;
     protected DashBoardViewModel dashBoardViewModel;
     protected String macAddress;
-    protected String fullSportsData;
     protected List<SleepDataUI> sleepDataList;
     protected Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap;
 
@@ -55,6 +59,8 @@ public class DayFragment extends Fragment {
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         macAddress = deviceViewModel.getMacAddress();
+/*        dashBoardViewModel.setIsEnableFeatures(false);
+        dashBoardViewModel.setIsTodayFragmentRefreshing(false);*/
 
     }
 

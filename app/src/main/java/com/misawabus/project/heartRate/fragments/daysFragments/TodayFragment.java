@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
@@ -19,13 +18,15 @@ import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 
 public class TodayFragment extends DayFragment {
     public static final String TAG = DayFragment.class.getSimpleName();
+
+
     private boolean isDeviceConnected = false;
+    private Boolean isEnableGlobal;
 
 
     public TodayFragment() {
@@ -111,108 +112,92 @@ public class TodayFragment extends DayFragment {
     public void onResume() {
         super.onResume();
 
-        Log.d(TAG, "onResume: ");
-
-        SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                if (dashBoardViewModel.getIsTodayFragmentRefreshing().getValue() != null
-                        && dashBoardViewModel.getIsTodayFragmentRefreshing().getValue()) {
-                    binding.refreshLayout.setRefreshing(true);
-                    Log.d(TAG, "onRefresh: already refreshing");
-                    return;
-                }
-
-                if (!isDeviceConnected) return;
-                Log.d(TAG, "onRefresh: connect anyways");
-                dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
-                dashBoardViewModel.setIsEnableFeatures(false);
-                dashBoardViewModel.setIsTodayFragmentRefreshing(true);
-                binding.fragmentPlot.setEnabled(false);
-                binding.fragmentSleepPlot.setEnabled(false);
-                binding.fragmentBloodPressurePlot.setEnabled(false);
-                binding.fragmentSleepPlot.setEnabled(false);
-
-            }
-        };
-
         dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {
             if (isDeviceConnected) {
                 this.isDeviceConnected = true;
                 binding.refreshLayout.setEnabled(true);
-                binding.refreshLayout.setOnRefreshListener(onRefreshListener);
+                binding.refreshLayout.setOnRefreshListener(() -> {
+                    Log.d(TAG, "onRefresh: connect anyways");
+                    dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
+                    dashBoardViewModel.setIsEnableFeatures(false);
+                    dashBoardViewModel.setIsTodayFragmentRefreshing(true);
+                    binding.fragmentPlot.setEnabled(false);
+                    binding.fragmentSleepPlot.setEnabled(false);
+                    binding.fragmentBloodPressurePlot.setEnabled(false);
+                    binding.fragmentSleepPlot.setEnabled(false);
+                });
                 binding.refreshLayout.setRefreshing(false);
-
+                handleIsEnabledFeatures();
+                handleIsTodayRefreshing();
                 return;
             }
             dashBoardViewModel.setIsEnableFeatures(false);
+            dashBoardViewModel.setIsTodayFragmentRefreshing(false);
             this.isDeviceConnected = false;
             binding.refreshLayout.setRefreshing(false);
             binding.refreshLayout.setEnabled(false);
         });
 
+
+    }
+
+    private void handleIsEnabledFeatures() {
+        Observer<Boolean> booleanObserver1 = isEnabled -> {
+            isEnableGlobal = isEnabled;
+            if (!isEnabled && dashBoardViewModel.getIsFetching() == View.VISIBLE) {
+                binding.refreshLayout.setRefreshing(false);
+                binding.refreshLayout.setEnabled(false);
+
+            }
+
+
+        };
+
+        Observer<Boolean> value = dashBoardViewModel.getObserverEnabledMutableLiveData().getValue();
+        if (value != null) {
+            dashBoardViewModel.getIsEnableFeatures().removeObserver(value);
+        }
+        dashBoardViewModel.setObserverEnabledMutableLiveData(booleanObserver1);
+        dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(),
+                booleanObserver1);
+    }
+
+    private void handleIsTodayRefreshing() {
         Observer<Boolean> booleanObserver = isTodayFragmentRefreshing -> {
 
-            if (isDeviceConnected && isTodayFragmentRefreshing) {
-                Log.d(TAG, "onViewCreated: dashBoardViewModel.getIsTodayFragmentRefreshing()   if (isDeviceConnected && isTodayFragmentRefreshing) ");
+            Boolean isEnabled = dashBoardViewModel.getIsEnableFeatures().getValue();
+
+            if (isTodayFragmentRefreshing && (isEnabled!=null && !isEnabled)) {
+                Log.d(TAG, "onChanged: dashBoardViewModel.getIsTodayFragmentRefreshing()   if (isDeviceConnected && isTodayFragmentRefreshing) ");
                 binding.refreshLayout.setRefreshing(true);
                 binding.fragmentPlot.setEnabled(false);
 
                 binding.fragmentSleepPlot.setEnabled(false);
                 binding.fragmentBloodPressurePlot.setEnabled(false);
-            } else if (isDeviceConnected) {
+                return;
+            }
 
-                binding.fragmentPlot.setEnabled(true);
-                binding.fragmentSleepPlot.setEnabled(true);
-                binding.fragmentBloodPressurePlot.setEnabled(true);
 
-                binding.refreshLayout.setEnabled(true);
-                binding.refreshLayout.setRefreshing(false);
+            binding.fragmentPlot.setEnabled(true);
+            binding.fragmentSleepPlot.setEnabled(true);
+            binding.fragmentBloodPressurePlot.setEnabled(true);
+
+            binding.refreshLayout.setEnabled(true);
+            binding.refreshLayout.setRefreshing(false);
 
                 Log.d(TAG, "onViewCreated: dashBoardViewModel.getIsTodayFragmentRefreshing()   refreshing finished: ");
 
-            }
         };
 
-        if (dashBoardViewModel.getObserverMutableLiveData().getValue() != null) {
-            dashBoardViewModel.getIsTodayFragmentRefreshing().removeObserver(dashBoardViewModel.getObserverMutableLiveData().getValue());
-            dashBoardViewModel.setObserverMutableLiveData(booleanObserver);
-            dashBoardViewModel.getIsTodayFragmentRefreshing().observe(getViewLifecycleOwner(),
-                    booleanObserver);
-        } else {
-            Log.d(TAG, "onResume:it does not have observers");
-            dashBoardViewModel.setObserverMutableLiveData(booleanObserver);
-            dashBoardViewModel.getIsTodayFragmentRefreshing().observe(getViewLifecycleOwner(),
-                    Objects.requireNonNull(dashBoardViewModel.getObserverMutableLiveData().getValue()));
+        Observer<Boolean> value = dashBoardViewModel.getObserverMutableLiveData().getValue();
+        if (value != null) {
+            dashBoardViewModel.getIsTodayFragmentRefreshing().removeObserver(value);
         }
-
-        Observer<Boolean> booleanObserver1 = isEnabled -> {
-            if (isDeviceConnected && !isEnabled && dashBoardViewModel.getIsFetching() == View.VISIBLE) {
-                binding.refreshLayout.setRefreshing(false);
-                binding.refreshLayout.setEnabled(false);
-            } else if (!isDeviceConnected && !isEnabled) {
-                binding.refreshLayout.setRefreshing(false);
-                binding.refreshLayout.setEnabled(false);
-            }
-
-
-        };
-
-        if (dashBoardViewModel.getObserverEnabledMutableLiveData().getValue() != null) {
-            dashBoardViewModel.getIsEnableFeatures().removeObserver(dashBoardViewModel.getObserverEnabledMutableLiveData().getValue());
-            dashBoardViewModel.setObserverEnabledMutableLiveData(booleanObserver1);
-            dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(),
-                    booleanObserver1);
-        } else {
-            Log.d(TAG, "onResume:it does not have enabled observers");
-            dashBoardViewModel.setObserverEnabledMutableLiveData(booleanObserver1);
-            dashBoardViewModel.getIsEnableFeatures().observe(getViewLifecycleOwner(),
-                    dashBoardViewModel.getObserverEnabledMutableLiveData().getValue());
-        }
-
-
+        dashBoardViewModel.setObserverMutableLiveData(booleanObserver);
+        dashBoardViewModel.getIsTodayFragmentRefreshing().observe(getViewLifecycleOwner(),
+                booleanObserver);
     }
+
 
     @Override
     public void onPause() {

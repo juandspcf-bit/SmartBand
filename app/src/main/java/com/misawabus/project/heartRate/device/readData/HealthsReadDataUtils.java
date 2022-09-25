@@ -4,6 +4,7 @@ import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWith
 import static java.util.Arrays.stream;
 
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,15 +52,19 @@ public class HealthsReadDataUtils {
     }
 
     public static DataFiveMinAvgDataContainer computeSportsDataFiveMinOrigin(List<OriginData> originDataList,
-                                                                             List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
-        computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
+                                                                             List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList,
+                                                                             DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+        computeDataFiveMinOrigin(originDataList,
+                biConsumerList,
+                fieldDataFiveMinAllIntervals);
 
         return fieldDataFiveMinAllIntervals;
 
     }
 
     public static DataFiveMinAvgDataContainer computeHeartRateDataFiveMinOrigin(List<OriginData> originDataList,
-                                                                                List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+                                                                                List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList,
+                                                                                DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
         computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
 
         return fieldDataFiveMinAllIntervals;
@@ -67,7 +72,8 @@ public class HealthsReadDataUtils {
     }
 
     public static DataFiveMinAvgDataContainer computeBloodPressureDataFiveMinOrigin(List<OriginData> originDataList,
-                                                                                    List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
+                                                                                    List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList,
+                                                                                    DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
         computeDataFiveMinOrigin(originDataList, biConsumerList, fieldDataFiveMinAllIntervals);
 
         return fieldDataFiveMinAllIntervals;
@@ -111,7 +117,6 @@ public class HealthsReadDataUtils {
 
 
     private static void computeDataFiveMinOrigin(List<OriginData> originDataList, List<BiConsumer<Map<String, Double>, OriginData>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAllIntervals) {
-        fieldDataFiveMinAllIntervals.setStringDate(originDataList.get(0).getDate());
         originDataList
                 .forEach(data -> {
                     TimeData timeData = data.getmTime();
@@ -347,17 +352,23 @@ public class HealthsReadDataUtils {
                                       Handler mHandler,
                                       DashBoardViewModel dashBoardViewModel,
                                       DeviceViewModel deviceViewModel,
-                                      AppCompatActivity activity) {
+                                      AppCompatActivity activity,
+                                      String date) {
+
         HealthsData.databaseWriteExecutor.execute(() -> {
             DataFiveMinAvgDataContainer sportsDataFiveMinAvgDataContainer = computeSportsDataFiveMinOrigin(list5Min,
                     functionToSetFieldsInSportsOrigin(),
-                    new SportsData5MinAvgDataContainer());
+                    new SportsData5MinAvgDataContainer()
+            );
+            sportsDataFiveMinAvgDataContainer.setStringDate(date);
             DataFiveMinAvgDataContainer heartRateDataFiveMinAvgDataContainer = computeHeartRateDataFiveMinOrigin(list5Min,
                     functionToSetFieldsInRateValueOrigin(),
                     new HeartRateData5MinAvgDataContainer());
+            heartRateDataFiveMinAvgDataContainer.setStringDate(date);
             DataFiveMinAvgDataContainer bloodPressureDataFiveMinAvgDataContainer = computeBloodPressureDataFiveMinOrigin(list5Min,
                     functionToSetFieldsInBloodPressureOrigin(),
                     new BloodPressureDataFiveMinAvgDataContainer());
+            bloodPressureDataFiveMinAvgDataContainer.setStringDate(date);
 
             Map<String, Double> mapSummary = getSummarySportsMap(sportsDataFiveMinAvgDataContainer);
 
@@ -382,8 +393,8 @@ public class HealthsReadDataUtils {
 
             mHandler.post(() -> {
 
-                String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
-                Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
+                Log.d(TAG, "processOriginDataList: stringDate  " + date);
+                Date formattedDate = DateUtils.getFormattedDate(date, "-");
                 LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
                 if (localDate.compareTo(LocalDate.now()) == 0) {
                     dashBoardViewModel.setTodaySummary(mapSummary);
