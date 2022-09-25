@@ -94,6 +94,8 @@ public class SummarySop2Fragment extends SummaryFragment {
 
     private void setFragmentViews(Date selectedDate, Sop2 data) {
         setTextButtonDate(selectedDate, selectDateButton);
+        if(data == null) return;
+        if( data.getData()==null || data.getData().isEmpty()) return;
         String stringSop2Data = data.getData();
 
         List<Map<String, Double>> sop2DataMap = FragmentUtil.parse5MinFieldData(stringSop2Data);
@@ -184,8 +186,6 @@ public class SummarySop2Fragment extends SummaryFragment {
         }
         binding.resultRespirationRateTextView.setText(resultResRate);
 
-
-
     }
 
 
@@ -194,7 +194,7 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .getSingleRow(date, deviceViewModel.getMacAddress())
                 .observe(getViewLifecycleOwner(),
                         dataFromDB -> {
-                            if (dataFromDB == null) new ArrayList<Sop2>();
+                            if (dataFromDB == null) new  Sop2();
                             listData.accept(dataFromDB);
                         });
     }

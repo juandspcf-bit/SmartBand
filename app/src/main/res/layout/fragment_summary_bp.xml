@@ -83,7 +83,7 @@
                 app:domainOriginLineColor="@color/ap_transparent"
                 app:domainStep="10dp"
                 app:graphBackgroundColor="@color/white"
-                app:graphMarginLeft="50dp"
+                app:graphMarginLeft="25dp"
                 app:graphMarginTop="30dp"
                 app:graphWidthMode="fill"
                 app:gridBackgroundColor="@color/ap_transparent"
