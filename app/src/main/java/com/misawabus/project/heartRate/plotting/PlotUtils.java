@@ -68,10 +68,10 @@ public class PlotUtils {
     private static Pair<Integer, XYSeries> selection;
     private static MyBarFormatter selectionFormatter;
     private static PlotUtils plotUtils;
-    private static SimpleXYSeries series2;
+    private static SimpleXYSeries seriesBarRepresentation;
     private static XYPlot xyPlotForSummarySteps;
     private static Double[] seriesStepsInit;
-    private static SimpleXYSeries series3;
+    private static SimpleXYSeries seriesPlotRepresentation;
     private TextLabelWidget selectionWidget;
     private Double[] seriesStepsInit3;
 
@@ -162,23 +162,27 @@ public class PlotUtils {
 
     public void initSeriesForSummarySteps(XYPlot plotI, Context context) {
         xyPlotForSummarySteps = plotI;
-
-        MyBarFormatter formatter1 = new MyBarFormatter(Color.rgb(115, 8, 250), Color.rgb(115, 8, 250));
-
         int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
+
         seriesStepsInit = new Double[intervalsTotal];
         Arrays.fill(seriesStepsInit, 0.0);
-        series2 = new SimpleXYSeries(Arrays.asList(seriesStepsInit), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
-        xyPlotForSummarySteps.addSeries(series2, formatter1);
+        List<Double> doubles = Arrays.asList(seriesStepsInit);
 
-        seriesStepsInit3 = new Double[intervalsTotal];
-        Arrays.fill(seriesStepsInit3, 0.0);
-        series3 = new SimpleXYSeries(Arrays.asList(seriesStepsInit3), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series3");
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(context, R.xml.line_point_formatter_for_summary_sports);
-        series1Format.setInterpolationParams(
+
+
+        MyBarFormatter formatterForSeriesBarRepresentation;
+        int fillColorForBarRepresentation = Color.rgb(115, 8, 250);
+        int borderColorForBarRepresentation = Color.rgb(115, 8, 250);
+        formatterForSeriesBarRepresentation = new MyBarFormatter(fillColorForBarRepresentation,
+                borderColorForBarRepresentation);
+        seriesBarRepresentation = new SimpleXYSeries(List.copyOf(doubles), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
+        xyPlotForSummarySteps.addSeries(seriesBarRepresentation, formatterForSeriesBarRepresentation);
+
+        LineAndPointFormatter formatterForSeriesPlotRepresentation = new LineAndPointFormatter(context, R.xml.line_point_formatter_for_summary_sports);
+        formatterForSeriesPlotRepresentation.setInterpolationParams(
                 new CatmullRomInterpolator.Params(2, CatmullRomInterpolator.Type.Uniform));
-        xyPlotForSummarySteps.addSeries(series3, series1Format);
-
+        seriesPlotRepresentation = new SimpleXYSeries(List.copyOf(doubles), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series3");
+        xyPlotForSummarySteps.addSeries(seriesPlotRepresentation, formatterForSeriesPlotRepresentation);
 
         MyBarRenderer renderer = xyPlotForSummarySteps.getRenderer(MyBarRenderer.class);
         renderer.setBarGroupWidth(BarRenderer.BarGroupWidthMode.FIXED_WIDTH, PixelUtils.dpToPix(8));
@@ -206,6 +210,7 @@ public class PlotUtils {
         selectionWidget.pack();
 
         OnTouchListener listener = (view, motionEvent) -> {
+            view.performClick();
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 PlotUtils.this.onPlotClicked(new PointF(motionEvent.getX(), motionEvent.getY()), xyPlotForSummarySteps, selectionWidget);
 
@@ -220,7 +225,6 @@ public class PlotUtils {
             public void onBeforeDraw(Plot plot, Canvas canvas) {
 
             }
-
             @Override
             public void onAfterDraw(Plot plot, Canvas canvas) {
                 selectionWidget.setText("");
@@ -240,8 +244,8 @@ public class PlotUtils {
         int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
         Stream.iterate(0, i -> ++i).limit(intervalsTotal - 1)
                 .forEach(data -> {
-                    series2.setY(seriesSteps[data], data);
-                    series3.setY(seriesSteps[data] * 1.3, data);
+                    seriesBarRepresentation.setY(seriesSteps[data], data);
+                    seriesPlotRepresentation.setY(seriesSteps[data] * 1.3, data);
                 });
 
 
@@ -539,6 +543,7 @@ public class PlotUtils {
                     }
                 }
             }
+
 
 
         } else {

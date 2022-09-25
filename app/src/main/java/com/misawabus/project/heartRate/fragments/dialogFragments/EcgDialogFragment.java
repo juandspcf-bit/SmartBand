@@ -53,6 +53,7 @@ public class EcgDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
     }
 
     @Override
@@ -90,7 +91,16 @@ public class EcgDialogFragment extends DialogFragment {
             public void onEcgDetectStateChange(EcgDetectState ecgDetectState) {
                 currentEcgDetectState = ecgDetectState;
                 Log.d("PTT_INFO", ecgDetectState.toString());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.hPulseValueTextView.setText(String.valueOf(currentEcgDetectState.getHr1()));
+                        binding.qtcValueTextView.setText(String.valueOf(currentEcgDetectState.getQtc()));
+                        binding.hrvEcgValueTextView.setText(String.valueOf(currentEcgDetectState.getHrv()));
+                        binding.linearProgressIndicator.setProgress(currentEcgDetectState.getProgress());
 
+                    }
+                });
                 if (ecgDetectState.getProgress() == 100) {
                     inProgress = false;
                 }
@@ -111,10 +121,7 @@ public class EcgDialogFragment extends DialogFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        binding.hPulseValueTextView.setText(String.valueOf(currentEcgDetectState.getHr1()));
-                        binding.qtcValueTextView.setText(String.valueOf(currentEcgDetectState.getQtc()));
-                        binding.hrvEcgValueTextView.setText(String.valueOf(currentEcgDetectState.getHrv()));
-                        binding.linearProgressIndicator.setProgress(currentEcgDetectState.getProgress());
+
                         binding.pttRealView.changeData(data2, data2.length);
                     }
                 });
@@ -141,6 +148,7 @@ public class EcgDialogFragment extends DialogFragment {
         binding.stopDetectECG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.linearProgressIndicator.setProgress(0);
                 exitModel();
             }
         });

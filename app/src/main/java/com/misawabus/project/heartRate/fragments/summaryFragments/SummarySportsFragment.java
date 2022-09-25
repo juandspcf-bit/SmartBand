@@ -28,10 +28,10 @@ import com.misawabus.project.heartRate.adapters.viewHolders.summarySports.ViewsI
 import com.misawabus.project.heartRate.adapters.viewHolders.summarySports.ViewsInDistanceRowHolder;
 import com.misawabus.project.heartRate.adapters.viewHolders.summarySports.ViewsInSportsRowHolder;
 import com.misawabus.project.heartRate.databinding.FragmentSportsSummaryBinding;
-import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
-import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.fragments.DataViews;
+import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.SportsViewModel;
 
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ import java.util.function.Consumer;
 
 public class SummarySportsFragment extends SummaryFragment {
     private static final String TAG = SummarySportsFragment.class.getSimpleName();
+    private final DataViews dataViews = new DataViews();
     private FragmentSportsSummaryBinding binding;
-
     private List<Double> stepsDoubleList;
     private List<Double> caloriesDoubleList;
     private List<Double> distancesDoubleList;
@@ -53,14 +53,13 @@ public class SummarySportsFragment extends SummaryFragment {
     private int sumSteps;
     private double sumCalories;
     private double sumDistances;
-    private final DataViews dataViews = new DataViews();
     private DeviceViewModel deviceViewModel;
     private boolean isInitDone;
     private Button backToMainFragButton;
     private Button selectDateButton;
     private Button shareButton;
 
-    public SummarySportsFragment(){
+    public SummarySportsFragment() {
 
     }
 
@@ -78,7 +77,7 @@ public class SummarySportsFragment extends SummaryFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sports_summary, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        dataViews.valueTexView="0";
+        dataViews.valueTexView = "0";
         binding.setSumData(dataViews);
         return binding.getRoot();
     }
@@ -96,17 +95,20 @@ public class SummarySportsFragment extends SummaryFragment {
         shareButton.setOnClickListener(viewToShare -> shareScreen());
 
         Date todayFormattedDate = getTodayFormattedDate();
-        getDataFromDB(todayFormattedDate, dataFromDB -> setFragmentViews(todayFormattedDate, dataFromDB));
+        getDataFromDB(todayFormattedDate, dataFromDB ->
+                setFragmentViews(todayFormattedDate, dataFromDB));
 
         selectDateButton.setOnClickListener(view1 ->
-                getDateFromCalendar(selectedDate -> getDataFromDB(selectedDate,
-                        dataFromDB -> setFragmentViews(selectedDate, dataFromDB))));
+                getDateFromCalendar(selectedDate ->
+                        getDataFromDB(selectedDate, dataFromDB ->
+                                setFragmentViews(selectedDate, dataFromDB)
+                        )));
 
     }
 
     private void setFragmentViews(Date selectedDate, Sports data) {
         setTextButtonDate(selectedDate, selectDateButton);
-        if(data== null){
+        if (data == null) {
             binding.groupDataSports.setVisibility(View.GONE);
             binding.imageViewSports.setVisibility(View.VISIBLE);
             return;
@@ -133,17 +135,17 @@ public class SummarySportsFragment extends SummaryFragment {
                 requireContext(),
                 binding.recyclerViewSports,
                 R.layout.row_layout_sports,
-                new ViewsInSportsRowHolder() );
+                new ViewsInSportsRowHolder());
 
         binding.toggleButton.check(R.id.buttonStepsList);
         binding.toggleButton.setEnabled(true);
 
-        if(selectedDate.toString().equals(getTodayFormattedDate().toString()) && !isInitDone){
-            isInitDone=true;
+        if (selectedDate.toString().equals(getTodayFormattedDate().toString()) && !isInitDone) {
+            isInitDone = true;
             PlotUtils.getInstance().initSeriesForSummarySteps(binding.plotStepsDailySummary, getContext());
             binding.toggleButton.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-                if(R.id.buttonStepsList==checkedId && isChecked){
-                    dataViews.valueTexView= sumSteps + " Steps";
+                if (R.id.buttonStepsList == checkedId && isChecked) {
+                    dataViews.valueTexView = sumSteps + " Steps";
                     binding.setSumData(dataViews);
 
                     buildStepsRecyclerView(stepsDoubleList,
@@ -151,8 +153,8 @@ public class SummarySportsFragment extends SummaryFragment {
                             requireContext(),
                             binding.recyclerViewSports,
                             R.layout.row_layout_sports,
-                            new ViewsInSportsRowHolder() );
-                }else if(R.id.buttonCaloriesList==checkedId && isChecked){
+                            new ViewsInSportsRowHolder());
+                } else if (R.id.buttonCaloriesList == checkedId && isChecked) {
                     dataViews.valueTexView = String.format(Locale.getDefault(),
                             "%.1f",
                             sumCalories) + " Kcal";
@@ -164,7 +166,7 @@ public class SummarySportsFragment extends SummaryFragment {
                             binding.recyclerViewSports,
                             R.layout.row_layout_calories,
                             new ViewsInCaloriesRowHolder());
-                }else if(R.id.buttonDistancesList==checkedId && isChecked) {
+                } else if (R.id.buttonDistancesList == checkedId && isChecked) {
                     dataViews.valueTexView = String.format(Locale.getDefault(), "%.1f", sumDistances) + " Km";
 
                     binding.setSumData(dataViews);
@@ -192,8 +194,6 @@ public class SummarySportsFragment extends SummaryFragment {
     }
 
 
-
-
     private void getDataFromDB(Date date, Consumer<Sports> listData) {
         SportsViewModel
                 .getSinglePDayRow(date, deviceViewModel.getMacAddress())
@@ -205,49 +205,49 @@ public class SummarySportsFragment extends SummaryFragment {
     }
 
 
-    private  void buildStepsRecyclerView(List<? extends Number> data,
-                                         List<String> intervals,
-                                         Context context,
-                                         RecyclerView recyclerView,
-                                         int layout_resource,
-                                         ViewsInRowHolder viewsInRowHolder) {
+    private void buildStepsRecyclerView(List<? extends Number> data,
+                                        List<String> intervals,
+                                        Context context,
+                                        RecyclerView recyclerView,
+                                        int layout_resource,
+                                        ViewsInRowHolder viewsInRowHolder) {
 
         OnEntityClickListener onEntityClickListener = (id, position) -> Log.d("RECYCLER", String.valueOf(id));
 
         FillViewsFieldsWithEntitiesValues fillViewsFieldsWithEntitiesValues = (position, viewsInRowHolder1) -> {
 
-           if(viewsInRowHolder1 instanceof ViewsInSportsRowHolder) {
+            if (viewsInRowHolder1 instanceof ViewsInSportsRowHolder) {
                 ViewsInSportsRowHolder viewsInSportsRowHolder = (ViewsInSportsRowHolder) viewsInRowHolder1;
-                if(position<(data.size()-1)){
+                if (position < (data.size() - 1)) {
                     String dataS = intervals.get(position) + " - " + intervals.get(position + 1);
                     viewsInSportsRowHolder.intervalTextViewRow.setText(dataS);
-                }else {
-                    viewsInSportsRowHolder.intervalTextViewRow.setText(intervals.get(position)+ "-"+"00:00");
+                } else {
+                    viewsInSportsRowHolder.intervalTextViewRow.setText(intervals.get(position) + "-" + "00:00");
                 }
-               String steps = data.get(position) + " steps";
+                String steps = data.get(position) + " steps";
                 viewsInSportsRowHolder.stepsTextViewRow.setText(steps);
             }
-            if(viewsInRowHolder1 instanceof ViewsInCaloriesRowHolder) {
+            if (viewsInRowHolder1 instanceof ViewsInCaloriesRowHolder) {
                 ViewsInCaloriesRowHolder viewsInCaloriesRowHolder = (ViewsInCaloriesRowHolder) viewsInRowHolder1;
-                if(position!=(data.size()-1)){
-                    String dataS = intervals.get(position)+ " - " +intervals.get(position + 1);
+                if (position != (data.size() - 1)) {
+                    String dataS = intervals.get(position) + " - " + intervals.get(position + 1);
                     viewsInCaloriesRowHolder.intervalTextViewRow.setText(dataS);
-                }else {
-                    viewsInCaloriesRowHolder.intervalTextViewRow.setText(intervals.get(position)+ "-"+"00:00");
+                } else {
+                    viewsInCaloriesRowHolder.intervalTextViewRow.setText(intervals.get(position) + "-" + "00:00");
                 }
-                String value = String.format(Locale.getDefault(),"%.1f kcal", data.get(position).doubleValue());
+                String value = String.format(Locale.getDefault(), "%.1f kcal", data.get(position).doubleValue());
                 viewsInCaloriesRowHolder.caloriesTextViewRow.setText(value);
             }
 
-            if(viewsInRowHolder1 instanceof ViewsInDistanceRowHolder) {
+            if (viewsInRowHolder1 instanceof ViewsInDistanceRowHolder) {
                 ViewsInDistanceRowHolder viewsInDistanceRowHolder = (ViewsInDistanceRowHolder) viewsInRowHolder1;
-                if(position!=(data.size()-1)){
-                    String dataS = intervals.get(position)+ " - " +intervals.get(position + 1);
+                if (position != (data.size() - 1)) {
+                    String dataS = intervals.get(position) + " - " + intervals.get(position + 1);
                     viewsInDistanceRowHolder.intervalTextViewRow.setText(dataS);
-                }else {
-                    viewsInDistanceRowHolder.intervalTextViewRow.setText(intervals.get(position)+ "-"+"00:00");
+                } else {
+                    viewsInDistanceRowHolder.intervalTextViewRow.setText(intervals.get(position) + "-" + "00:00");
                 }
-                String value = String.format(Locale.getDefault(),"%.1f km", data.get(position).doubleValue());
+                String value = String.format(Locale.getDefault(), "%.1f km", data.get(position).doubleValue());
                 viewsInDistanceRowHolder.distanceTextViewRow.setText(value);
             }
         };
