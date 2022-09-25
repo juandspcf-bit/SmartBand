@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
+import com.misawabus.project.heartRate.fragments.daysFragments.lifecycleObservers.TodayLifeCycleObserverOnRefreshing;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
@@ -24,15 +25,15 @@ import java.util.Optional;
 public class TodayFragment extends DayFragment {
     public static final String TAG = DayFragment.class.getSimpleName();
 
-
-    private boolean isDeviceConnected = false;
-    private Boolean isEnableGlobal;
-
-
     public TodayFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLifecycle().addObserver(new TodayLifeCycleObserverOnRefreshing());
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -112,9 +113,8 @@ public class TodayFragment extends DayFragment {
     public void onResume() {
         super.onResume();
 
-        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {
+/*        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isDeviceConnected -> {
             if (isDeviceConnected) {
-                this.isDeviceConnected = true;
                 binding.refreshLayout.setEnabled(true);
                 binding.refreshLayout.setOnRefreshListener(() -> {
                     Log.d(TAG, "onRefresh: connect anyways");
@@ -133,17 +133,15 @@ public class TodayFragment extends DayFragment {
             }
             dashBoardViewModel.setIsEnableFeatures(false);
             dashBoardViewModel.setIsTodayFragmentRefreshing(false);
-            this.isDeviceConnected = false;
             binding.refreshLayout.setRefreshing(false);
             binding.refreshLayout.setEnabled(false);
-        });
+        });*/
 
 
     }
 
     private void handleIsEnabledFeatures() {
         Observer<Boolean> booleanObserver1 = isEnabled -> {
-            isEnableGlobal = isEnabled;
             if (!isEnabled && dashBoardViewModel.getIsFetching() == View.VISIBLE) {
                 binding.refreshLayout.setRefreshing(false);
                 binding.refreshLayout.setEnabled(false);
