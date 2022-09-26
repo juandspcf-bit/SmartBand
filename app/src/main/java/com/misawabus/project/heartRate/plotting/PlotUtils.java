@@ -5,10 +5,12 @@ import static java.util.stream.Collectors.averagingDouble;
 import static java.util.stream.Collectors.toList;
 
 import android.content.Context;
+import android.graphics.BlendMode;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.os.Build;
 import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -189,32 +191,31 @@ public class PlotUtils {
         MyBarRenderer renderer = xyPlotForSummarySteps.getRenderer(MyBarRenderer.class);
         renderer.setBarGroupWidth(BarRenderer.BarGroupWidthMode.FIXED_WIDTH, PixelUtils.dpToPix(8));
 
-        selectionWidget = new TextLabelWidget(xyPlotForSummarySteps.getLayoutManager(), "",
-                new Size(
-                        PixelUtils.dpToPix(0), SizeMode.ABSOLUTE,
-                        0, SizeMode.RELATIVE),
-                TextOrientation.HORIZONTAL);
-
-        selectionWidget.getLabelPaint().setTextSize(PixelUtils.dpToPix(16));
         Paint p1 = new Paint();
         p1.setARGB(50, 0, 0, 255);
         xyPlotForSummarySteps.getGraph().setRangeGridLinePaint(p1);
 
-        selectionWidget.getLabelPaint().setColor(Color.DKGRAY);
+        selectionWidget = new TextLabelWidget(xyPlotForSummarySteps.getLayoutManager(),
+                new Size(
+                        PixelUtils.dpToPix(200), SizeMode.ABSOLUTE,
+                        0, SizeMode.RELATIVE),
+                TextOrientation.HORIZONTAL);
+        selectionWidget.getLabelPaint().setTextSize(PixelUtils.dpToPix(15));
+        selectionWidget.getLabelPaint().setColor(Color.rgb(0,29, 53));
         Paint p = new Paint();
-        p.setARGB(0, 245, 10, 223);
+        p.setARGB(100, 255, 102, 102);
         selectionWidget.setBackgroundPaint(p);
-
-        selectionWidget.position(
-                PixelUtils.dpToPix(200), HorizontalPositioning.ABSOLUTE_FROM_LEFT,
-                PixelUtils.dpToPix(5), VerticalPositioning.ABSOLUTE_FROM_TOP,
-                Anchor.TOP_MIDDLE);
         selectionWidget.pack();
 
         OnTouchListener listener = (view, motionEvent) -> {
             view.performClick();
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                PlotUtils.this.onPlotClicked(new PointF(motionEvent.getX(), motionEvent.getY()), xyPlotForSummarySteps, selectionWidget);
+                PlotUtils
+                        .this
+                        .onPlotClicked(new PointF(motionEvent.getX(),
+                                motionEvent.getY()),
+                        xyPlotForSummarySteps,
+                        selectionWidget);
 
             }
             return true;
@@ -232,6 +233,7 @@ public class PlotUtils {
                 selectionWidget.setText("");
             }
         });
+
 
 
     }
@@ -524,9 +526,9 @@ public class PlotUtils {
         // make sure the point lies within the graph area.  we use grid_rect
         // because it accounts for margins and padding as well.
         if (plot.containsPoint(point.x, point.y)) {
-            selectionWidget.setSize(new Size(
+/*            selectionWidget.setSize(new Size(
                     PixelUtils.dpToPix(100), SizeMode.ABSOLUTE,
-                    0, SizeMode.RELATIVE));
+                    0, SizeMode.RELATIVE));*/
             Number x = plot.getXVal(point);
             Number y = plot.getYVal(point);
 
@@ -574,16 +576,36 @@ public class PlotUtils {
         }
 
         if (selection == null) {
+
+            Paint p = new Paint();
+            p.setARGB(0, 255, 255, 255);
+            p.setFlags(Paint.ANTI_ALIAS_FLAG);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                p.setBlendMode(BlendMode.CLEAR);
+            }
+            selectionWidget.setBackgroundPaint(p);
             selectionWidget.setText("");
-            selectionWidget.setSize(new Size(
-                    PixelUtils.dpToPix(0), SizeMode.ABSOLUTE,
-                    0, SizeMode.RELATIVE));
 
         } else {
+            Log.d(TAG, "onPlotClicked: "+plot.getMeasuredWidth() + " : " +  plot.getMeasuredHeight());
+
+            Paint p = new Paint();
+            p.setARGB(100, 233, 239, 248);
+            p.setFlags(Paint.ANTI_ALIAS_FLAG);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                p.setBlendMode(BlendMode.SRC);
+            }
+            selectionWidget.setBackgroundPaint(p);
+
+
+
             selectionWidget.position(
-                    PixelUtils.dpToPix(200), HorizontalPositioning.ABSOLUTE_FROM_LEFT,
-                    PixelUtils.dpToPix(5), VerticalPositioning.ABSOLUTE_FROM_TOP,
-                    Anchor.TOP_MIDDLE);
+                    PixelUtils.dpToPix(plot.getMeasuredWidth()/4.0f),
+                    HorizontalPositioning.ABSOLUTE_FROM_LEFT,
+                    //plot.getMeasuredHeight(),
+                    PixelUtils.dpToPix(0.95f*plot.getMeasuredHeight()/2.0f),
+                    VerticalPositioning.ABSOLUTE_FROM_TOP,
+                    Anchor.CENTER);
             int position = PlotUtils.selection.second.getX(selection.first).intValue();
 
             String dataS;
@@ -592,7 +614,8 @@ public class PlotUtils {
             } else {
                 dataS = IntervalUtils.hoursInterval[position] + " - " + "00:00";
             }
-            selectionWidget.setText(selection.second.getY(selection.first) + " steps at " + "\n" + dataS);
+
+            selectionWidget.setText(selection.second.getY(selection.first).intValue() + " steps at " + "\n" + dataS);
 
 
         }
