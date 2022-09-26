@@ -26,6 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:max="100"
+            app:trackThickness="12dp"
             android:progressTint="#BF4242"
             tools:layout_editor_absoluteX="-76dp"
             tools:layout_editor_absoluteY="538dp" />
