@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import com.androidplot.xy.XYPlot;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.plotting.PlotUtilsHeartRate;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSpo2;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSports;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
 import java.util.List;
@@ -37,42 +39,44 @@ public class SetDataInViews {
         binding.textViewDistanceCounter.setText(distance);
     }
 
-    public static void setSleepValues(List<Integer> collect0,
-                                      List<Integer> collect1,
-                                      List<Integer> collect2,
+    public static void setSleepValues(SleepDataUI sleepDataUI,
+                                      List<Integer> lightSleep,
+                                      List<Integer> deepSleep,
+                                      List<Integer> wakeUp,
                                       @NonNull XYPlot plot,
-                                      SleepDataUI dataMap,
                                       FragmentDataSummaryV2Binding binding) {
         binding.fragmentSleepPlot.setVisibility(View.VISIBLE);
         binding.flowNoSleepData.setVisibility(View.GONE);
-        PlotUtils plotUtils = PlotUtils.getInstance();
 
-        plotUtils.processingStringIntervalsSleep(collect0, collect1, collect2, Objects.requireNonNull(plot), dataMap);
+        PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI,
+                lightSleep,
+                deepSleep,
+                wakeUp,
+                plot
+        );
 
     }
 
-    public static void plotSop2Data( XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot, Context context) {
+    public static void plotSop2Data(XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
         PlotUtils plotUtils = PlotUtils.getInstance();
-        plotUtils.plotSop2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
+        PlotUtilsSpo2.plotSpo2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
-                plot,
-                context
+                plot
         );
     }
 
-    public static void plotHeartRateData( XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot, Context context) {
+    public static void plotHeartRateData(XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
         PlotUtils plotUtils = PlotUtils.getInstance();
-        plotUtils.plotHeartRateDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
+        PlotUtilsHeartRate.plotHeartRateDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
-                plot,
-                context
+                plot
         );
 
     }
 
     public static void plotStepsData( XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
         PlotUtils plotUtils = PlotUtils.getInstance();
-        plotUtils.plotStepsDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
+        PlotUtilsSports.plotStepsDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
                 plot
         );

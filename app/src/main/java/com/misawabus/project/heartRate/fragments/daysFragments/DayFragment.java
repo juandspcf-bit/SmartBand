@@ -189,8 +189,7 @@ public class DayFragment extends Fragment {
             binding.fragmentRatePlot.setVisibility(View.VISIBLE);
             binding.flowNoHeartRateData.setVisibility(View.GONE);
             SetDataInViews.plotHeartRateData(heartRateXYDataArraysForPlotting,
-                    binding.fragmentRatePlot,
-                    getContext());
+                    binding.fragmentRatePlot);
         }
 
 
@@ -221,8 +220,7 @@ public class DayFragment extends Fragment {
             binding.fragmentSop2Plot.setVisibility(View.VISIBLE);
             binding.flowNoSop2Data.setVisibility(View.GONE);
             SetDataInViews.plotSop2Data(sop2XYDataArraysForPlotting,
-                    binding.fragmentSop2Plot,
-                    getContext());
+                    binding.fragmentSop2Plot);
         }
 
     }

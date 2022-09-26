@@ -30,7 +30,7 @@ import com.misawabus.project.heartRate.adapters.viewHolders.summarySports.ViewsI
 import com.misawabus.project.heartRate.databinding.FragmentSportsSummaryBinding;
 import com.misawabus.project.heartRate.fragments.DataViews;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
-import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSports;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.SportsViewModel;
 
@@ -142,7 +142,7 @@ public class SummarySportsFragment extends SummaryFragment {
 
         if (selectedDate.toString().equals(getTodayFormattedDate().toString()) && !isInitDone) {
             isInitDone = true;
-            PlotUtils.getInstance().initSeriesForSummarySteps(binding.plotStepsDailySummary, getContext());
+            PlotUtilsSports.initSeriesForSummarySteps(binding.plotStepsDailySummary);
             binding.toggleButton.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
                 if (R.id.buttonStepsList == checkedId && isChecked) {
                     dataViews.valueTexView = sumSteps + " Steps";
@@ -181,7 +181,7 @@ public class SummarySportsFragment extends SummaryFragment {
             });
         }
 
-        PlotUtils.getInstance().processingIntervalsSummarySteps(stepDoubleArray);
+        PlotUtilsSports.processingIntervalsSummarySteps(binding.plotStepsDailySummary, stepDoubleArray);
 
     }
 

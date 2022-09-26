@@ -23,6 +23,7 @@ import com.misawabus.project.heartRate.adapters.recyclerView.RecyclerViewBuilder
 import com.misawabus.project.heartRate.adapters.recyclerView.ViewsInRowHolder;
 import com.misawabus.project.heartRate.adapters.viewHolders.summarySleep.ViewsInSleepRowHolder;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySleepBinding;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -140,11 +141,11 @@ public class SummarySleepFragment  extends SummaryFragment {
 
                 PlotUtils plotUtils = PlotUtils.getInstance();
 
-                plotUtils.processingStringIntervalsSleep(sleepData.get("lightSleep"),
+                PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI, sleepData.get("lightSleep"),
                         sleepData.get("deepSleep"),
                         sleepData.get("wakeUp"),
-                        viewsInSleepRowHolder.plot,
-                        sleepDataUI);
+                        viewsInSleepRowHolder.plot
+                );
                 Duration duration = Duration.ofMinutes(sleepDataUI.getAllSleepTime());
                 String allSleepTime = duration.toHours() + " hours " + duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
                 String wakeCount = String.valueOf(sleepDataUI.getWakeCount());

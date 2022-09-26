@@ -7,11 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
-import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
@@ -40,11 +36,10 @@ public class PastYesterdayFragment extends DayFragment {
             sleepDataList = sleepDataUIList;
             SleepDataUI sleepDataUI = sleepDataUIList.get(0);
             Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
-            SetDataInViews.setSleepValues(sleepData.get("lightSleep"),
+            SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
                     sleepData.get("deepSleep"),
                     sleepData.get("wakeUp"),
                     binding.fragmentSleepPlot,
-                    sleepDataUI,
                     binding);
         });
 

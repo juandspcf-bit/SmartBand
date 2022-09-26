@@ -186,8 +186,7 @@ public class SummaryHRFragment extends SummaryFragment {
         binding.group.setVisibility(View.VISIBLE);
 
         SetDataInViews.plotHeartRateData(fieldXYDataArraysForPlotting,
-                binding.fragmentRatePlotSummary,
-                getContext());
+                binding.fragmentRatePlotSummary);
 
         binding.highestHR.setText(maxString);
         binding.lowestHR.setText(minString);

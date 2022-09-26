@@ -23,12 +23,12 @@ import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySop2Binding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSpo2;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -108,12 +108,9 @@ public class SummarySop2Fragment extends SummaryFragment {
         sop2XYDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
                 subArrayWithReplacedZeroValuesAsAvg);
 
-        PlotUtils plotUtils = PlotUtils.getInstance();
-        plotUtils.plotSop2DoubleIntervalsData(sop2XYDataArraysForPlotting.getPeriodIntervalsArray(),
+        PlotUtilsSpo2.plotSpo2DoubleIntervalsData(sop2XYDataArraysForPlotting.getPeriodIntervalsArray(),
                 sop2XYDataArraysForPlotting.getSeriesDoubleAVR(),
-                binding.fragmentSop2PlotSummary,
-                getContext()
-        );
+                binding.fragmentSop2PlotSummary);
 
         double apneaResult = sop2DataMap.stream()
                 .map(sop2Data -> sop2Data.get("apneaResult)"))

@@ -3,7 +3,6 @@ package com.misawabus.project.heartRate.fragments.daysFragments;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
@@ -79,8 +78,8 @@ public class DaysFragmentUtil {
         binding.fragmentRatePlot.setVisibility(View.VISIBLE);
         binding.flowNoHeartRateData.setVisibility(View.GONE);
         SetDataInViews.plotHeartRateData(hrXYDataArraysForPlotting,
-                binding.fragmentRatePlot,
-                context);
+                binding.fragmentRatePlot
+        );
     }
 
     public static void plotBloodPressure(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
@@ -118,7 +117,7 @@ public class DaysFragmentUtil {
                 context);
     }
 
-    public static void plotSpO2(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding, Context context) {
+    public static void plotSpO2(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding) {
         DataFiveMinAvgDataContainer dataIntervalsMapContainer
                 = stringDataFiveMinAVGAllIntervalsMap.get(Sop2HData5MinAvgDataContainer
                 .class.getSimpleName());
@@ -143,7 +142,7 @@ public class DaysFragmentUtil {
             binding.flowNoSop2Data.setVisibility(View.GONE);
         }
         SetDataInViews.plotSop2Data(sop2XYDataArraysForPlotting,
-                binding.fragmentSop2Plot,
-                context);
+                binding.fragmentSop2Plot
+        );
     }
 }

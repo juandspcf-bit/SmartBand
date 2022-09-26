@@ -49,11 +49,10 @@ public class TodayFragment extends DayFragment {
                     max(Comparator.comparingInt(SleepDataUI::getAllSleepTime));
             SleepDataUI sleepDataUI = max.orElse(sleepDataUIList.get(0));
             Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
-            SetDataInViews.setSleepValues(sleepData.get("lightSleep"),
+            SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
                     sleepData.get("deepSleep"),
                     sleepData.get("wakeUp"),
                     binding.fragmentSleepPlot,
-                    sleepDataUI,
                     binding);
         });
 
