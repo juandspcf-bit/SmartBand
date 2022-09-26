@@ -1,6 +1,5 @@
 package com.misawabus.project.heartRate.fragments.fragmentUtils;
 
-import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -9,6 +8,7 @@ import com.androidplot.xy.XYPlot;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.plotting.PlotUtilsBloodPressure;
 import com.misawabus.project.heartRate.plotting.PlotUtilsHeartRate;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSpo2;
@@ -18,7 +18,6 @@ import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class SetDataInViews {
 
@@ -58,7 +57,6 @@ public class SetDataInViews {
     }
 
     public static void plotSop2Data(XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
-        PlotUtils plotUtils = PlotUtils.getInstance();
         PlotUtilsSpo2.plotSpo2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
                 plot
@@ -66,7 +64,6 @@ public class SetDataInViews {
     }
 
     public static void plotHeartRateData(XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
-        PlotUtils plotUtils = PlotUtils.getInstance();
         PlotUtilsHeartRate.plotHeartRateDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
                 plot
@@ -75,21 +72,17 @@ public class SetDataInViews {
     }
 
     public static void plotStepsData( XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
-        PlotUtils plotUtils = PlotUtils.getInstance();
         PlotUtilsSports.plotStepsDoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
                 plot
         );
     }
 
-    public static void plotBloodPressureData( XYDataArraysForPlotting hpXYDataArraysForPlotting, XYDataArraysForPlotting lpXYDataArraysForPlotting, XYPlot plot, Context contex) {
-        PlotUtils plotUtils = PlotUtils.getInstance();
-        plotUtils.processingDoublesIntervalsBP(hpXYDataArraysForPlotting.getPeriodIntervalsArray(),
+    public static void plotBloodPressureData( XYDataArraysForPlotting hpXYDataArraysForPlotting, XYDataArraysForPlotting lpXYDataArraysForPlotting, XYPlot plot) {
+        PlotUtilsBloodPressure.plotBloodPressureDoubleIntervalsData(hpXYDataArraysForPlotting.getPeriodIntervalsArray(),
                 hpXYDataArraysForPlotting.getSeriesDoubleAVR(),
                 lpXYDataArraysForPlotting.getSeriesDoubleAVR(),
-                plot,
-                contex
-        );
+                plot);
     }
 
 }

@@ -139,8 +139,6 @@ public class SummarySleepFragment  extends SummaryFragment {
                 ViewsInSleepRowHolder viewsInSleepRowHolder = (ViewsInSleepRowHolder) viewsInRowHolder1;
                 Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
 
-                PlotUtils plotUtils = PlotUtils.getInstance();
-
                 PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI, sleepData.get("lightSleep"),
                         sleepData.get("deepSleep"),
                         sleepData.get("wakeUp"),

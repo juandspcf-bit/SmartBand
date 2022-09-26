@@ -113,8 +113,7 @@ public class DaysFragmentUtil {
         binding.flowNoBPData.setVisibility(View.GONE);
         SetDataInViews.plotBloodPressureData(highValueArrays,
                 lowVaamlueArrays,
-                binding.fragmentBloodPressurePlot,
-                context);
+                binding.fragmentBloodPressurePlot);
     }
 
     public static void plotSpO2(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap, FragmentDataSummaryV2Binding binding) {

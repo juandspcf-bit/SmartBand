@@ -34,6 +34,7 @@ import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentSummaryBpBinding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.plotting.PlotUtils;
+import com.misawabus.project.heartRate.plotting.PlotUtilsBloodPressure;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.BloodPressureViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -184,13 +185,10 @@ public class SummaryBPFragment extends SummaryFragment {
 
     private void extracted(XYDataArraysForPlotting highValuesSampleContainer, XYDataArraysForPlotting lowValuesSampleContainer, List<String> stringsIntervalHours, int fullLengthSeries, Map<IdTypeDataTable, List<Double>> mapForHighPressureLowPressure, int maxIndex, String stringMax, int minIndex, String stringMin) {
         if (fullLengthSeries >= 3) {
-            PlotUtils plotUtils = PlotUtils.getInstance();
-            plotUtils.processingDoublesIntervalsBP(highValuesSampleContainer.getPeriodIntervalsArray(),
+            PlotUtilsBloodPressure.plotBloodPressureDoubleIntervalsData(highValuesSampleContainer.getPeriodIntervalsArray(),
                     highValuesSampleContainer.getSeriesDoubleAVR(),
                     lowValuesSampleContainer.getSeriesDoubleAVR(),
-                    binding.fragmentBPSummaryPlot,
-                    getContext());
-
+                    binding.fragmentBPSummaryPlot);
         }
 
         binding.imageViewBP.setVisibility(View.GONE);

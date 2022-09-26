@@ -207,8 +207,7 @@ public class DayFragment extends Fragment {
             binding.flowNoBPData.setVisibility(View.GONE);
             SetDataInViews.plotBloodPressureData(highBPRateXYDataArraysForPlotting,
                     lowBPRateXYDataArraysForPlotting,
-                    binding.fragmentBloodPressurePlot,
-                    getContext());
+                    binding.fragmentBloodPressurePlot);
         }
 
 
