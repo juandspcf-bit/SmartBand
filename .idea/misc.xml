@@ -92,7 +92,7 @@
         <entry key="app/src/main/res/layout/fragment_realt_time_data.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_realt_time_steps.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.29914529914529914" />
-        <entry key="app/src/main/res/layout/fragment_sports_summary.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_sports_summary.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_sports_summary_sub.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/fragment_summary_activity.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/fragment_summary_bp.xml" value="0.3625" />

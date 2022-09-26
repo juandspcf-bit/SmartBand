@@ -70,6 +70,7 @@ public class PlotUtils {
     private static PlotUtils plotUtils;
     private static SimpleXYSeries seriesBarRepresentation;
     private static XYPlot xyPlotForSummarySteps;
+    private static CustomPlot xyCustomPlotForSummarySteps;
     private static Double[] seriesStepsInit;
     private static SimpleXYSeries seriesPlotRepresentation;
     private TextLabelWidget selectionWidget;
@@ -161,6 +162,7 @@ public class PlotUtils {
     }
 
     public void initSeriesForSummarySteps(XYPlot plotI, Context context) {
+
         xyPlotForSummarySteps = plotI;
         int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
 
@@ -239,7 +241,9 @@ public class PlotUtils {
 
         String[] domainLabels = IntervalUtils.hoursInterval;
         double rangeStepsUpperLimit = Collections.max(Arrays.asList(seriesSteps));
-        setRangeDomain(domainLabels, (int) rangeStepsUpperLimit, xyPlotForSummarySteps);
+        int i1 = setRangeDomain(domainLabels, (int) rangeStepsUpperLimit, xyPlotForSummarySteps);
+        setRangeMargins(domainLabels, i1, xyPlotForSummarySteps);
+
 
         int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
         Stream.iterate(0, i -> ++i).limit(intervalsTotal - 1)
@@ -258,7 +262,7 @@ public class PlotUtils {
         plot.clear();
         double rangeStepsUpperLimit = Collections.max(Arrays.asList(seriesSteps));
         setRangeDomain(domainLabels, (int)rangeStepsUpperLimit, plot);
-
+        setRangeMargins(domainLabels, (int) rangeStepsUpperLimit, plot);
 
         XYSeries series1 = new SimpleXYSeries(Arrays.asList(seriesSteps), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         MyBarFormatter formatter1 = new MyBarFormatter(Color.rgb(115, 8, 250), Color.rgb(115, 8, 250));
@@ -269,8 +273,9 @@ public class PlotUtils {
         plot.redraw();
     }
 
-    private void setRangeDomain(String[] domainLabels, int rangeStepsUpperLimit, XYPlot plot) {
+    private int setRangeDomain(String[] domainLabels, int rangeStepsUpperLimit, XYPlot plot) {
         if (rangeStepsUpperLimit > 1000) {
+
             double dRangeLimit = Math.floor(rangeStepsUpperLimit);
             rangeStepsUpperLimit = (int) (dRangeLimit * 1.2);
             plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeStepsUpperLimit / 3.0);
@@ -314,7 +319,21 @@ public class PlotUtils {
             }
         });
 
+        return  rangeStepsUpperLimit;
 
+    }
+
+
+    private void setRangeMargins(String[] domainLabels, int rangeStepsUpperLimit, XYPlot plot) {
+        if (rangeStepsUpperLimit > 10000) {
+            plot.getGraph().setMarginLeft(80);
+        } else if (rangeStepsUpperLimit > 1000) {
+            plot.getGraph().setMarginLeft(60);
+        } else if (rangeStepsUpperLimit > 100) {
+            plot.getGraph().setMarginLeft(50);
+        } else if (rangeStepsUpperLimit > 10) {
+            plot.getGraph().setMarginLeft(25);
+        }
     }
 
 
@@ -329,7 +348,9 @@ public class PlotUtils {
         plot.addSeries(series1, series1Format);
 
         double rangeUpperLimit = Collections.max(Arrays.asList(rangeDouble));
+
         rangeUpperLimit = rangeUpperLimit * 1.1;
+        setRangeMargins(domainLabels, (int) rangeUpperLimit, plot);
         plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeUpperLimit / 7.0);
         plot.setRangeUpperBoundary(rangeUpperLimit, BoundaryMode.FIXED);
         plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);

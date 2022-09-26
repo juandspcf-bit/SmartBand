@@ -14,15 +14,21 @@ import androidx.lifecycle.ViewModelProvider;
 import com.androidplot.ui.SeriesRenderer;
 import com.androidplot.xy.BarFormatter;
 import com.androidplot.xy.BarRenderer;
+import com.androidplot.xy.CatmullRomInterpolator;
+import com.androidplot.xy.LineAndPointFormatter;
+import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.misawabus.project.heartRate.R;
+import com.misawabus.project.heartRate.Utils.Utils;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentGeneralSummaryBinding;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 public class SummaryActivityFragment extends Fragment {
     private FragmentGeneralSummaryBinding binding;
@@ -71,6 +77,17 @@ public class SummaryActivityFragment extends Fragment {
             }
         });
 
+
+        int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
+
+        Double[] seriesStepsInit = new Double[intervalsTotal];
+        Arrays.fill(seriesStepsInit, 0.0);
+        List<Double> doubles = Arrays.asList(seriesStepsInit);
+        LineAndPointFormatter formatterForSeriesPlotRepresentation = new LineAndPointFormatter(getContext(), R.xml.line_point_formatter_for_summary_sports);
+        formatterForSeriesPlotRepresentation.setInterpolationParams(
+                new CatmullRomInterpolator.Params(2, CatmullRomInterpolator.Type.Uniform));
+        SimpleXYSeries seriesPlotRepresentation = new SimpleXYSeries(List.copyOf(doubles), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series3");
+        binding.plotCustomStepsDailySummary.addSeries(seriesPlotRepresentation, formatterForSeriesPlotRepresentation);
 
     }
 
