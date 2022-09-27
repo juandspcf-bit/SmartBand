@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import com.androidplot.xy.XYPlot;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.misawabus.project.heartRate.plotting.PlotUtils;
 import com.misawabus.project.heartRate.plotting.PlotUtilsBloodPressure;
 import com.misawabus.project.heartRate.plotting.PlotUtilsHeartRate;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
@@ -38,23 +37,7 @@ public class SetDataInViews {
         binding.textViewDistanceCounter.setText(distance);
     }
 
-    public static void setSleepValues(SleepDataUI sleepDataUI,
-                                      List<Integer> lightSleep,
-                                      List<Integer> deepSleep,
-                                      List<Integer> wakeUp,
-                                      @NonNull XYPlot plot,
-                                      FragmentDataSummaryV2Binding binding) {
-        binding.fragmentSleepPlot.setVisibility(View.VISIBLE);
-        binding.flowNoSleepData.setVisibility(View.GONE);
 
-        PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI,
-                lightSleep,
-                deepSleep,
-                wakeUp,
-                plot
-        );
-
-    }
 
     public static void plotSop2Data(XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
         PlotUtilsSpo2.plotSpo2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
@@ -85,4 +68,41 @@ public class SetDataInViews {
                 plot);
     }
 
+    public static void setSleepValues(SleepDataUI sleepDataUI,
+                                      List<Integer> lightSleep,
+                                      List<Integer> deepSleep,
+                                      List<Integer> wakeUp,
+                                      @NonNull XYPlot plot,
+                                      FragmentDataSummaryV2Binding binding) {
+        binding.fragmentSleepPlot.setVisibility(View.VISIBLE);
+        binding.flowNoSleepData.setVisibility(View.GONE);
+
+        PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI,
+                lightSleep,
+                deepSleep,
+                wakeUp,
+                plot
+        );
+    }
+
+    public static void setSleepPrecisionValues(SleepDataUI sleepDataUI,
+                                               List<Integer> deepSleep,
+                                               List<Integer> lightSleep,
+                                               List<Integer> rapidEyeMovement,
+                                               List<Integer> insomnia,
+                                               List<Integer> wakeUp,
+                                               XYPlot fragmentSleepPlot,
+                                               FragmentDataSummaryV2Binding binding) {
+        binding.fragmentSleepPlot.setVisibility(View.VISIBLE);
+        binding.flowNoSleepData.setVisibility(View.GONE);
+
+        PlotUtilsSleep.plotSleepPrecisionIntegerListData(sleepDataUI,
+                deepSleep,
+                lightSleep,
+                rapidEyeMovement,
+                insomnia,
+                wakeUp,
+                fragmentSleepPlot);
+
+    }
 }

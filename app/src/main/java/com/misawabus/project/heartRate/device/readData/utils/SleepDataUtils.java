@@ -1,12 +1,10 @@
 package com.misawabus.project.heartRate.device.readData.utils;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.misawabus.project.heartRate.Utils.DateUtils;
-import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
+import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.SleepPrecisionData;
 
@@ -68,7 +66,11 @@ public class SleepDataUtils {
         sleepDataUIObject.setSleepUp(sleepData.getSleepUp().toString());
 
         if(sleepData instanceof SleepPrecisionData){
+            sleepDataUIObject.setIdTypeDataTable(IdTypeDataTable.SleepPrecision);
 
+
+        }else {
+            sleepDataUIObject.setIdTypeDataTable(IdTypeDataTable.Sleep);
         }
 
 

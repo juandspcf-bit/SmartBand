@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidplot.xy.XYPlot;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
@@ -22,8 +23,11 @@ import com.misawabus.project.heartRate.adapters.recyclerView.OnEntityClickListen
 import com.misawabus.project.heartRate.adapters.recyclerView.RecyclerViewBuilder;
 import com.misawabus.project.heartRate.adapters.recyclerView.ViewsInRowHolder;
 import com.misawabus.project.heartRate.adapters.viewHolders.summarySleep.ViewsInSleepRowHolder;
+import com.misawabus.project.heartRate.constans.IdTypeDataTable;
+import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySleepBinding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
+import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -129,20 +133,45 @@ public class SummarySleepFragment  extends SummaryFragment {
         FillViewsFieldsWithEntitiesValues fillViewsFieldsWithEntitiesValues = (position, viewsInRowHolder1) -> {
 
             Optional<? extends SleepDataUI> first = data.stream()
-                    .filter(periodSleep -> periodSleep.getIndex() == position)
+                    .filter(periodSleep ->
+                    {
+
+                        return periodSleep.getIndex() == position;
+                    })
                     .findFirst();
             if(!first.isPresent()) return;
             SleepDataUI sleepDataUI = first.get();
 
             if (viewsInRowHolder1 instanceof ViewsInSleepRowHolder) {
                 ViewsInSleepRowHolder viewsInSleepRowHolder = (ViewsInSleepRowHolder) viewsInRowHolder1;
-                Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
 
+
+
+                Map<String, List<Integer>> sleepData;
+                if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+                    sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
+                    PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI,
+                            sleepData.get("lightSleep"),
+                            sleepData.get("deepSleep"),
+                            sleepData.get("wakeUp"),
+                            viewsInSleepRowHolder.plot);
+                }else if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+                    sleepData = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
+                    PlotUtilsSleep.plotSleepPrecisionIntegerListData(sleepDataUI,
+                            sleepData.get("deepSleep"),
+                            sleepData.get("lightSleep"),
+                            sleepData.get("rapidEyeMovement"),
+                            sleepData.get("insomnia"),
+                            sleepData.get("wakeUp"),
+                            viewsInSleepRowHolder.plot);
+                }
+
+/*                Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
                 PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI, sleepData.get("lightSleep"),
                         sleepData.get("deepSleep"),
                         sleepData.get("wakeUp"),
                         viewsInSleepRowHolder.plot
-                );
+                );*/
                 Duration duration = Duration.ofMinutes(sleepDataUI.getAllSleepTime());
                 String allSleepTime = duration.toHours() + " hours " + duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
                 String wakeCount = String.valueOf(sleepDataUI.getWakeCount());

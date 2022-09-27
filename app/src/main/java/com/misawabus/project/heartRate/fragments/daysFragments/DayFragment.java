@@ -20,6 +20,7 @@ import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.Utils.ExcelConversionUtils;
+import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
@@ -38,58 +39,78 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DayFragment extends Fragment {
     private static final String TAG = DayFragment.class.getSimpleName();
     protected DeviceViewModel deviceViewModel;
-
-    static void setDaySleepPlot(DayFragment dayFragment, List<SleepDataUI> sleepDataUIList) {
-        if(sleepDataUIList ==null || sleepDataUIList.size()==0) return;
-        dayFragment.sleepDataList = sleepDataUIList;
-
-        sleepDataUIList.forEach(sleepDataUI -> Log.d(TAG, "setDaySleepPlot: " + sleepDataUI));
-
-        List<LocalTime> collect = sleepDataUIList.stream().map(sleepDataUI -> {
-            return DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
-        }).filter(localTime -> localTime.getHour() <= 8).collect(Collectors.toList());
-        Log.d(TAG, "setDaySleepPlot: c" + collect);
-
-        SleepDataUI sleepDataUI;
-        if(collect.size()==0){
-            sleepDataUI = sleepDataUIList.get(0);
-        }
-        else {
-            sleepDataUI = sleepDataUIList.get(collect.size() - 1);
-        }
-
-        Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
-
-
-        SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
-                sleepData.get("deepSleep"),
-                sleepData.get("wakeUp"),
-                dayFragment.binding.fragmentSleepPlot,
-                dayFragment.binding);
-    }
-
-    public FragmentDataSummaryV2Binding getBinding() {
-        return binding;
-    }
-
     protected FragmentDataSummaryV2Binding binding;
     protected DashBoardViewModel dashBoardViewModel;
     protected String macAddress;
     protected List<SleepDataUI> sleepDataList;
     protected Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap;
 
+    static void setDaySleepPlot(DayFragment dayFragment, List<SleepDataUI> sleepDataUIList) {
+        if (sleepDataUIList == null || sleepDataUIList.size() == 0) return;
+        dayFragment.sleepDataList = sleepDataUIList;
+
+        sleepDataUIList.forEach(sleepDataUI -> Log.d(TAG, "setDaySleepPlot: " + sleepDataUI));
+
+        List<LocalTime> collect = sleepDataUIList.stream()
+                .map(sleepDataUI ->
+                {
+                    LocalTime localTimeFromVeepooTimeDateObj;
+                    localTimeFromVeepooTimeDateObj =
+                            DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
+                    return localTimeFromVeepooTimeDateObj;
+                })
+                .filter(localTime ->
+                {
+                    int hour = localTime.getHour();
+                    return hour <= 8;
+                })
+                .collect(Collectors.toList());
+
+
+        Log.d(TAG, "setDaySleepPlot: c" + collect);
+
+        SleepDataUI sleepDataUI;
+        if (collect.size() == 0) {
+            sleepDataUI = sleepDataUIList.get(0);
+        } else {
+            sleepDataUI = sleepDataUIList.get(collect.size() - 1);
+        }
+
+
+        Map<String, List<Integer>> sleepData;
+        if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+            sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
+            SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
+                    sleepData.get("deepSleep"),
+                    sleepData.get("wakeUp"),
+                    dayFragment.binding.fragmentSleepPlot,
+                    dayFragment.binding);
+        }else if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+            sleepData = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
+            SetDataInViews.setSleepPrecisionValues(sleepDataUI, sleepData.get("deepSleep"),
+                    sleepData.get("lightSleep"),
+                    sleepData.get("rapidEyeMovement"),
+                    sleepData.get("insomnia"),
+                    sleepData.get("wakeUp"),
+                    dayFragment.binding.fragmentSleepPlot,
+                    dayFragment.binding);
+        }
+
+
+    }
+
+    public FragmentDataSummaryV2Binding getBinding() {
+        return binding;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,7 +152,6 @@ public class DayFragment extends Fragment {
             binding.chipShareEmail.setEnabled(true);
 
         });
-
 
 
         binding.chipShareEmail.setOnClickListener(view12 -> {

@@ -5,6 +5,7 @@ public enum IdTypeDataTable {
     HeartRate,
     HeartRateFiveMin,
     Sleep,
+    SleepPrecision,
     HighPressure,
     LowPressure,
     BloodPressure,

@@ -9,21 +9,16 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
-import com.misawabus.project.heartRate.Utils.DBops;
 import com.misawabus.project.heartRate.Utils.DateUtils;
-import com.misawabus.project.heartRate.device.readData.utils.SleepDataUtils;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
-import com.veepoo.protocol.listener.data.IAllHealthDataListener;
 import com.veepoo.protocol.listener.data.IOriginData3Listener;
 import com.veepoo.protocol.listener.data.IOriginDataListener;
 import com.veepoo.protocol.listener.data.IOriginProgressListener;
-import com.veepoo.protocol.listener.data.ISleepDataListener;
 import com.veepoo.protocol.model.datas.HRVOriginData;
 import com.veepoo.protocol.model.datas.OriginData;
 import com.veepoo.protocol.model.datas.OriginData3;
@@ -34,7 +29,6 @@ import com.veepoo.protocol.model.datas.Spo2hOriginData;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -55,9 +49,6 @@ public class HealthsData {
     private final DeviceViewModel deviceViewModel;
     private final WriteResponse writeResponse = new WriteResponse();
     private final AppCompatActivity activity;
-    private final List<SleepDataUI> todaySleepDataList = new ArrayList<>();
-    private final List<SleepDataUI> yesterdaySleepDataList = new ArrayList<>();
-    private final List<SleepDataUI> pastYesterdaySleepDataList = new ArrayList<>();
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -87,6 +78,11 @@ public class HealthsData {
         this.dashBoardViewModel = new ViewModelProvider(activity).get(DashBoardViewModel.class);
         this.deviceViewModel = new ViewModelProvider(activity).get(DeviceViewModel.class);
         this.activity = activity;
+    }
+
+    private static void testSleepData(SleepData sleepData) {
+        if (sleepData instanceof SleepPrecisionData)
+            Log.d(TAG, "testSleepData: It is indeed SleepPrecisionData");
     }
 
     public void readOriginData() {
@@ -149,11 +145,11 @@ public class HealthsData {
                         timeData.getMinute());
 
                 if (localDate.compareTo(LocalDate.now()) == 0) {
-                    todayList5Min.set(interval-1, originData);
+                    todayList5Min.set(interval - 1, originData);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                    yesterdayList5Min.set(interval-1, originData);
+                    yesterdayList5Min.set(interval - 1, originData);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                    pastYesterdayList5Min.set(interval-1, originData);
+                    pastYesterdayList5Min.set(interval - 1, originData);
                 }
             }
 
@@ -220,12 +216,12 @@ public class HealthsData {
 
 
         Map<String, Boolean> deviceFeatures = deviceViewModel.getDeviceFeatures().getValue();
-        if(deviceFeatures != null){
+        if (deviceFeatures != null) {
             Boolean originProtocolVersion = deviceFeatures.get("OriginProtcolVersion");
 
-            if(originProtocolVersion!=null && originProtocolVersion){
+            if (originProtocolVersion != null && originProtocolVersion) {
                 VPOperateManager.getMangerInstance(context).readOriginData(writeResponse, originData3Listener, dashBoardViewModel.getWatchData());
-            }else if (originProtocolVersion!=null){
+            } else if (originProtocolVersion != null) {
                 //VPOperateManager.getMangerInstance(context).readOriginData(writeResponse, originDataListener, dashBoardViewModel.getWatchData());
                 readHealthData();
             }
@@ -234,104 +230,11 @@ public class HealthsData {
     }
 
     public void readSleepData() {
-        VPOperateManager.getMangerInstance(context).readSleepData(writeResponse, new ISleepDataListener() {
-                    @Override
-                    public void onSleepDataChange(String s, SleepData sleepData) {
-                        Log.d(TAG, "onSleepDataChange: day-" + s + " : data-" + sleepData);
-                        String fullData = SleepDataUtils.processingSleepData(sleepData);
-                        if (fullData.isEmpty()) return;
-
-                        SleepDataUI sleepDataUIObject = //SleepDataUtils.getSleepDataUIObject(fullData);
-                        SleepDataUtils.getSleepDataUIObject(sleepData, deviceViewModel.getMacAddress());
-                        sleepDataUIObject.setMacAddress(deviceViewModel.getMacAddress());
-                        LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
-
-                        if (sleepLocalDate.compareTo(LocalDate.now()) == 0) {
-                            todaySleepDataList.add(sleepDataUIObject);
-                        } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                            yesterdaySleepDataList.add(sleepDataUIObject);
-                        } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                            pastYesterdaySleepDataList.add(sleepDataUIObject);
-                        }
-                        testSleepData(sleepData);
-
-                    }
-
-                    @Override
-                    public void onSleepProgress(float progress) {
-
-                    }
-
-                    @Override
-                    public void onSleepProgressDetail(String day, int packagenumber) {
-
-                    }
-
-                    @Override
-                    public void onReadSleepComplete() {
-                        mHandler.post(() -> {
-
-                            List<SleepDataUI> sortedToday = todaySleepDataList.stream().sorted((a, b) -> {
-                                int minutesA = getMinutes(a);
-                                int minutesB = getMinutes(b);
-                                return Integer.compare(minutesA, minutesB);
-                            }).collect(Collectors.toList());
-
-                            List<SleepDataUI> sortedYesterday = yesterdaySleepDataList.stream().sorted((a, b) -> {
-                                int minutesA = getMinutes(a);
-                                int minutesB = getMinutes(b);
-                                return Integer.compare(minutesA, minutesB);
-                            }).collect(Collectors.toList());
-
-                            List<SleepDataUI> sortedPastYesterday = pastYesterdaySleepDataList.stream().sorted((a, b) -> {
-                                int minutesA = getMinutes(a);
-                                int minutesB = getMinutes(b);
-                                return Integer.compare(minutesA, minutesB);
-                            }).collect(Collectors.toList());
-
-
-                            dashBoardViewModel.setTodayUpdateSleepFullData(List.copyOf(sortedToday));
-                            dashBoardViewModel.setYesterdayUpdateSleepFullData(List.copyOf(sortedYesterday));
-                            dashBoardViewModel.setPastYesterdayUpdateSleepFullData(List.copyOf(sortedPastYesterday));
-
-
-
-                            if (sortedToday.size() != 0) {
-                                for (int i = 0; i < sortedToday.size(); i++) {
-                                    SleepDataUI sleepDataUI = sortedToday.get(i);
-                                    sleepDataUI.setIndex(i);
-                                    DBops.updateSleepData(sortedToday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                                }
-                            }
-
-                            if (sortedYesterday.size() != 0) {
-                                for (int i = 0; i < sortedYesterday.size(); i++) {
-                                    SleepDataUI sleepDataUI = sortedYesterday.get(i);
-                                    sleepDataUI.setIndex(i);
-                                    DBops.updateSleepData(sortedYesterday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                                }
-                            }
-                            if (sortedPastYesterday.size() != 0) {
-                                for (int i = 0; i < sortedPastYesterday.size(); i++) {
-                                    SleepDataUI sleepDataUI = sortedPastYesterday.get(i);
-                                    sleepDataUI.setIndex(i);
-                                    DBops.updateSleepData(sortedPastYesterday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                                }
-                            }
-
-                            todaySleepDataList.clear();
-                            yesterdaySleepDataList.clear();
-                            pastYesterdaySleepDataList.clear();
-
-                            dashBoardViewModel.setIsEnableFeatures(true);
-                            dashBoardViewModel.setIsTodayFragmentRefreshing(false);
-
-                        });
-
-
-                    }
-                }
-                , dashBoardViewModel.getWatchData());
+        VPOperateManager
+                .getMangerInstance(context)
+                .readSleepData(writeResponse,
+                        new MyISleepDataListener(dashBoardViewModel, deviceViewModel, activity),
+                        dashBoardViewModel.getWatchData());
     }
 
     public void getSmartWatchDataSingleDay(int day) {
@@ -347,11 +250,11 @@ public class HealthsData {
                         timeData.getMinute());
 
                 if (localDate.compareTo(LocalDate.now()) == 0) {
-                    todayList5Min.set(interval-1, originData);
+                    todayList5Min.set(interval - 1, originData);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                    yesterdayList5Min.set(interval-1, originData);
+                    yesterdayList5Min.set(interval - 1, originData);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                    pastYesterdayList5Min.set(interval-1, originData);
+                    pastYesterdayList5Min.set(interval - 1, originData);
                 }
 
             }
@@ -448,12 +351,12 @@ public class HealthsData {
             }
         };
         Map<String, Boolean> deviceFeatures = deviceViewModel.getDeviceFeatures().getValue();
-        if(deviceFeatures != null){
+        if (deviceFeatures != null) {
             Boolean originProtocolVersion = deviceFeatures.get("OriginProtcolVersion");
 
-            if(originProtocolVersion!=null && originProtocolVersion){
-                VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originData3Listener,day, 288, dashBoardViewModel.getWatchData());
-            }else if (originProtocolVersion!=null){
+            if (originProtocolVersion != null && originProtocolVersion) {
+                VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originData3Listener, day, 288, dashBoardViewModel.getWatchData());
+            } else if (originProtocolVersion != null) {
                 VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originDataListener, day, 288, dashBoardViewModel.getWatchData());
                 //readHealthData();
             }
@@ -461,271 +364,25 @@ public class HealthsData {
     }
 
     public void readSingleDaySleepData(int day) {
-        VPOperateManager.getMangerInstance(context).readSleepDataSingleDay(writeResponse, new ISleepDataListener() {
-            @Override
-            public void onSleepDataChange(String day, SleepData sleepData) {
-                Log.d(TAG, "onSleepDataChange: day-" + day + " : data-" + sleepData);
-                String fullData = SleepDataUtils.processingSleepData(sleepData);
-                if (fullData.isEmpty()) return;
-
-                SleepDataUI sleepDataUIObject = //SleepDataUtils.getSleepDataUIObject(fullData);
-                        SleepDataUtils.getSleepDataUIObject(sleepData, deviceViewModel.getMacAddress());
-                sleepDataUIObject.setMacAddress(deviceViewModel.getMacAddress());
-                LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
-
-                if (sleepLocalDate.compareTo(LocalDate.now()) == 0) {
-                    todaySleepDataList.add(sleepDataUIObject);
-                } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                    yesterdaySleepDataList.add(sleepDataUIObject);
-                } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                    pastYesterdaySleepDataList.add(sleepDataUIObject);
-                }
-                testSleepData(sleepData);
-            }
-
-            @Override
-            public void onSleepProgress(float progress) {
-
-            }
-
-            @Override
-            public void onSleepProgressDetail(String day, int packageNumber) {
-
-            }
-
-            @Override
-            public void onReadSleepComplete() {
-                mHandler.post(() -> {
-
-                    List<SleepDataUI> sortedToday = todaySleepDataList.stream().sorted((a, b) -> {
-                        int minutesA = getMinutes(a);
-                        int minutesB = getMinutes(b);
-                        return Integer.compare(minutesA, minutesB);
-                    }).collect(Collectors.toList());
-
-                    List<SleepDataUI> sortedYesterday = yesterdaySleepDataList.stream().sorted((a, b) -> {
-                        int minutesA = getMinutes(a);
-                        int minutesB = getMinutes(b);
-                        return Integer.compare(minutesA, minutesB);
-                    }).collect(Collectors.toList());
-
-                    List<SleepDataUI> sortedPastYesterday = pastYesterdaySleepDataList.stream().sorted((a, b) -> {
-                        int minutesA = getMinutes(a);
-                        int minutesB = getMinutes(b);
-                        return Integer.compare(minutesA, minutesB);
-                    }).collect(Collectors.toList());
-
-
-                    dashBoardViewModel.setTodayUpdateSleepFullData(List.copyOf(sortedToday));
-                    dashBoardViewModel.setYesterdayUpdateSleepFullData(List.copyOf(sortedYesterday));
-                    dashBoardViewModel.setPastYesterdayUpdateSleepFullData(List.copyOf(sortedPastYesterday));
-
-
-
-                    if (sortedToday.size() != 0) {
-                        for (int i = 0; i < sortedToday.size(); i++) {
-                            SleepDataUI sleepDataUI = sortedToday.get(i);
-                            sleepDataUI.setIndex(i);
-                            DBops.updateSleepData(sortedToday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                        }
-                    }
-
-                    if (sortedYesterday.size() != 0) {
-                        for (int i = 0; i < sortedYesterday.size(); i++) {
-                            SleepDataUI sleepDataUI = sortedYesterday.get(i);
-                            sleepDataUI.setIndex(i);
-                            DBops.updateSleepData(sortedYesterday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                        }
-                    }
-                    if (sortedPastYesterday.size() != 0) {
-                        for (int i = 0; i < sortedPastYesterday.size(); i++) {
-                            SleepDataUI sleepDataUI = sortedPastYesterday.get(i);
-                            sleepDataUI.setIndex(i);
-                            DBops.updateSleepData(sortedPastYesterday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                        }
-                    }
-
-                    todaySleepDataList.clear();
-                    yesterdaySleepDataList.clear();
-                    pastYesterdaySleepDataList.clear();
-
-                    dashBoardViewModel.setIsEnableFeatures(true);
-                    dashBoardViewModel.setIsTodayFragmentRefreshing(false);
-
-                });
-
-            }
-        }, day, dashBoardViewModel.getWatchData());
+        VPOperateManager
+                .getMangerInstance(context)
+                .readSleepDataSingleDay(writeResponse,
+                        new MyISleepDataListener(dashBoardViewModel, deviceViewModel, activity),
+                        day,
+                        dashBoardViewModel.getWatchData());
 
 
     }
 
-    public void readHealthData(){
-        VPOperateManager.getMangerInstance(context).readAllHealthData(new IAllHealthDataListener() {
-            @Override
-            public void onProgress(float progress) {
-                String message = "onAllProgress:" + progress;
-                Logger.t(TAG).i(message);
-            }
-
-            @Override
-            public void onOringinFiveMinuteDataChange(OriginData originData) {
-                String stringDate = originData.getDate();
-                Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
-                LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
-
-                TimeData timeData = originData.getmTime();
-                int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
-                        timeData.getMinute());
-
-                if (localDate.compareTo(LocalDate.now()) == 0) {
-                    todayList5Min.set(interval-1, originData);
-                } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                    yesterdayList5Min.set(interval-1, originData);
-                } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                    pastYesterdayList5Min.set(interval-1, originData);
-                }
-            }
-
-            @Override
-            public void onOringinHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-
-            }
-
-            @Override
-            public void onReadOriginComplete() {
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
-                        mHandler,
-                        HealthsData.this.dashBoardViewModel,
-                        HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity,
-                        DateUtils.getLocalDate(DateUtils.getTodayFormattedDate(), "/").toString());
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
-                        mHandler,
-                        HealthsData.this.dashBoardViewModel,
-                        HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity,
-                        DateUtils.getLocalDate(DateUtils.getYesterdayFormattedDate(), "/").toString());
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
-                        mHandler,
-                        HealthsData.this.dashBoardViewModel,
-                        HealthsData.this.deviceViewModel,
-                        HealthsData.this.activity,
-                        DateUtils.getLocalDate(DateUtils.getPastYesterdayFormattedDate(), "/").toString());
-
-                todayList5Min = Stream.generate(OriginData::new).limit(288)
-                        .collect(Collectors.toList());
-
-                yesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
-                        .collect(Collectors.toList());
-
-                pastYesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
-                        .collect(Collectors.toList());
-
-                dashBoardViewModel.setIsEnableFeatures(true);
-                dashBoardViewModel.setIsTodayFragmentRefreshing(false);
-
-            }
-
-            @Override
-            public void onSleepDataChange(String day, SleepData sleepData) {
-                Log.d(TAG, "onSleepDataChange: day-" + day + " : data-" + sleepData);
-                String fullData = SleepDataUtils.processingSleepData(sleepData);
-                if (fullData.isEmpty()) return;
-
-                SleepDataUI sleepDataUIObject = //SleepDataUtils.getSleepDataUIObject(fullData);
-                        SleepDataUtils.getSleepDataUIObject(sleepData, deviceViewModel.getMacAddress());
-                sleepDataUIObject.setMacAddress(deviceViewModel.getMacAddress());
-                LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
-
-                if (sleepLocalDate.compareTo(LocalDate.now()) == 0) {
-                    todaySleepDataList.add(sleepDataUIObject);
-                } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
-                    yesterdaySleepDataList.add(sleepDataUIObject);
-                } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
-                    pastYesterdaySleepDataList.add(sleepDataUIObject);
-                }
-                testSleepData(sleepData);
-
-            }
-
-            @Override
-            public void onReadSleepComplete() {
-                mHandler.post(() -> {
-
-                    List<SleepDataUI> sortedToday = todaySleepDataList.stream().sorted((a, b) -> {
-                        int minutesA = getMinutes(a);
-                        int minutesB = getMinutes(b);
-                        return Integer.compare(minutesA, minutesB);
-                    }).collect(Collectors.toList());
-
-                    List<SleepDataUI> sortedYesterday = yesterdaySleepDataList.stream().sorted((a, b) -> {
-                        int minutesA = getMinutes(a);
-                        int minutesB = getMinutes(b);
-                        return Integer.compare(minutesA, minutesB);
-                    }).collect(Collectors.toList());
-
-                    List<SleepDataUI> sortedPastYesterday = pastYesterdaySleepDataList.stream().sorted((a, b) -> {
-                        int minutesA = getMinutes(a);
-                        int minutesB = getMinutes(b);
-                        return Integer.compare(minutesA, minutesB);
-                    }).collect(Collectors.toList());
-
-
-                    dashBoardViewModel.setTodayUpdateSleepFullData(List.copyOf(sortedToday));
-                    dashBoardViewModel.setYesterdayUpdateSleepFullData(List.copyOf(sortedYesterday));
-                    dashBoardViewModel.setPastYesterdayUpdateSleepFullData(List.copyOf(sortedPastYesterday));
-
-
-
-                    if (sortedToday.size() != 0) {
-                        for (int i = 0; i < sortedToday.size(); i++) {
-                            SleepDataUI sleepDataUI = sortedToday.get(i);
-                            sleepDataUI.setIndex(i);
-                            DBops.updateSleepData(sortedToday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                        }
-                    }
-
-                    if (sortedYesterday.size() != 0) {
-                        for (int i = 0; i < sortedYesterday.size(); i++) {
-                            SleepDataUI sleepDataUI = sortedYesterday.get(i);
-                            sleepDataUI.setIndex(i);
-                            DBops.updateSleepData(sortedYesterday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                        }
-                    }
-                    if (sortedPastYesterday.size() != 0) {
-                        for (int i = 0; i < sortedPastYesterday.size(); i++) {
-                            SleepDataUI sleepDataUI = sortedPastYesterday.get(i);
-                            sleepDataUI.setIndex(i);
-                            DBops.updateSleepData(sortedPastYesterday.get(i), deviceViewModel.getMacAddress(), activity, i);
-                        }
-                    }
-
-                    todaySleepDataList.clear();
-                    yesterdaySleepDataList.clear();
-                    pastYesterdaySleepDataList.clear();
-
-
-
-                });
-
-            }
-        }, dashBoardViewModel.getWatchData());
+    public void readHealthData() {
+        VPOperateManager
+                .getMangerInstance(context)
+                .readAllHealthData(new MyIAllHealthDataListener(dashBoardViewModel,
+                                deviceViewModel,
+                                activity),
+                        dashBoardViewModel.getWatchData());
     }
 
-    private static void testSleepData(SleepData sleepData) {
-        if(sleepData instanceof SleepPrecisionData) Log.d(TAG, "testSleepData: It is indeed SleepPrecisionData");
-    }
-
-    private int getMinutes(SleepDataUI a) {
-        int indexOpenBraceA = a.getSleepUp().indexOf("[");
-        String[] split = a.getSleepUp()
-                .substring(indexOpenBraceA + 1, a.getSleepUp().length() - 1)
-                .split(" ")[1]
-                .split(":");
-
-        return Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[0]);
-    }
 
     static class WriteResponse implements IBleWriteResponse {
 
