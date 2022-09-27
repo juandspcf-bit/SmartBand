@@ -41,7 +41,6 @@ public class TodayLifeCycleObserverOnRefreshing implements DefaultLifecycleObser
             if (isDeviceConnected) {
                 binding.refreshLayout.setEnabled(true);
                 binding.refreshLayout.setOnRefreshListener(() -> {
-                    Log.d(TAG, "onRefresh: connect anyways");
                     dashBoardViewModel.getHealthsReadDataManager().getSmartWatchDataSingleDay(0);
                     dashBoardViewModel.setIsEnableFeatures(false);
                     dashBoardViewModel.setIsTodayFragmentRefreshing(true);
@@ -105,8 +104,6 @@ public class TodayLifeCycleObserverOnRefreshing implements DefaultLifecycleObser
 
             binding.refreshLayout.setEnabled(true);
             binding.refreshLayout.setRefreshing(false);
-
-            Log.d(TAG, "onViewCreated: dashBoardViewModel.getIsTodayFragmentRefreshing()   refreshing finished: ");
 
         };
 

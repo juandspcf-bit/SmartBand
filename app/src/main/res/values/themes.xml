@@ -20,6 +20,7 @@
         <item name="statusBarBackground">#c7dacf</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
 

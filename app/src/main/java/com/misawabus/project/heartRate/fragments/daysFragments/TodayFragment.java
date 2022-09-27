@@ -38,22 +38,9 @@ public class TodayFragment extends DayFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated: ");
-        dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            if (sleepDataUIList == null || sleepDataUIList.size() == 0) {
 
-                return;
-            }
-            sleepDataList = sleepDataUIList;
-            Optional<SleepDataUI> max = sleepDataUIList.stream().
-                    max(Comparator.comparingInt(SleepDataUI::getAllSleepTime));
-            SleepDataUI sleepDataUI = max.orElse(sleepDataUIList.get(0));
-            Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
-            SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
-                    sleepData.get("deepSleep"),
-                    sleepData.get("wakeUp"),
-                    binding.fragmentSleepPlot,
-                    binding);
+        dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
+            setDaySleepPlot(this, sleepDataUIList);
         });
 
 

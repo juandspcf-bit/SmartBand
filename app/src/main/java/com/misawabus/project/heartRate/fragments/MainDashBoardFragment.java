@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,12 @@ public class MainDashBoardFragment extends Fragment{
         super.onCreate(savedInstanceState);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        if(getActivity()!=null){
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
     }
 
     @Override

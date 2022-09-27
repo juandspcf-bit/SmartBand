@@ -79,7 +79,7 @@
         <entry key="app/src/main/res/layout/fragment_first2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_general_summary.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1875" />
-        <entry key="app/src/main/res/layout/fragment_main_dashboard.xml" value="0.15476699444206926" />
+        <entry key="app/src/main/res/layout/fragment_main_dashboard.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.1466438648995297" />
         <entry key="app/src/main/res/layout/fragment_personal_fields_scrolling.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_personals_fields.xml" value="0.33" />
@@ -98,7 +98,7 @@
         <entry key="app/src/main/res/layout/fragment_summary_bp.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/fragment_summary_hr.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_summary_sleep.xml" value="0.346636259977195" />
-        <entry key="app/src/main/res/layout/fragment_summary_sop2.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/fragment_summary_sop2.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_tabs_daily_activity.xml" value="0.27704147071398033" />
         <entry key="app/src/main/res/layout/fragment_tabs_day.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_tabs_day_v2.xml" value="0.375" />

@@ -14,21 +14,20 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
-import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.adapters.recyclerView.FillViewsFieldsWithEntitiesValues;
 import com.misawabus.project.heartRate.adapters.recyclerView.OnEntityClickListener;
 import com.misawabus.project.heartRate.adapters.recyclerView.RecyclerViewBuilder;
 import com.misawabus.project.heartRate.adapters.recyclerView.ViewsInRowHolder;
 import com.misawabus.project.heartRate.adapters.viewHolders.summarySleep.ViewsInSleepRowHolder;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySleepBinding;
+import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
+import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
-import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
-import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
-import com.misawabus.project.heartRate.plotting.PlotUtils;
 
 import java.time.Duration;
 import java.util.Date;
@@ -147,8 +146,8 @@ public class SummarySleepFragment  extends SummaryFragment {
                 Duration duration = Duration.ofMinutes(sleepDataUI.getAllSleepTime());
                 String allSleepTime = duration.toHours() + " hours " + duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
                 String wakeCount = String.valueOf(sleepDataUI.getWakeCount());
-                String sleepDown = DateUtils.getTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown()).toString();
-                String sleepUp = DateUtils.getTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp()).toString();
+                String sleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown()).toString();
+                String sleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp()).toString();
                 String deepSleepTime = sleepDataUI.getDeepSleepTime() + " minutes";
                 String lowSleepTime = sleepDataUI.getLowSleepTime() + " minutes";
                 int sleepQuality = sleepDataUI.getSleepQuality();

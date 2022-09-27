@@ -13,9 +13,11 @@ import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 
 public class YesterdayFragment extends DayFragment {
@@ -36,15 +38,7 @@ public class YesterdayFragment extends DayFragment {
 
 
         dashBoardViewModel.getYesterdayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            if(sleepDataUIList==null || sleepDataUIList.size()==0) return;
-            sleepDataList = sleepDataUIList;
-            SleepDataUI sleepDataUI = sleepDataUIList.get(0);
-            Map<String, List<Integer>> sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
-            SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
-                    sleepData.get("deepSleep"),
-                    sleepData.get("wakeUp"),
-                    binding.fragmentSleepPlot,
-                    binding);
+            setDaySleepPlot(this, sleepDataUIList);
         });
 
        dashBoardViewModel.getYesterdayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {

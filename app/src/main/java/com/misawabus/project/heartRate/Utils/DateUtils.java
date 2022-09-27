@@ -48,7 +48,7 @@ public class DateUtils {
         return localDate;
     }
 
-    public static LocalTime getTimeFromVeepooTimeDateObj(String time){
+    public static LocalTime getLocalTimeFromVeepooTimeDateObj(String time){
         time = time.substring(time.lastIndexOf("[") + 1, time.lastIndexOf("]"));
         String sleepUpTime = time.split(" ")[1];
         String[] sleepUpTimeSplit = sleepUpTime.split(":");

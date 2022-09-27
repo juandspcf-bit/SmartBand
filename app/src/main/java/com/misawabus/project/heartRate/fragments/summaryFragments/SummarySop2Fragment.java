@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,15 @@ public class SummarySop2Fragment extends SummaryFragment {
         super.onCreate(savedInstanceState);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
+        if(getActivity()!=null){
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_fragments, null));
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
+
 
     }
 
@@ -147,8 +157,7 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
 
-        sop2DataMap.stream()
-                .map(sop2Data -> sop2Data.get("SleepActivity")).forEach(result-> Log.d(TAG, "setFragmentViews: " + result));
+
 
         long roundApneaResult = Math.round(apneaResult);
         binding.apneaResultValue.setText(String.valueOf(roundApneaResult));

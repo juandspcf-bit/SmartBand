@@ -69,7 +69,7 @@ public class PlotUtilsSleep {
                 Integer.parseInt(sleepDownTimeSplit[2]));
 
 
-        LocalTime sleepUpTimeLocalTime = DateUtils.getTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp());
+        LocalTime sleepUpTimeLocalTime = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp());
 
 
         List<LocalTime> axisTimes = new ArrayList<>();
