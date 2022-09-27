@@ -143,7 +143,7 @@ public class PlotUtilsSleep {
 
 
 
-        PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(Color.rgb(179, 179, 0), Color.rgb(179, 179, 0));
+        PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(Color.rgb(255, 153, 187), Color.rgb(255, 153, 187));
         XYSeries series2 = new SimpleXYSeries(rapidEyeMovement, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series2, formatter2);
 

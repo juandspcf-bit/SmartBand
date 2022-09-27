@@ -123,7 +123,12 @@ public class SleepDataUI {
     private int insomniaDuration;
 
 
-    @NonNull
+    @ColumnInfo(name = "later")
+    private int later;
+
+    @ColumnInfo(name = "next")
+    private int next;
+
     @Override
     public String toString() {
         return "SleepDataUI{" +
@@ -159,10 +164,12 @@ public class SleepDataUI {
                 ", insomniaScore=" + insomniaScore +
                 ", insomniaTimes=" + insomniaTimes +
                 ", insomniaLength=" + insomniaLength +
-                ", insomniaBeanList=" + insomniaBeanList +
+                ", insomniaBeanList='" + insomniaBeanList + '\'' +
                 ", startInsomniaTime='" + startInsomniaTime + '\'' +
                 ", stopInsomniaTime='" + stopInsomniaTime + '\'' +
                 ", insomniaDuration=" + insomniaDuration +
+                ", later=" + later +
+                ", next=" + next +
                 '}';
     }
 
@@ -453,4 +460,21 @@ public class SleepDataUI {
     public void setInsomniaDuration(int insomniaDuration) {
         this.insomniaDuration = insomniaDuration;
     }
+
+    public int getLater() {
+        return later;
+    }
+
+    public void setLater(int later) {
+        this.later = later;
+    }
+
+    public int getNext() {
+        return next;
+    }
+
+    public void setNext(int next) {
+        this.next = next;
+    }
+
 }
