@@ -122,7 +122,6 @@ public class PlotUtilsSleep {
         plot.clear();
         float rangeUpperLimit = 3.0f;
 
-
         plot.setRangeUpperBoundary(rangeUpperLimit, BoundaryMode.FIXED);
         plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeUpperLimit / 3.0);
         plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
@@ -131,17 +130,13 @@ public class PlotUtilsSleep {
         p.setARGB(50, 0, 0, 255);
         plot.getGraph().setRangeGridLinePaint(p);
 
-
         PlotUtils.MyBarFormatter formatter0 = new PlotUtils.MyBarFormatter(Color.rgb(0, 34, 102), Color.rgb(0, 34, 102));
         XYSeries series0 = new SimpleXYSeries(deepSleep, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series0, formatter0);
 
-
         PlotUtils.MyBarFormatter formatter1 = new PlotUtils.MyBarFormatter(Color.rgb(77, 136, 255), Color.rgb(77, 136, 255));
         XYSeries series1 = new SimpleXYSeries(lightSleep, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series1, formatter1);
-
-
 
         PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(Color.rgb(255, 153, 187), Color.rgb(255, 153, 187));
         XYSeries series2 = new SimpleXYSeries(rapidEyeMovement, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
@@ -150,7 +145,6 @@ public class PlotUtilsSleep {
         PlotUtils.MyBarFormatter formatter3 = new PlotUtils.MyBarFormatter(Color.rgb(255, 128, 128), Color.rgb(255, 128, 128));
         XYSeries series3 = new SimpleXYSeries(insomnia, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series3, formatter3);
-
 
         PlotUtils.MyBarFormatter formatter4 = new PlotUtils.MyBarFormatter(Color.rgb(255, 255, 0), Color.rgb(255, 255, 0));
         XYSeries series4 = new SimpleXYSeries(wakeUp, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
