@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/sleepPlotRowV2"
+            style="@style/APDefacto.Light"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:backgroundColor="@color/white"
+            app:domainLineColor="@color/ap_transparent"
+            app:domainOriginLineColor="@color/ap_transparent"
+            app:graphBackgroundColor="@color/white"
+            app:graphMarginLeft="10dp"
+            app:graphMarginTop="20dp"
+            app:graphWidthMode="fill"
+            app:gridBackgroundColor="@color/white"
+            app:gridClippingEnabled="false"
+            app:legendVisible="false"
+            app:lineLabelInsetLeft="4dp"
+            app:lineLabelRotationBottom="-45"
+            app:lineLabelTextColorLeft="#4B1263"
+            app:lineLabels="bottom"
+            app:rangeLineColor="#646D71"
+            app:rangeStep="2dp"
+            app:title="Sleep" />
+
+
+</androidx.cardview.widget.CardView>

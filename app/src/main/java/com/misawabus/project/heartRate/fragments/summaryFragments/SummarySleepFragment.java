@@ -112,9 +112,6 @@ public class SummarySleepFragment  extends SummaryFragment {
 
     }
 
-
-
-
     private void getDataFromDB(Date date, Consumer<List<SleepDataUI>> sleepDataUIList) {
         SleepDataUIViewModel.getListRows(date,
                 deviceViewModel.getMacAddress()).observe(getViewLifecycleOwner(),

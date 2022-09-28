@@ -238,6 +238,7 @@ public class HealthsData {
     }
 
     public void getSmartWatchDataSingleDay(int day) {
+        Log.d(TAG, "getSmartWatchDataSingleDay: ");
         IOriginProgressListener originDataListener = new IOriginDataListener() {
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
@@ -312,6 +313,7 @@ public class HealthsData {
         IOriginProgressListener originData3Listener = new IOriginData3Listener() {
             @Override
             public void onOriginFiveMinuteListDataChange(List<OriginData3> originData3List) {
+                Log.d(TAG, "getSmartWatchDataSingleDay: " + originData3List);
                 HealthsReadDataUtils.processOriginData3List(originData3List,
                         mHandler,
                         dashBoardViewModel,
@@ -355,9 +357,9 @@ public class HealthsData {
             Boolean originProtocolVersion = deviceFeatures.get("OriginProtcolVersion");
 
             if (originProtocolVersion != null && originProtocolVersion) {
-                VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originData3Listener, day, 288, dashBoardViewModel.getWatchData());
+                VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originData3Listener, day, 1, dashBoardViewModel.getWatchData());
             } else if (originProtocolVersion != null) {
-                VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originDataListener, day, 288, dashBoardViewModel.getWatchData());
+                VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originDataListener, day, 1, dashBoardViewModel.getWatchData());
                 //readHealthData();
             }
         }

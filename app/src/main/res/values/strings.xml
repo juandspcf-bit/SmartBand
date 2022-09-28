@@ -101,4 +101,5 @@
     <string name="stop_ecg_detection">stop ECG detection</string>
     <string name="heart_rate_for_ecg_fragment">Heart Rate</string>
     <string name="qtc">QTC</string>
+    <string name="sleep_time_title">Sleep\nTime</string>
 </resources>

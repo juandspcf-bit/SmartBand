@@ -32,6 +32,7 @@ import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryBPFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryHRFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragment;
+import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragmentV2;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySportsFragment;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
@@ -182,7 +183,8 @@ public class DayFragment extends Fragment {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentContainerView3,
-                        new SummarySleepFragment())
+                        new SummarySleepFragmentV2())
+                        //new SummarySleepFragment())
                 .commit();
     }
 

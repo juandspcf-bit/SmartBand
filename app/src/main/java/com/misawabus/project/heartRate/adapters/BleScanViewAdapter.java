@@ -2,7 +2,7 @@ package com.misawabus.project.heartRate.adapters;
 
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.misawabus.project.heartRate.R;
-import com.misawabus.project.heartRate.adapters.recyclerView.OnRecycleViewClickCallback;
+import com.misawabus.project.heartRate.adapters.recyclerView.OnViewClickedCallback;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,7 +24,7 @@ import java.util.List;
 public class BleScanViewAdapter extends RecyclerView.Adapter<BleScanViewAdapter.NormalTextViewHolder> {
     private final LayoutInflater mLayoutInflater;
     List<SearchResult> itemData;
-    OnRecycleViewClickCallback mBleCallback;
+    OnViewClickedCallback mBleCallback;
 
     public BleScanViewAdapter(Context context, List<SearchResult> data) {
         this.itemData = data;
@@ -50,7 +50,7 @@ public class BleScanViewAdapter extends RecyclerView.Adapter<BleScanViewAdapter.
     }
 
 
-    public void setBleItemOnclick(OnRecycleViewClickCallback bleCallback) {
+    public void setBleItemOnclick(OnViewClickedCallback bleCallback) {
         this.mBleCallback = bleCallback;
     }
 
@@ -66,7 +66,7 @@ public class BleScanViewAdapter extends RecyclerView.Adapter<BleScanViewAdapter.
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mBleCallback.OnRecycleViewClick(getAdapterPosition());
+                    mBleCallback.OnViewClicked(getAdapterPosition());
                     Log.d("SummaryViewHolder", "onClick--> position = " + getAdapterPosition());
                 }
             });

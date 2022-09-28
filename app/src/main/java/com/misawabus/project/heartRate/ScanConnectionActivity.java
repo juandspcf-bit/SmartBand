@@ -40,7 +40,7 @@ import com.inuker.bluetooth.library.utils.BluetoothUtils;
 import com.misawabus.project.heartRate.Utils.BluetoothMustPermissions;
 import com.misawabus.project.heartRate.adapters.BleScanViewAdapter;
 import com.misawabus.project.heartRate.adapters.CustomLogAdapter;
-import com.misawabus.project.heartRate.adapters.recyclerView.OnRecycleViewClickCallback;
+import com.misawabus.project.heartRate.adapters.recyclerView.OnViewClickedCallback;
 import com.misawabus.project.heartRate.viewModels.ScanConnectionViewModel;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -53,7 +53,7 @@ import com.veepoo.protocol.util.VPLogger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScanConnectionActivity extends AppCompatActivity implements OnRecycleViewClickCallback {
+public class ScanConnectionActivity extends AppCompatActivity implements OnViewClickedCallback {
     private final static String TAG = ScanConnectionActivity.class.getSimpleName();
     private final static String YOUR_APPLICATION = "timaimee";
     private static final int SELECT_DEVICE_REQUEST_CODE = 20000;
@@ -152,7 +152,7 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnRecyc
     }
 
     @Override
-    public void OnRecycleViewClick(int position) {
+    public void OnViewClicked(int position) {
 
         runOnUiThread(new Runnable() {
             @Override
