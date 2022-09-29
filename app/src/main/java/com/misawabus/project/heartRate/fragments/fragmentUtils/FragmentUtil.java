@@ -420,7 +420,7 @@ public class FragmentUtil {
                 return 5;
             } else if (sleepLineV == 0 || sleepLineV == 1 || sleepLineV == 2 || sleepLineV == 3 /*|| sleepLineV == 4*/) {
                 return 0;
-            } else return 3;
+            } else return 0;
 
         }).collect(Collectors.toList());
 

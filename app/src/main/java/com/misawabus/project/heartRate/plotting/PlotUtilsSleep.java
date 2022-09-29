@@ -120,10 +120,10 @@ public class PlotUtilsSleep {
                                                          XYPlot plot) {
 
         plot.clear();
-        float rangeUpperLimit = 3.0f;
+        float rangeUpperLimit = 5.0f;
 
         plot.setRangeUpperBoundary(rangeUpperLimit, BoundaryMode.FIXED);
-        plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeUpperLimit / 3.0);
+        plot.setRangeStep(StepMode.SUBDIVIDE, 5);
         plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
 
         Paint p = new Paint();

@@ -48,8 +48,6 @@ public class PlotUtilsBloodPressure {
         lpfL.getLinePaint().setStrokeWidth(32.0f);
         lpfL.getVertexPaint().setStrokeWidth(16.0f);
 
-        //LineAndPointFormatter lpfH = new LineAndPointFormatter(context, R.xml.line_point_formatter_high_pressure);
-        //LineAndPointFormatter lpfL = new LineAndPointFormatter(context, R.xml.line_point_formatter_low_pressure);
 
         candlestickSeries.setHighSeries(simpleHYSeries);
         candlestickSeries.setLowSeries(simpleLYSeries);
@@ -106,6 +104,7 @@ public class PlotUtilsBloodPressure {
 
         rangeUpperLimit = rangeUpperLimit * 1.1;
         plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeUpperLimit / 3.0);
+        plot.setDomainStep(StepMode.SUBDIVIDE, Math.min(integerHPSeries.length, 20));
         plot.setRangeUpperBoundary(rangeUpperLimit, BoundaryMode.FIXED);
         plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
 

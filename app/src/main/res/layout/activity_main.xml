@@ -9,9 +9,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/mainAppColor"
-        android:theme="@style/Widget.AppCompat.PopupMenu.Overflow">
+        android:layout_height="wrap_content">
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -25,7 +23,7 @@
             android:id="@+id/main_title"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:background="#e4e4e4"
+            android:background="#c7dacf"
             android:gravity="center_horizontal"
             android:text="@string/devices_list"
             android:textSize="48sp"

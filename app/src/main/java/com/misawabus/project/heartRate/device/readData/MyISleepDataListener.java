@@ -48,8 +48,8 @@ public class MyISleepDataListener implements ISleepDataListener {
     @Override
     public void onSleepDataChange(String day, SleepData sleepData) {
         Log.d(TAG, "onSleepDataChange: day-" + day + " : data-" + sleepData);
-        String fullData = SleepDataUtils.processingSleepData(sleepData);
-        if (fullData.isEmpty()) return;
+/*        String fullData = SleepDataUtils.processingSleepData(sleepData);
+        if (fullData.isEmpty()) return;*/
 
         SleepDataUI sleepDataUIObject =
                 SleepDataUtils.getSleepDataUIObject(sleepData, deviceViewModel.getMacAddress());

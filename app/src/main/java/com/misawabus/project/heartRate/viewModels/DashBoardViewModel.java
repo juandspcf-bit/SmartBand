@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
@@ -36,6 +37,8 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isConnected = new MutableLiveData<>();
     private final MutableLiveData<Observer<Boolean>> observerMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Observer<Boolean>> observerEnabledMutableLiveData = new MutableLiveData<>();
+
+    private MutableLiveData<ViewPager2.OnPageChangeCallback> viewPagerCallBack = new MutableLiveData<>();
 
     private final MutableLiveData<List<SleepDataUI>> todayUpdateSleepFullData = new MutableLiveData<>();
     private final MutableLiveData<List<SleepDataUI>> yesterdayUpdateSleepFullData = new MutableLiveData<>();
@@ -317,5 +320,13 @@ public class DashBoardViewModel extends ViewModel {
 
     public void setObserverEnabledMutableLiveData(Observer<Boolean> observerEnabled) {
         this.observerEnabledMutableLiveData.setValue(observerEnabled);
+    }
+
+    public MutableLiveData<ViewPager2.OnPageChangeCallback> getViewPagerCallBack() {
+        return viewPagerCallBack;
+    }
+
+    public void setViewPagerCallBack(ViewPager2.OnPageChangeCallback viewPagerCallBack) {
+        this.viewPagerCallBack.setValue(viewPagerCallBack);
     }
 }

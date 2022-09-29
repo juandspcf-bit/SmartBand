@@ -78,16 +78,9 @@ public class SummaryActivityFragment extends Fragment {
         });
 
 
-        int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
 
-        Double[] seriesStepsInit = new Double[intervalsTotal];
-        Arrays.fill(seriesStepsInit, 0.0);
-        List<Double> doubles = Arrays.asList(seriesStepsInit);
-        LineAndPointFormatter formatterForSeriesPlotRepresentation = new LineAndPointFormatter(getContext(), R.xml.line_point_formatter_for_summary_sports);
-        formatterForSeriesPlotRepresentation.setInterpolationParams(
-                new CatmullRomInterpolator.Params(2, CatmullRomInterpolator.Type.Uniform));
-        SimpleXYSeries seriesPlotRepresentation = new SimpleXYSeries(List.copyOf(doubles), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series3");
-        binding.plotCustomStepsDailySummary.addSeries(seriesPlotRepresentation, formatterForSeriesPlotRepresentation);
+
+
 
     }
 

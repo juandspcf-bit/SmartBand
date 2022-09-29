@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidplot.xy.XYPlot;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
@@ -24,10 +23,8 @@ import com.misawabus.project.heartRate.adapters.recyclerView.RecyclerViewBuilder
 import com.misawabus.project.heartRate.adapters.recyclerView.ViewsInRowHolder;
 import com.misawabus.project.heartRate.adapters.viewHolders.summarySleep.ViewsInSleepRowHolder;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
-import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySleepBinding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
-import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;

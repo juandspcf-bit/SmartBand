@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,6 +84,12 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        ScanConnectionActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        ScanConnectionActivity.this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        ScanConnectionActivity.this.getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+        ScanConnectionActivity.this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         swipeRefreshLayout = findViewById(R.id.devices_refresh_layout);
         swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
@@ -294,12 +301,16 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
 
         if (device != null && device.getName() != null) {
             String deviceName = device.getName();
-            Log.d("deviceName", deviceName);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Log.d("device Full Info", device.getAlias());
+            }else {
+                Log.d("device Full Info", deviceName);
+            }
         }
 
         if (device != null && device.getAddress() != null) {
             String remoteDeviceAddress = device.getAddress();
-            Log.d("remoteDeviceAddress", remoteDeviceAddress);
+            //Log.d("remoteDeviceAddress", remoteDeviceAddress);
             addToCollectionSearchResult(device);
         }
     }

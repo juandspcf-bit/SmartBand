@@ -16,7 +16,7 @@
         <activity
             android:name=".DashBoardActivity"
             android:exported="false"
-            android:theme="@style/DashBoard2"/>
+            android:theme="@style/Theme.MyApplication"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
