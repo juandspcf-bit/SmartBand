@@ -104,17 +104,18 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_v2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LinearFragLayoutProgress" />
+            app:layout_constraintTop_toBottomOf="@+id/LinearFragLayoutProgress"
+            tools:layout="@layout/fragment_tabs_daily_activity" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_v2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             app:backgroundTint="#e4e4e4"
-            app:itemIconSize="40dp"
+            app:itemIconSize="30dp"
             app:itemIconTint="#015A5A"
             app:itemPaddingBottom="0dp"
             app:itemPaddingTop="0dp"

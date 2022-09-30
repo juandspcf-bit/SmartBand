@@ -103,9 +103,9 @@ public class DashBoardActivity extends AppCompatActivity {
         DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, deviceDB -> {
             if (deviceDB == null){
                 dashBoardViewModel.setDevice(new Device());
+                return;
             }
             dashBoardViewModel.setDevice(deviceDB);
-            if (deviceDB.getBirthDate() == null) return;
             LocalDate localDateBirthDate = DateUtils.getLocalDate(deviceDB.getBirthDate(), "-");
             int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
             dashBoardViewModel.setAge(age);
