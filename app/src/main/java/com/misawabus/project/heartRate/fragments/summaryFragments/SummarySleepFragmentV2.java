@@ -216,18 +216,80 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
 
-                Log.d(TAG, "onPageSelected: position " + position + " of data size:" + data.size());
-
                 SleepDataUI sleepDataUI = //first.get();
                         data.get(position);
 
+
+                Map<String, List<Integer>> sleepDataMapLines = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
+                List<Integer> deepSleep = sleepDataMapLines.get("deepSleep");
+                String deepSleepTime = "0";
+                long countDeepSleep=0;
+
+                if(deepSleep!=null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+                    countDeepSleep = deepSleep.stream().filter(data -> data > 0).count()*5;
+                    deepSleepTime = getIntervalTime(countDeepSleep);
+                }else if(deepSleep != null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+                    countDeepSleep = deepSleep.stream().filter(data -> data > 0).count();
+                    deepSleepTime = getIntervalTime(countDeepSleep);
+                }
+
+
+                List<Integer> lightSleep = sleepDataMapLines.get("lightSleep");
+                String lightSleepTime = "0";
+                long countLightSleep=0;
+                if(lightSleep!=null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+                    countLightSleep = lightSleep.stream().filter(data -> data > 0).count()*5;
+                    lightSleepTime = getIntervalTime(countLightSleep);
+                }else if(deepSleep != null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+                    countLightSleep = lightSleep.stream().filter(data -> data > 0).count();
+                    lightSleepTime = getIntervalTime(countLightSleep);
+                }
+
+
+
                 Duration duration = Duration.ofMinutes(sleepDataUI.getAllSleepTime());
-                String allSleepTime = duration.toHours() + " hours " + duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
+                String allSleepTime;
+                if(duration.toHours()>0){
+                    allSleepTime = duration.toHours() + " hours\n" + duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
+                }else {
+                    allSleepTime = duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
+                }
+
                 String wakeCount = String.valueOf(sleepDataUI.getWakeCount());
-                String sleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown()).toString();
-                String sleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp()).toString();
-                String deepSleepTime = sleepDataUI.getDeepSleepTime() + " minutes";
-                String lowSleepTime = sleepDataUI.getLowSleepTime() + " minutes";
+
+                LocalTime localTimeFromVeepooTimeDateObj = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
+                String sleepDown = localTimeFromVeepooTimeDateObj.toString();
+
+                LocalTime localTimeFromVeepooTimeDateObj1 = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp());
+                String sleepUp = localTimeFromVeepooTimeDateObj1.toString();
+
+                LocalTime localTime = localTimeFromVeepooTimeDateObj1.minusHours(localTimeFromVeepooTimeDateObj.getHour());
+                LocalTime localTime1 = localTime.minusMinutes(localTimeFromVeepooTimeDateObj.getMinute());
+                int hours = localTime1.getHour();
+                int minutes = localTime1.getMinute();
+                allSleepTime = getStringTimeFormatted(hours, minutes);
+
+/*
+                duration = Duration.ofMinutes(sleepDataUI.getDeepSleepTime());
+                String deepSleepTime;
+                if(duration.toHours()>0){
+                    deepSleepTime = duration.toHours() + " hours\n" + duration.minusHours(duration.toHours()).toMinutes() + " minutes";
+                }else{
+                    deepSleepTime = duration.minusHours(duration.toHours()).toMinutes() + " minutes";
+                }
+*/
+
+/*
+                duration = Duration.ofMinutes(sleepDataUI.getLowSleepTime());
+                String lowSleepTime;
+                if(duration.toHours()>0){
+                    lowSleepTime = duration.toHours() + " hours\n" + duration.minusHours(duration.toHours()).toMinutes() + " minutes";
+                }else{
+                    lowSleepTime = duration.minusHours(duration.toHours()).toMinutes() + " minutes";
+                }
+*/
+
+
                 int sleepQuality = sleepDataUI.getSleepQuality();
 
                 binding.sleepTimeTextView.setText(allSleepTime);
@@ -235,7 +297,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 binding.fallSleepTimeTextView.setText(sleepDown);
                 binding.wakeUpTimeTextView.setText(sleepUp);
                 binding.deepSleepTextView.setText(deepSleepTime);
-                binding.lightSleepTextView.setText(lowSleepTime);
+                binding.lightSleepTextView.setText(lightSleepTime);
                 binding.ratingBarSleepQuality2.setRating(sleepQuality);
             }
 
@@ -250,6 +312,29 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
         }
         viewPager.registerOnPageChangeCallback(callback);
         dashBoardViewModel.getViewPagerCallBack().setValue(callback);
+    }
+
+    @NonNull
+    private String getIntervalTime(long countDeepSleep) {
+        long hours = (long) Math.floor(countDeepSleep / 60.0);
+        long minutes = countDeepSleep - 60 * hours;
+        String time = getStringTimeFormatted(hours, minutes);
+        return time;
+    }
+
+    @NonNull
+    private String getStringTimeFormatted(long hours, long minutes) {
+        String time;
+        if(hours >1) {
+            time = hours + " hours\n" + minutes + " minutes";
+        }else if(hours ==1 && minutes >0){
+            time = hours + " hour\n" + minutes + " minutes";
+        }else if(hours ==1 && minutes ==0){
+            time = hours + " hour";
+        }else {
+            time = minutes + " minutes";
+        }
+        return time;
     }
 
 

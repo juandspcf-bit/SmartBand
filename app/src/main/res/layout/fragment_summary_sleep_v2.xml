@@ -20,6 +20,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/sleeping" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -337,7 +338,7 @@
                             android:id="@+id/wakeUpTimesTitleTextView"
                             android:layout_width="90dp"
                             android:layout_height="0dp"
-                            android:background="#EAEACA"
+                            android:background="#FFFF00"
                             android:gravity="center"
                             android:text="Wake up\ntimes"
                             android:textColor="#220D49"
@@ -386,7 +387,7 @@
                             android:id="@+id/wakeUpTimeTitleTextView"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:background="#FFFF00"
+                            android:background="#EAEACA"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="Wake up\ntime"
