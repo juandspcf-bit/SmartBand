@@ -31,7 +31,6 @@ import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryBPFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryHRFragment;
-import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragmentV2;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySportsFragment;
@@ -40,7 +39,6 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -176,14 +174,14 @@ public class DayFragment extends Fragment {
     protected void onClickCardFitnessArea(View view) {
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView3,
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummarySportsFragment()).commit();
     }
 
     protected void onClickCardSleepArea(View view) {
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView3,
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummarySleepFragmentV2())
                         //new SummarySleepFragment())
                 .commit();
@@ -192,21 +190,21 @@ public class DayFragment extends Fragment {
     protected void onClickCardBloodPressureArea(View view) {
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView3,
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummaryBPFragment()).commit();
     }
 
     protected void onClickCardHeartRateArea(View view) {
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView3,
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummaryHRFragment()).commit();
     }
 
     protected void onClickCardSop2Area(View view) {
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView3,
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummarySop2Fragment()).commit();
     }
 

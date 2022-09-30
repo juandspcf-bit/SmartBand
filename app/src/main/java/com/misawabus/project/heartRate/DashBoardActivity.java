@@ -132,7 +132,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView3, new MainDashBoardFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard, new MainDashBoardFragment()).commit();
 
 
 
@@ -141,7 +141,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private void hideBottomNavigationBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsControllerCompat windowInsetsController =
-                    WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
+                    WindowCompat.getInsetsController(getWindow(), binding.mainDashBoardFragmentContainerInActivityDashBoard);
             windowInsetsController.setSystemBarsBehavior(
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );

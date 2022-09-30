@@ -34,7 +34,7 @@
                 android:gravity="center_vertical|end"
                 android:text="Sync"
                 android:textColor="#705aa9"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:visibility="visible"
                 tools:layout_editor_absoluteX="73dp"
                 tools:layout_editor_absoluteY="-16dp" />
@@ -42,7 +42,7 @@
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:background="@color/ap_transparent"
                 android:indeterminateTint="#7C5959"
                 android:visibility="visible"
@@ -57,12 +57,12 @@
                 android:gravity="center_vertical|end"
                 android:text="Connected:"
                 android:textColor="#705aa9"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <ImageView
                 android:id="@+id/imageView8"
                 android:layout_width="34dp"
-                android:layout_height="38dp"
+                android:layout_height="30dp"
                 android:background="@color/ap_transparent"
                 app:srcCompat="@drawable/ic_baseline_link_24"
                 app:tint="#FF5252" />
@@ -96,7 +96,7 @@
 
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewData"
+            android:id="@+id/navigationFragmentContainer"
             android:name="com.misawabus.project.heartRate.fragments.TabsDailyActivityFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"

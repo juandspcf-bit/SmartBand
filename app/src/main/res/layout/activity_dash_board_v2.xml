@@ -23,7 +23,7 @@
 
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentContainerView3"
+                android:id="@+id/mainDashBoardFragmentContainerInActivityDashBoard"
                 android:name="com.misawabus.project.heartRate.fragments.MainDashBoardFragment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

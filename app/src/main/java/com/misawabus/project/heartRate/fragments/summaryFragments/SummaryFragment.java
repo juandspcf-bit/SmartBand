@@ -44,7 +44,7 @@ public class SummaryFragment extends Fragment {
     protected void backMainFragment() {
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView3,
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new MainDashBoardFragment())
                 .commit();
     }
