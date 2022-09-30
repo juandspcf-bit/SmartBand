@@ -2,12 +2,12 @@ package com.misawabus.project.heartRate;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -34,7 +34,6 @@ import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 public class DashBoardActivity extends AppCompatActivity {
     private final static String TAG = DashBoardActivity.class.getSimpleName();
@@ -63,39 +62,26 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         Bundle extras = getIntent().getExtras();
         String macAddress = extras.getString("deviceAddress");
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-
-        WindowInsetsControllerCompat windowInsetsController =
-                WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
-
-        windowInsetsController.setSystemBarsBehavior(
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        );
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-
-        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
-        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
-        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
-
+        hideBottomNavigationBar();
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Log.d("onBackPressed","...........");
-                Intent intent = new Intent(DashBoardActivity.this, ScanConnectionActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("keep", false);
-                //ActivityCompat.finishAffinity(DashBoardActivity.this);
+
 
 
             }
         });
+
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
 
         mVpoperateManager = VPOperateManager.getMangerInstance(getApplicationContext());
         DBops dbHandler = new DBops();
@@ -144,6 +130,20 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
+    private void hideBottomNavigationBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        }else {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
+    }
+
+
     private void registerCallBack(){
         connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.registerDefaultNetworkCallback(myCallBack);
@@ -157,14 +157,7 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        WindowInsetsControllerCompat windowInsetsController =
-                WindowCompat.getInsetsController(getWindow(), binding.fragmentContainerView3);
-        //ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-
-        windowInsetsController.setSystemBarsBehavior(
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        );
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        hideBottomNavigationBar();
         registerCallBack();
     }
 

@@ -3,13 +3,18 @@ package com.misawabus.project.heartRate.fragments.summaryFragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.datepicker.CalendarConstraints;
@@ -52,6 +57,21 @@ public class SummaryFragment extends Fragment {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_fragments, null));
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && getActivity()!=null) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getActivity().getWindow(), view);
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        }else if(getActivity()!=null) {
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     }
 
