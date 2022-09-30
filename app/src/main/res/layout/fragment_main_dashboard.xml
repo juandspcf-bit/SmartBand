@@ -112,8 +112,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             app:backgroundTint="#e4e4e4"
             app:itemIconSize="30dp"
             app:itemIconTint="#015A5A"
