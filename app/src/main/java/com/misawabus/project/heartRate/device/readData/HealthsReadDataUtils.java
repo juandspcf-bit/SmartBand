@@ -41,7 +41,7 @@ import java.util.function.BiConsumer;
 
 public class HealthsReadDataUtils {
 
-    public static final String TAG = HealthsData.class.getSimpleName();
+    public static final String TAG = HealthsReadDataUtils.class.getSimpleName();
 
 
     public static DataFiveMinAvgDataContainer computeSportsDataFiveMinAVR(List<OriginData3> originData3List,
@@ -294,7 +294,7 @@ public class HealthsReadDataUtils {
             XYDataArraysForPlotting highBPArraysForPlotting = getHighBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
             XYDataArraysForPlotting lowBPArraysForPlotting = getLowBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
             XYDataArraysForPlotting spo2PArraysForPlotting = getSpo2PArraysForPlotting(sop2DataFiveMinAvgDataContainer);
-            Log.d(TAG, "getSpo2PArraysForPlotting processOriginData3List: " + Arrays.toString(spo2PArraysForPlotting.getSeriesDoubleAVR()));
+
 
 
             Map<String, XYDataArraysForPlotting> arraysMap;

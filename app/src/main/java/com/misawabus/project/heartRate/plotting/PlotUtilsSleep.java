@@ -25,6 +25,12 @@ import java.util.stream.Stream;
 public class PlotUtilsSleep {
 
 
+    private static final int wakeUpColor = Color.rgb(255, 255, 0);;
+    private static final int insomniaColor = Color.rgb(255, 128, 128);
+    private static final int rapidEyeMovementColor = Color.rgb(255, 153, 187);
+    private static final int lightSleepColor = Color.rgb(77, 136, 255);
+    private static final int deepSleepColor = Color.rgb(0, 34, 102);
+
     public static void plotSleepIntegerListData(SleepDataUI sleepDataUI,
                                                 List<Integer> lightSleep,
                                                 List<Integer> deepSleep,
@@ -43,15 +49,15 @@ public class PlotUtilsSleep {
         p.setARGB(50, 0, 0, 255);
         plot.getGraph().setRangeGridLinePaint(p);
 
-        PlotUtils.MyBarFormatter formatter0 = new PlotUtils.MyBarFormatter(Color.rgb(187, 60, 230), Color.rgb(187, 60, 230));
+        PlotUtils.MyBarFormatter formatter0 = new PlotUtils.MyBarFormatter(lightSleepColor, lightSleepColor);
         XYSeries series0 = new SimpleXYSeries(lightSleep, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series0, formatter0);
 
-        PlotUtils.MyBarFormatter formatter1 = new PlotUtils.MyBarFormatter(Color.rgb(13, 33, 128), Color.rgb(13, 33, 128));
+        PlotUtils.MyBarFormatter formatter1 = new PlotUtils.MyBarFormatter(deepSleepColor, deepSleepColor);
         XYSeries series1 = new SimpleXYSeries(deepSleep, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series1, formatter1);
 
-        PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(Color.rgb(116, 230, 59), Color.rgb(116, 230, 59));
+        PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(wakeUpColor, wakeUpColor);
         XYSeries series2 = new SimpleXYSeries(wakeUp, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series2, formatter2);
 
@@ -130,23 +136,28 @@ public class PlotUtilsSleep {
         p.setARGB(50, 0, 0, 255);
         plot.getGraph().setRangeGridLinePaint(p);
 
-        PlotUtils.MyBarFormatter formatter0 = new PlotUtils.MyBarFormatter(Color.rgb(0, 34, 102), Color.rgb(0, 34, 102));
+
+        PlotUtils.MyBarFormatter formatter0 = new PlotUtils.MyBarFormatter(deepSleepColor, deepSleepColor);
         XYSeries series0 = new SimpleXYSeries(deepSleep, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series0, formatter0);
 
-        PlotUtils.MyBarFormatter formatter1 = new PlotUtils.MyBarFormatter(Color.rgb(77, 136, 255), Color.rgb(77, 136, 255));
+
+        PlotUtils.MyBarFormatter formatter1 = new PlotUtils.MyBarFormatter(lightSleepColor, lightSleepColor);
         XYSeries series1 = new SimpleXYSeries(lightSleep, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series1, formatter1);
 
-        PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(Color.rgb(255, 153, 187), Color.rgb(255, 153, 187));
+
+        PlotUtils.MyBarFormatter formatter2 = new PlotUtils.MyBarFormatter(rapidEyeMovementColor, rapidEyeMovementColor);
         XYSeries series2 = new SimpleXYSeries(rapidEyeMovement, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series2, formatter2);
 
-        PlotUtils.MyBarFormatter formatter3 = new PlotUtils.MyBarFormatter(Color.rgb(255, 128, 128), Color.rgb(255, 128, 128));
+
+        PlotUtils.MyBarFormatter formatter3 = new PlotUtils.MyBarFormatter(insomniaColor, insomniaColor);
         XYSeries series3 = new SimpleXYSeries(insomnia, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series3, formatter3);
 
-        PlotUtils.MyBarFormatter formatter4 = new PlotUtils.MyBarFormatter(Color.rgb(255, 255, 0), Color.rgb(255, 255, 0));
+
+        PlotUtils.MyBarFormatter formatter4 = new PlotUtils.MyBarFormatter(wakeUpColor, wakeUpColor);
         XYSeries series4 = new SimpleXYSeries(wakeUp, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
         plot.addSeries(series4, formatter4);
 
