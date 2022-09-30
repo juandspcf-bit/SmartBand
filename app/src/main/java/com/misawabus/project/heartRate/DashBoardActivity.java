@@ -101,10 +101,23 @@ public class DashBoardActivity extends AppCompatActivity {
         deviceViewModel.setMacAddress(macAddress);
 
         DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, deviceDB -> {
-            Device device = deviceDB == null ? new Device() : deviceDB;
-            dashBoardViewModel.setDevice(device);
+            if (deviceDB == null){
+                dashBoardViewModel.setDevice(new Device());
+            }
+            dashBoardViewModel.setDevice(deviceDB);
+            if (deviceDB.getBirthDate() == null) return;
+            LocalDate localDateBirthDate = DateUtils.getLocalDate(deviceDB.getBirthDate(), "-");
+            int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
+            dashBoardViewModel.setAge(age);
         });
 
+
+/*        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, device -> {
+            if (device == null || device.getBirthDate() == null) return;
+            LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
+            int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
+            dashBoardViewModel.setAge(age);
+        });*/
 
         VPOperateManager.getMangerInstance(this).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {
 
@@ -121,12 +134,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView3, new MainDashBoardFragment()).commit();
 
-        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, device -> {
-            if (device == null || device.getBirthDate() == null) return;
-            LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
-            int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
-            dashBoardViewModel.setAge(age);
-        });
+
 
     }
 
