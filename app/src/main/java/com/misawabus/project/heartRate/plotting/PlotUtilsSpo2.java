@@ -2,6 +2,7 @@ package com.misawabus.project.heartRate.plotting;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import com.androidplot.xy.BoundaryMode;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 public class PlotUtilsSpo2 {
 
 
+    private static final String TAG = PlotUtilsSpo2.class.getSimpleName();
 
     public static void plotSpo2DoubleIntervalsData(String[] domainLabels,
                                                    Double[] rangeDouble,
@@ -28,8 +30,8 @@ public class PlotUtilsSpo2 {
         plot.clear();
 
         XYSeries series1 = new SimpleXYSeries(Arrays.asList(rangeDouble), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
-        //LineAndPointFormatter series1Format = new LineAndPointFormatter(context, R.xml.line_point_formatter_with_labels_hr_summary);
-
+        Log.d(TAG, "plotSpo2DoubleIntervalsData: " + Arrays.toString(domainLabels));
+        Log.d(TAG, "plotSpo2DoubleIntervalsData: " + Arrays.toString(rangeDouble));
         LineAndPointFormatter formatterForSeriesPlotRepresentation =
                 new LineAndPointFormatter(Color.rgb(255, 100, 100),
                         Color.rgb(255, 100, 100),
