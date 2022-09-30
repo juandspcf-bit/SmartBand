@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -293,6 +294,7 @@ public class HealthsReadDataUtils {
             XYDataArraysForPlotting highBPArraysForPlotting = getHighBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
             XYDataArraysForPlotting lowBPArraysForPlotting = getLowBPArraysForPlotting(bloodPressureDataFiveMinAvgDataContainer);
             XYDataArraysForPlotting spo2PArraysForPlotting = getSpo2PArraysForPlotting(sop2DataFiveMinAvgDataContainer);
+            Log.d(TAG, "getSpo2PArraysForPlotting processOriginData3List: " + Arrays.toString(spo2PArraysForPlotting.getSeriesDoubleAVR()));
 
 
             Map<String, XYDataArraysForPlotting> arraysMap;
@@ -438,7 +440,11 @@ public class HealthsReadDataUtils {
 
 
     @NonNull
-    private static Map<String, XYDataArraysForPlotting> getStringXYDataArraysForPlottingMap(XYDataArraysForPlotting sportsArraysForPlotting, XYDataArraysForPlotting heartRateArraysForPlotting, XYDataArraysForPlotting highBPArraysForPlotting, XYDataArraysForPlotting lowBPArraysForPlotting, XYDataArraysForPlotting spo2PArraysForPlotting) {
+    private static Map<String, XYDataArraysForPlotting> getStringXYDataArraysForPlottingMap(XYDataArraysForPlotting sportsArraysForPlotting,
+                                                                                            XYDataArraysForPlotting heartRateArraysForPlotting,
+                                                                                            XYDataArraysForPlotting highBPArraysForPlotting,
+                                                                                            XYDataArraysForPlotting lowBPArraysForPlotting,
+                                                                                            XYDataArraysForPlotting spo2PArraysForPlotting) {
         Map<String, XYDataArraysForPlotting> arraysMap = new HashMap<>();
         arraysMap
                 .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
@@ -562,6 +568,9 @@ public class HealthsReadDataUtils {
 
         Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "Ppgs");
         int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        if(lengthSubArray<3){
+            return new XYDataArraysForPlotting();
+        }
         String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
 
         XYDataArraysForPlotting xyDataArraysForPlotting;
@@ -585,13 +594,12 @@ public class HealthsReadDataUtils {
         List<Map<String, Double>> bloodPressureMapFieldsWith30Min;
         bloodPressureMapFieldsWith30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(dataIntervalsList);
 
-        Double[] subArrayHPWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "highValue");
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "highValue");
+
         String[] timeAxisSubArrayHP = IntervalUtils.hoursInterval;
-
-
         XYDataArraysForPlotting xyDataArraysForPlotting;
         xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArrayHP,
-                subArrayHPWithReplacedZeroValuesAsAvg);
+                subArrayWithReplacedZeroValuesAsAvg);
 
         return xyDataArraysForPlotting;
     }
@@ -611,13 +619,12 @@ public class HealthsReadDataUtils {
         List<Map<String, Double>> bloodPressureMapFieldsWith30Min;
         bloodPressureMapFieldsWith30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(dataIntervalsList);
 
-        Double[] subArrayHPWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "lowVaamlue");
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(bloodPressureMapFieldsWith30Min, "lowVaamlue");
+
         String[] timeAxisSubArrayHP = IntervalUtils.hoursInterval;
-
-
         XYDataArraysForPlotting xyDataArraysForPlotting;
         xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArrayHP,
-                subArrayHPWithReplacedZeroValuesAsAvg);
+                subArrayWithReplacedZeroValuesAsAvg);
 
         return xyDataArraysForPlotting;
     }
@@ -628,16 +635,20 @@ public class HealthsReadDataUtils {
         if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
         Map<Integer, Map<String, Double>> dataIntervalsMap;
         dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
-        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+        if (dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3){
             return new XYDataArraysForPlotting();
+        }
+
 
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
         Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "oxygenValue");
         int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        if(lengthSubArray<3){
+            return new XYDataArraysForPlotting();
+        }
         String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
-
         XYDataArraysForPlotting xyDataArraysForPlotting;
         xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
                 subArrayWithReplacedZeroValuesAsAvg);

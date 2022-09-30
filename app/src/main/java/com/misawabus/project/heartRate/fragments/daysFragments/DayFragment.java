@@ -40,6 +40,7 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -271,7 +272,9 @@ public class DayFragment extends Fragment {
         }
 
 
-        XYDataArraysForPlotting sop2XYDataArraysForPlotting = stringXYDataArraysForPlottingMap.get(Sop2HData5MinAvgDataContainer.class.getSimpleName());
+        XYDataArraysForPlotting sop2XYDataArraysForPlotting;
+        sop2XYDataArraysForPlotting =
+                stringXYDataArraysForPlottingMap.get(Sop2HData5MinAvgDataContainer.class.getSimpleName());
         if (sop2XYDataArraysForPlotting != null
                 && sop2XYDataArraysForPlotting.getSeriesDoubleAVR() != null
                 && binding.fragmentSop2Plot != null

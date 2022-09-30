@@ -4,6 +4,8 @@ import static com.misawabus.project.heartRate.fragments.summaryFragments.utils.U
 import static java.util.stream.Collectors.averagingDouble;
 import static java.util.stream.Collectors.toList;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.androidplot.ui.SeriesRenderer;
@@ -63,7 +65,8 @@ public class PlotUtils {
 
         return maps
                 .stream()
-                .map(doubleMap -> doubleMap.get(field)).toArray(Double[]::new);
+                .map(doubleMap -> doubleMap.getOrDefault(field, 0.0))
+                .toArray(Double[]::new);
     }
 
     @NonNull

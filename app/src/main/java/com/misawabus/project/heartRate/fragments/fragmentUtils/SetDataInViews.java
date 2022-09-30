@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.fragments.fragmentUtils;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ public class SetDataInViews {
 
 
     public static void plotSop2Data(XYDataArraysForPlotting xyDataArraysForPlotting, XYPlot plot) {
-        PlotUtilsSpo2.plotSpo2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
+          PlotUtilsSpo2.plotSpo2DoubleIntervalsData(xyDataArraysForPlotting.getPeriodIntervalsArray(),
                 xyDataArraysForPlotting.getSeriesDoubleAVR(),
                 plot
         );
