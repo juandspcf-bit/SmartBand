@@ -126,7 +126,6 @@
                     android:id="@+id/ratingBarSleepQuality2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:isIndicator="true"
                     app:layout_constraintBottom_toTopOf="@+id/horizontal30perGuideline"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:visibility="visible"
-                    app:layout_constraintGuide_percent="0.3" />
+                    app:layout_constraintGuide_percent="0.24" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/vertical25perGuideline"
@@ -171,12 +170,14 @@
                             android:id="@+id/sleepTimeTitleTextView"
                             android:layout_width="90dp"
                             android:layout_height="0dp"
-                            android:background="#BA68C8"
+                            android:background="#4DB6AC"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/sleep_time_title"
                             android:textColor="@color/white"
                             app:layout_constraintBottom_toTopOf="@+id/guideline63"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.constraintlayout.widget.Guideline
@@ -184,7 +185,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:layout_constraintGuide_percent="0.5" />
+                            app:layout_constraintGuide_begin="45dp" />
 
                         <TextView
                             android:id="@+id/sleepTimeTextView"
@@ -193,6 +194,8 @@
                             android:gravity="center"
                             android:text="@string/_0_ecg"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/guideline63" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -299,21 +302,71 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/insomniaSleepCardView"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="7dp"
+                    tools:layout_editor_absoluteX="63dp"
+                    tools:layout_editor_absoluteY="398dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/insomniaSleepTitleTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="#FF8080"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Insomnia"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toTopOf="@+id/insomniaGuideline"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/insomniaSleepTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:gravity="center"
+                            android:text="@string/_0_ecg"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/insomniaGuideline" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/insomniaGuideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
 
                 <androidx.constraintlayout.helper.widget.Flow
-                    android:id="@+id/flow11"
+                    android:id="@+id/flowCardsInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:padding="10dp"
-                    app:constraint_referenced_ids="sleepTimeCardView, fallSleepTimeCardView, wakeUpTimeCardView"
-                    app:flow_verticalGap="20dp"
-                    app:flow_wrapMode="chain"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/vertical50guideline"
-                    app:layout_constraintStart_toStartOf="@+id/vertical25perGuideline"
+                    app:constraint_referenced_ids="deepSleepCardView,lightSleepCardView,remSleepCardView,insomniaSleepCardView,wakeUpTimesCardView,fallSleepTimeCardView,wakeUpTimeCardView,sleepTimeCardView"
+                    app:flow_horizontalAlign="center"
+                    app:flow_horizontalGap="10dp"
+                    app:flow_horizontalStyle="spread"
+                    app:flow_maxElementsWrap="3"
+                    app:flow_verticalGap="10dp"
+                    app:flow_wrapMode="chain2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/horizontal30perGuideline" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -342,7 +395,7 @@
                             android:gravity="center"
                             android:text="Wake up\ntimes"
                             android:textColor="#220D49"
-                            app:layout_constraintBottom_toTopOf="@+id/guideline66"
+                            app:layout_constraintBottom_toTopOf="@+id/wakeUpTimesGuideline"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -357,10 +410,57 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/wakeUpTimesTitleTextView" />
+                            app:layout_constraintTop_toBottomOf="@+id/wakeUpTimesGuideline" />
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline66"
+                            android:id="@+id/wakeUpTimesGuideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/remSleepCardView"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="7dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/remSleepCardViewTitleTextView"
+                            android:layout_width="90dp"
+                            android:layout_height="0dp"
+                            android:background="#FF99BB"
+                            android:gravity="center"
+                            android:text="REM\nsleep"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toTopOf="@+id/remSleepCardViewGuideline"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="TextContrastCheck" />
+
+                        <TextView
+                            android:id="@+id/remSleepCardViewTextView"
+                            android:layout_width="90dp"
+                            android:layout_height="0dp"
+                            android:gravity="center"
+                            android:text="@string/_0_ecg"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/remSleepCardViewGuideline" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/remSleepCardViewGuideline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -469,22 +569,6 @@
 
 
                 </androidx.cardview.widget.CardView>
-
-
-                <androidx.constraintlayout.helper.widget.Flow
-                    android:id="@+id/column2flow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    app:constraint_referenced_ids="deepSleepCardView, lightSleepCardView, wakeUpTimesCardView"
-                    app:flow_verticalGap="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/vertical50guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/horizontal30perGuideline" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

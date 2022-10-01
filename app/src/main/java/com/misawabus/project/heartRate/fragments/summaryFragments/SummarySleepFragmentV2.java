@@ -1,7 +1,6 @@
 package com.misawabus.project.heartRate.fragments.summaryFragments;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +10,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
@@ -176,6 +172,10 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 XYPlot xyPlot = viewsInSleepRowHolderV2.xyPlot;
                 Map<String, List<Integer>> sleepData;
                 if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+                    binding.flowCardsInfo.removeView(binding.insomniaSleepCardView);
+                    binding.insomniaSleepCardView.setVisibility(View.GONE);
+                    binding.flowCardsInfo.removeView(binding.remSleepCardView);
+                    binding.remSleepCardView.setVisibility(View.GONE);
                     sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
                     PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI,
                             sleepData.get("lightSleep"),
@@ -196,7 +196,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
 
         };
 
-        Log.d(TAG, "buildViewPagerView: data.size()" + data.size());
+
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(data.size(),
                 row_layout_sleep_card,
                 context,
@@ -205,10 +205,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 viewsInSleepRowHolder);
 
         viewPager.setAdapter(viewPagerAdapter);
-
-
-
-
 
         ViewPager2.OnPageChangeCallback callback = new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -226,28 +222,22 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
 
                 Map<String, List<Integer>> sleepDataMapLines = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
                 List<Integer> deepSleep = sleepDataMapLines.get("deepSleep");
-                String deepSleepTime = "0";
-                long countDeepSleep=0;
-
-                if(deepSleep!=null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
-                    countDeepSleep = deepSleep.stream().filter(data -> data > 0).count()*5;
-                    deepSleepTime = getIntervalTime(countDeepSleep);
-                }else if(deepSleep != null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
-                    countDeepSleep = deepSleep.stream().filter(data -> data > 0).count();
-                    deepSleepTime = getIntervalTime(countDeepSleep);
-                }
-
+                String deepSleepTime = getTypeSleepFormattedStringCount(deepSleep, sleepDataUI.idTypeDataTable);
 
                 List<Integer> lightSleep = sleepDataMapLines.get("lightSleep");
-                String lightSleepTime = "0";
-                long countLightSleep=0;
-                if(lightSleep!=null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
-                    countLightSleep = lightSleep.stream().filter(data -> data > 0).count()*5;
-                    lightSleepTime = getIntervalTime(countLightSleep);
-                }else if(deepSleep != null && sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
-                    countLightSleep = lightSleep.stream().filter(data -> data > 0).count();
-                    lightSleepTime = getIntervalTime(countLightSleep);
+                String lightSleepTime = getTypeSleepFormattedStringCount(lightSleep, sleepDataUI.idTypeDataTable);
+
+                if( sleepDataUI.getIdTypeDataTable().equals(IdTypeDataTable.SleepPrecision)){
+                    List<Integer> rapidEyeMovement = sleepDataMapLines.get("rapidEyeMovement");
+                    String rapidEyeMovementTime = getTypeSleepFormattedStringCount(rapidEyeMovement, sleepDataUI.idTypeDataTable);
+                    List<Integer> insomnia = sleepDataMapLines.get("insomnia");
+                    String insomniaTime = getTypeSleepFormattedStringCount(insomnia, sleepDataUI.idTypeDataTable);
+                    binding.remSleepCardViewTextView.setText(rapidEyeMovementTime);
+                    binding.insomniaSleepTextView.setText(insomniaTime);
                 }
+
+
+
 
 
 
@@ -259,7 +249,23 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                     allSleepTime = duration.minusHours(duration.toHours()).toMinutes() +  " minutes";
                 }
 
-                String wakeCount = String.valueOf(sleepDataUI.getWakeCount());
+
+                int wakeCount1 = sleepDataUI.getWakeCount();
+                String wakeCount;
+                if(sleepDataUI.getIdTypeDataTable().equals(IdTypeDataTable.SleepPrecision)){
+                    if(position>0){
+                        int wakeCountInt = wakeCount1 - data.get(position - 1).getWakeCount();
+                        wakeCount = String.valueOf(wakeCountInt);
+                    }else {
+                        wakeCount = String.valueOf(wakeCount1);
+                    }
+                }else {
+                    wakeCount = String.valueOf(wakeCount1);
+                }
+
+
+
+
 
                 LocalTime localTimeFromVeepooTimeDateObj = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
                 String sleepDown = localTimeFromVeepooTimeDateObj.toString();
@@ -273,26 +279,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 int minutes = localTime1.getMinute();
                 allSleepTime = getStringTimeFormatted(hours, minutes);
 
-/*
-                duration = Duration.ofMinutes(sleepDataUI.getDeepSleepTime());
-                String deepSleepTime;
-                if(duration.toHours()>0){
-                    deepSleepTime = duration.toHours() + " hours\n" + duration.minusHours(duration.toHours()).toMinutes() + " minutes";
-                }else{
-                    deepSleepTime = duration.minusHours(duration.toHours()).toMinutes() + " minutes";
-                }
-*/
-
-/*
-                duration = Duration.ofMinutes(sleepDataUI.getLowSleepTime());
-                String lowSleepTime;
-                if(duration.toHours()>0){
-                    lowSleepTime = duration.toHours() + " hours\n" + duration.minusHours(duration.toHours()).toMinutes() + " minutes";
-                }else{
-                    lowSleepTime = duration.minusHours(duration.toHours()).toMinutes() + " minutes";
-                }
-*/
-
 
                 int sleepQuality = sleepDataUI.getSleepQuality();
 
@@ -302,7 +288,10 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 binding.wakeUpTimeTextView.setText(sleepUp);
                 binding.deepSleepTextView.setText(deepSleepTime);
                 binding.lightSleepTextView.setText(lightSleepTime);
+
                 binding.ratingBarSleepQuality2.setRating(sleepQuality);
+
+
             }
 
             @Override
@@ -316,6 +305,21 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
         }
         viewPager.registerOnPageChangeCallback(callback);
         dashBoardViewModel.getViewPagerCallBack().setValue(callback);
+    }
+
+    @NonNull
+    private String getTypeSleepFormattedStringCount(List<Integer> typeSleep, IdTypeDataTable idTypeDataTable) {
+        String typeSleepTime = "0";
+        long countTypeSleep=0;
+
+        if(typeSleep !=null && idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+            countTypeSleep = typeSleep.stream().filter(data -> data > 0).count()*5;
+            typeSleepTime = getIntervalTime(countTypeSleep);
+        }else if(typeSleep != null && idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+            countTypeSleep = typeSleep.stream().filter(data -> data > 0).count();
+            typeSleepTime = getIntervalTime(countTypeSleep);
+        }
+        return typeSleepTime;
     }
 
     @NonNull

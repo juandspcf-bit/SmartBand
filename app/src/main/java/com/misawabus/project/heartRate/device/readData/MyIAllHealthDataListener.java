@@ -21,6 +21,7 @@ import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,19 +76,23 @@ public class MyIAllHealthDataListener implements IAllHealthDataListener {
     @Override
     public void onSleepDataChange(String day, SleepData sleepData) {
         Log.d(TAG, "onSleepDataChange: day-" + day + " : data-" + sleepData);
-        String fullData = SleepDataUtils.processingSleepData(sleepData);
-        if (fullData.isEmpty()) return;
 
-        SleepDataUI sleepDataUIObject = //SleepDataUtils.getSleepDataUIObject(fullData);
+        SleepDataUI sleepDataUIObject =
                 SleepDataUtils.getSleepDataUIObject(sleepData, deviceViewModel.getMacAddress());
         sleepDataUIObject.setMacAddress(deviceViewModel.getMacAddress());
         LocalDate sleepLocalDate = DateUtils.getLocalDate(sleepDataUIObject.dateData, "/");
+        LocalDate localDateSleepDown = DateUtils.getLocalDateFromVeepooTimeDateObj(sleepDataUIObject.getSleepDown());
+        LocalDate correctedDate;
+        correctedDate= localDateSleepDown.compareTo(sleepLocalDate)>0?localDateSleepDown:sleepLocalDate;
+        Date formattedDate = DateUtils.getFormattedDate(correctedDate.toString(), "-");
+        sleepDataUIObject.setDateData(formattedDate);
 
-        if (sleepLocalDate.compareTo(LocalDate.now()) == 0) {
+
+       if (correctedDate.compareTo(LocalDate.now()) == 0) {
             todaySleepDataList.add(sleepDataUIObject);
-        } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+        } else if (correctedDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
             yesterdaySleepDataList.add(sleepDataUIObject);
-        } else if (sleepLocalDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+        } else if (correctedDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
             pastYesterdaySleepDataList.add(sleepDataUIObject);
         }
     }

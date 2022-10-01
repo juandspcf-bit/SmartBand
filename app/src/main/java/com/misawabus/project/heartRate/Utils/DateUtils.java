@@ -85,4 +85,15 @@ public class DateUtils {
         String s = date.getYear() + "/" + date.getMonthValue() + "/" + date.getDayOfMonth();
         return getFormattedDate(s, "/");
     }
+
+    public static LocalDate getLocalDateFromVeepooTimeDateObj(String time) {
+
+        time = time.substring(time.lastIndexOf("[") + 1, time.lastIndexOf("]"));
+        String sleepUpTime = time.split(" ")[0];
+        String[] sleepUpTimeSplit = sleepUpTime.split("-");
+
+        return LocalDate.of(Integer.parseInt(sleepUpTimeSplit[0]),
+                Integer.parseInt(sleepUpTimeSplit[1]),
+                Integer.parseInt(sleepUpTimeSplit[2]));
+    }
 }

@@ -302,7 +302,7 @@ public class FragmentUtil {
 
         List<Integer> integerSleeps = new ArrayList<>();
 
-        for (int i = 1; i < chars.length - 1; i++) {
+        for (int i = 0; i < chars.length; i++) {
             char aChar = chars[i];
             integerSleeps.add(Integer.parseInt(String.valueOf(aChar)));
         }
@@ -373,7 +373,7 @@ public class FragmentUtil {
 
         List<Integer> integerSleeps = new ArrayList<>();
 
-        for (int i = 1; i < chars.length - 1; i++) {
+        for (int i = 0; i < chars.length; i++) {
             char aChar = chars[i];
             integerSleeps.add(Integer.parseInt(String.valueOf(aChar)));
         }

@@ -58,8 +58,6 @@ public class DayFragment extends Fragment {
         if (sleepDataUIList == null || sleepDataUIList.size() == 0) return;
         dayFragment.sleepDataList = sleepDataUIList;
 
-        sleepDataUIList.forEach(sleepDataUI -> Log.d(TAG, "setDaySleepPlot: " + sleepDataUI));
-
         List<LocalTime> collect = sleepDataUIList.stream()
                 .map(sleepDataUI ->
                 {
@@ -118,8 +116,7 @@ public class DayFragment extends Fragment {
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         macAddress = deviceViewModel.getMacAddress();
-/*        dashBoardViewModel.setIsEnableFeatures(false);
-        dashBoardViewModel.setIsTodayFragmentRefreshing(false);*/
+
 
     }
 

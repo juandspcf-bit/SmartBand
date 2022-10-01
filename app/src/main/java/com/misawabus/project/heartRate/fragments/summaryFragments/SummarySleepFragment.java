@@ -129,7 +129,6 @@ public class SummarySleepFragment  extends SummaryFragment {
             Optional<? extends SleepDataUI> first = data.stream()
                     .filter(periodSleep ->
                     {
-
                         return periodSleep.getIndex() == position;
                     })
                     .findFirst();
