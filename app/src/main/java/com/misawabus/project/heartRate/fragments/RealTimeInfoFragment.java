@@ -73,12 +73,15 @@ public class RealTimeInfoFragment extends Fragment {
                         EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
                         EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
                         EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
+                        EFunctionStatus ppgSupport = customSettingData.getPpg();
                         binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
                                 || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);
                         binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
                                 || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);
                         binding.imageButtonBloodP.setEnabled(EFunctionStatus.SUPPORT == autoBpDetect
                                 || EFunctionStatus.SUPPORT_OPEN == autoBpDetect);
+                        binding.imageButtonEcg.setEnabled(EFunctionStatus.SUPPORT == ppgSupport
+                                || EFunctionStatus.SUPPORT_OPEN == ppgSupport);
                     }else {
                         disableAllButtons();
                     }

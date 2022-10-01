@@ -93,9 +93,6 @@ public class DeviceSettings {
                 customSetting.setIsOpenPPG(customSettingData.getPpg());
                 customSetting.setIsOpenAutoTemperatureDetect(customSettingData.getAutoTemperatureDetect());
                 customSetting.setTemperatureUnit(customSettingData.getTemperatureUnit());
-
-
-
                 customSetting.setIsOpenVoiceBpHeart(SUPPORT_OPEN);
                 customSetting.setIsOpenAutoHRV(SUPPORT_OPEN);
 
