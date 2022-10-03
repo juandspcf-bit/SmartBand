@@ -67,6 +67,7 @@ public class SummaryActivityFragment extends Fragment {
             public void onClick(View view) {
                 //dashBoardViewModel.getRealTimeTesterClass().startTemperatureDetection();
                 //dashBoardViewModel.getDeviceSettingsManager().readDeviceSettings();
+                dashBoardViewModel.getRealTimeTesterClass().readReadRRIntervalByDay();
             }
         });
 

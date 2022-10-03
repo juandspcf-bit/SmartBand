@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.inuker.bluetooth.library.Code;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -22,12 +23,15 @@ import com.veepoo.protocol.listener.data.IBPDetectDataListener;
 import com.veepoo.protocol.listener.data.IBPSettingDataListener;
 import com.veepoo.protocol.listener.data.IHeartDataListener;
 import com.veepoo.protocol.listener.data.IHeartWaringDataListener;
+import com.veepoo.protocol.listener.data.IRRIntervalProgressListener;
 import com.veepoo.protocol.listener.data.ISportDataListener;
 import com.veepoo.protocol.listener.data.ITemptureDetectDataListener;
+import com.veepoo.protocol.model.DayState;
 import com.veepoo.protocol.model.datas.BpData;
 import com.veepoo.protocol.model.datas.BpSettingData;
 import com.veepoo.protocol.model.datas.HeartData;
 import com.veepoo.protocol.model.datas.HeartWaringData;
+import com.veepoo.protocol.model.datas.RRIntervalData;
 import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TemptureDetectData;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
@@ -35,6 +39,7 @@ import com.veepoo.protocol.model.settings.BpSetting;
 import com.veepoo.protocol.model.settings.HeartWaringSetting;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -195,6 +200,25 @@ public class RealTimeTesterClass {
 
     public void readHeartRateAlertSettings(@NonNull Consumer<Integer> receivingCode, @NonNull Consumer<HeartWaringData> receivingSettings){
         VPOperateManager.getMangerInstance(context).readHeartWarning(receivingCode::accept, receivingSettings::accept);
+    }
+
+    public void readReadRRIntervalByDay(){
+        VPOperateManager.getMangerInstance(context).readRRIntervalByDay(new IBleWriteResponse() {
+            @Override
+            public void onResponse(int i) {
+                if(i != Code.REQUEST_SUCCESS) Log.d(TAG, "onReadRRIntervalProgressChanged: " + "no success");;
+            }
+        }, new IRRIntervalProgressListener() {
+            @Override
+            public void onReadRRIntervalProgressChanged(float v, RRIntervalData rrIntervalData) {
+                Log.d(TAG, "onReadRRIntervalProgressChanged: " + rrIntervalData.toString());
+            }
+
+            @Override
+            public void onReadRRIntervalComplete(DayState dayState, List<RRIntervalData> list) {
+                Log.d(TAG, "onReadRRIntervalProgressChanged: " + list);
+            }
+        }, DayState.YESTERDAY, 1440);
     }
 
 
