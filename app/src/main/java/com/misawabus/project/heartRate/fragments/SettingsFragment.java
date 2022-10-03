@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.inuker.bluetooth.library.Code;
 import com.misawabus.project.heartRate.R;
+import com.misawabus.project.heartRate.ScanConnectionActivity;
 import com.misawabus.project.heartRate.databinding.FragmentSettingsBinding;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.veepoo.protocol.model.datas.HeartWaringData;
@@ -80,7 +82,7 @@ public class SettingsFragment extends Fragment {
                         Snackbar.make(view, "Yes", Snackbar.LENGTH_SHORT).show();
                         return;
                     }
-                    Snackbar.make(view, "No", Snackbar.LENGTH_SHORT).show();
+
                 });
                 dialog.dismiss();
             }
@@ -113,9 +115,16 @@ public class SettingsFragment extends Fragment {
         binding.disconecctButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(binding.disconecctButton.getText()=="Connect"){
+                    Intent myIntent = new Intent(getActivity(), ScanConnectionActivity.class);
+                    startActivity(myIntent);
+                }
+
                 dashBoardViewModel.getDeviceSettingsManager().disconnectDevice(code -> {
                     if(code==Code.REQUEST_SUCCESS)
                         Toast.makeText(getContext(), "Successfully disconnected", Toast.LENGTH_SHORT).show();
+                    binding.disconecctButton.setText("Connect");
+
                 });
             }
         });
