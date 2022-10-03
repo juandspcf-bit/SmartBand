@@ -2,6 +2,7 @@ package com.misawabus.project.heartRate.fragments.summaryFragments.utils;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.util.Log;
 
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
@@ -15,6 +16,7 @@ import java.util.function.BiFunction;
 
 public class UtilsSummaryFrag {
 
+    private static final String TAG = UtilsSummaryFrag.class.getSimpleName();
     public static Map<Integer, String> activityZonesMapping = new HashMap<>();
 
     static {
@@ -36,6 +38,8 @@ public class UtilsSummaryFrag {
                 seriesList.add(join);
             }
         }
+        Log.d(TAG, "interpolateSeries: " + seriesList);
+        if(seriesList.size()<3) return;
 
         var filteredLengthSeries = seriesList.size();
         var seriesDoubleFiltered = new double[filteredLengthSeries];

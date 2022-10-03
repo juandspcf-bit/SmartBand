@@ -29,6 +29,7 @@
                     android:id="@+id/chipShareEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:enabled="false"
                     android:text="share"
                     app:chipIcon="@drawable/ic_baseline_attach_email_48"
@@ -48,13 +49,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="#282a35"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline45"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline46">
+                    app:layout_constraintTop_toBottomOf="@+id/chipShareEmail">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/mainSportsRealTimeLayout"
@@ -232,9 +233,7 @@
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fragmentStepsPlotCardView">
+                    tools:layout_editor_absoluteY="799dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -315,9 +314,7 @@
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/guideline45">
+                    tools:layout_editor_absoluteY="469dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -398,9 +395,7 @@
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fragmentRatePlotCardView">
+                    tools:layout_editor_absoluteY="1130dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -482,9 +477,7 @@
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fragmentBloodPressureCardView">
+                    tools:layout_editor_absoluteY="1460dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -566,10 +559,7 @@
                     android:layout_height="300dp"
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
-                    app:cardElevation="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fragmentSleepPlotCardView">
+                    app:cardElevation="5dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -660,25 +650,25 @@
                     app:layout_constraintGuide_percent="0.5" />
 
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline45"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.21" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline46"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.03" />
-
-                <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline47"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.05" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/cardPlotsflow"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    app:constraint_referenced_ids="fragmentStepsPlotCardView,fragmentRatePlotCardView,fragmentBloodPressureCardView,fragmentSleepPlotCardView,fragmentSop2PlotCardView"
+                    app:flow_verticalGap="25dp"
+                    app:layout_constraintBottom_toBottomOf="@id/linearLayout7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragmentFitnessPlotCardView" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

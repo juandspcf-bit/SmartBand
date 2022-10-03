@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -43,6 +44,8 @@ import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySportsF
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
+import com.veepoo.protocol.model.enums.EFunctionStatus;
+import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -139,6 +142,39 @@ public class DayFragment extends Fragment {
         Objects.requireNonNull(binding.refreshLayout).setEnabled(false);
         binding.refreshLayout.setSize(SwipeRefreshLayout.LARGE);
 
+        deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
+            @Override
+            public void onChanged(CustomSettingData customSettingData) {
+                if(customSettingData!=null){
+                    EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
+                    EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
+                    EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
+                    EFunctionStatus ppgSupport = customSettingData.getPpg();
+                    EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
+/*                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);*/
+/*                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);*/
+                    if (EFunctionStatus.SUPPORT != autoBpDetect
+                            && EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
+                        binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
+                        binding.cardPlotsflow.removeView(binding.fragmentBloodPressureCardView);
+                    }
+                    if (EFunctionStatus.SUPPORT != lowSpo2hRemain
+                            && EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain) {
+                        binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
+                        binding.cardPlotsflow.removeView(binding.fragmentSop2PlotCardView);
+                    }
+/*                    binding.imageButtonEcg.setEnabled(EFunctionStatus.SUPPORT == ppgSupport
+                            || EFunctionStatus.SUPPORT_OPEN == ppgSupport);*/
+                }else {
+
+                }
+            }
+        });
+
+
+
         binding.fragmentPlot.setVisibility(View.GONE);
         binding.flowNoStepsData.setVisibility(View.VISIBLE);
         binding.fragmentRatePlot.setVisibility(View.GONE);
@@ -170,6 +206,9 @@ public class DayFragment extends Fragment {
                     sleepDataList,
                     device);
         });
+
+
+
     }
 
     protected void onClickCardFitnessArea(View view) {
