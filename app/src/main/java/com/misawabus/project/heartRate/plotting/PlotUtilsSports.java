@@ -218,10 +218,10 @@ public class PlotUtilsSports {
             int position = selection.second.getX(selection.first).intValue();
 
             String dataS;
-            if (position != (IntervalUtils.hoursInterval.length - 1)) {
-                dataS = IntervalUtils.hoursInterval[position] + " - " + IntervalUtils.hoursInterval[position + 1];
+            if (position != (IntervalUtils.intervalLabels30Min.length - 1)) {
+                dataS = IntervalUtils.intervalLabels30Min[position] + " - " + IntervalUtils.intervalLabels30Min[position + 1];
             } else {
-                dataS = IntervalUtils.hoursInterval[position] + " - " + "00:00";
+                dataS = IntervalUtils.intervalLabels30Min[position] + " - " + "00:00";
             }
 
             selectionWidget.setText(selection.second.getY(selection.first).intValue() + " steps at " + "\n" + dataS);
@@ -234,7 +234,7 @@ public class PlotUtilsSports {
     public static void processingIntervalsSummarySteps(XYPlot plot, Double[] seriesSteps) {
 
 
-        String[] domainLabels = IntervalUtils.hoursInterval;
+        String[] domainLabels = IntervalUtils.intervalLabels30Min;
         double rangeStepsUpperLimit = Collections.max(Arrays.asList(seriesSteps));
         int updatedRangeStepsUpperLimit = setRangeDomain((int) rangeStepsUpperLimit, xyPlotForSummarySteps);
         plot.setRangeUpperBoundary(updatedRangeStepsUpperLimit, BoundaryMode.FIXED);

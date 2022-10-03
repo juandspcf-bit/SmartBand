@@ -236,6 +236,47 @@ public class FragmentUtil {
 
     }
 
+    public static List<Map<String, Double>> getBloodPressureMapFieldWith30MinAVGValues(List<Map<String, Double>> dataMap, String field) {
+
+        List<List<Map<String, Double>>> list30Min = new ArrayList<>();
+
+        int size =48;
+        for (int i = 0; i < size; i++) {
+            List<Map<String, Double>> array = new ArrayList<>();
+            list30Min.add(array);
+        }
+
+        for (int i = 0; i < dataMap.size(); i++) {
+            int interval = (int) (Math.floor(i / 6.0)+1);
+            List<Map<String, Double>> doubles = list30Min.get(interval-1);
+            doubles.add(dataMap.get(i));
+        }
+
+        List<Map<String, Double>> collect = list30Min.stream().map(maps -> {
+
+            double fieldValue = maps
+                    .stream()
+                    .map(list30Min2 -> list30Min2.getOrDefault(field,
+                            0.0))
+                    .mapToDouble(value -> value)
+                    .filter(value -> value > 0.0)
+                    .average().orElse(0.0);
+
+
+            Map<String, Double> mapFieldsWith30MinValues = new HashMap<>();
+            mapFieldsWith30MinValues.put(field, fieldValue);
+
+            return mapFieldsWith30MinValues;
+
+
+        }).collect(toList());
+
+
+        return collect;
+
+
+    }
+
     public static Map<String, List<Double>> getBPDataGroupByFieldsWith30MinSumValuesForExcel(List<Map<String, Double>> dataMap) {
 
         List<List<Map<String, Double>>> list30Min = new ArrayList<>();

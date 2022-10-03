@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 
@@ -178,7 +177,7 @@ public class SummaryHRFragment extends SummaryFragment {
 
 
         Double[] ppgs = heartRateGroupByFieldsWith30MinSumValues.get("Ppgs").toArray(new Double[0]);
-        String[] domainLabels = IntervalUtils.hoursInterval;
+        String[] domainLabels = IntervalUtils.intervalLabels30Min;
 
         setTextButtonDate(selectedDate, binding.selectDateHRButton);
 

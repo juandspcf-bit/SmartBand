@@ -6,13 +6,9 @@ import com.misawabus.project.heartRate.Utils.Utils;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 public class IntervalUtils {
-    public static final String[] hoursInterval;
+    public static final String[] intervalLabels30Min;
     private static final String TAG = IntervalUtils.class.getSimpleName();
 
     static {
@@ -37,7 +33,7 @@ public class IntervalUtils {
 
             domainLabels[i] = value;
         }
-        hoursInterval = domainLabels;
+        intervalLabels30Min = domainLabels;
     }
 
     @NonNull
