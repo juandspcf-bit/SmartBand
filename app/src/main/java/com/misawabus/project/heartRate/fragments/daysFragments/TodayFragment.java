@@ -1,11 +1,15 @@
 package com.misawabus.project.heartRate.fragments.daysFragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.Observer;
 
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
@@ -90,5 +94,11 @@ public class TodayFragment extends DayFragment {
         if (binding.fragmentSop2PlotCardView != null) {
             binding.fragmentSop2PlotCardView.setOnClickListener(this::onClickCardSop2Area);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 }

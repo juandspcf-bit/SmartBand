@@ -1,13 +1,19 @@
 package com.misawabus.project.heartRate.fragments.daysFragments;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -116,8 +122,6 @@ public class DayFragment extends Fragment {
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         macAddress = deviceViewModel.getMacAddress();
-
-
     }
 
     @Override
@@ -172,7 +176,9 @@ public class DayFragment extends Fragment {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
-                        new SummarySportsFragment()).commit();
+                        new SummarySportsFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     protected void onClickCardSleepArea(View view) {
@@ -181,6 +187,7 @@ public class DayFragment extends Fragment {
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummarySleepFragmentV2())
                         //new SummarySleepFragment())
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -188,21 +195,27 @@ public class DayFragment extends Fragment {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
-                        new SummaryBPFragment()).commit();
+                        new SummaryBPFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     protected void onClickCardHeartRateArea(View view) {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
-                        new SummaryHRFragment()).commit();
+                        new SummaryHRFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     protected void onClickCardSop2Area(View view) {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
-                        new SummarySop2Fragment()).commit();
+                        new SummarySop2Fragment())
+                .addToBackStack(null)
+                .commit();
     }
 
 
@@ -280,5 +293,34 @@ public class DayFragment extends Fragment {
                     binding.fragmentSop2Plot);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: My fragement");
+        if(getActivity()!=null){
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getActivity().getWindow(), getView());
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        }else {
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "onAttach: ");
     }
 }

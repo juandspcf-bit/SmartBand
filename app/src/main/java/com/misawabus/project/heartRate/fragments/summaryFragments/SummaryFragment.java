@@ -42,11 +42,7 @@ public class SummaryFragment extends Fragment {
     }
 
     protected void backMainFragment() {
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
-                        new MainDashBoardFragment())
-                .commit();
+        getParentFragmentManager().popBackStack();
     }
 
     @Override

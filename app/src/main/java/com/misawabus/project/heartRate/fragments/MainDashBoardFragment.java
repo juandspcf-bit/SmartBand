@@ -160,6 +160,26 @@ public class MainDashBoardFragment extends Fragment{
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getActivity()!=null){
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getActivity().getWindow(), getView());
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        }else {
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
+    }
 
     private void hideProgressBar(ValueAnimator animation) {
         dashBoardViewModel.setIsFetching(View.INVISIBLE);
