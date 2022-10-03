@@ -255,6 +255,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 if(sleepDataUI.getIdTypeDataTable().equals(IdTypeDataTable.SleepPrecision)){
                     if(position>0){
                         int wakeCountInt = wakeCount1 - data.get(position - 1).getWakeCount();
+                        if (wakeCountInt<0) wakeCountInt =0;
                         wakeCount = String.valueOf(wakeCountInt);
                     }else {
                         wakeCount = String.valueOf(wakeCount1);
