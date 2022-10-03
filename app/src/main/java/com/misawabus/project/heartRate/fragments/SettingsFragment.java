@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -22,7 +23,10 @@ import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.ScanConnectionActivity;
 import com.misawabus.project.heartRate.databinding.FragmentSettingsBinding;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
+import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.datas.HeartWaringData;
+import com.veepoo.protocol.model.enums.EFunctionStatus;
+import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.util.function.Consumer;
 
@@ -32,6 +36,7 @@ public class SettingsFragment extends Fragment {
     private DashBoardViewModel dashBoardViewModel;
     private View vista;
     private boolean isOpen;
+    private DeviceViewModel deviceViewModel;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -41,6 +46,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
 
     }
@@ -127,6 +133,14 @@ public class SettingsFragment extends Fragment {
 
                 });
             }
+        });
+
+
+        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(),  isBluetoothConnected-> {
+            if(!isBluetoothConnected) {
+                binding.disconecctButton.setText("Connect");
+            }
+
         });
 
 
