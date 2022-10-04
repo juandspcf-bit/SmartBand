@@ -4,8 +4,6 @@ import static com.misawabus.project.heartRate.fragments.summaryFragments.utils.U
 import static java.util.stream.Collectors.averagingDouble;
 import static java.util.stream.Collectors.toList;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.androidplot.ui.SeriesRenderer;

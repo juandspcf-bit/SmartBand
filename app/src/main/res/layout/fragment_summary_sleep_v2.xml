@@ -135,13 +135,20 @@
                     android:layout_height="wrap_content"
                     android:text="0%" />
 
+                <TextView
+                    android:id="@+id/awakeTimesPercenTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0%" />
+
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/deepSleepBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progress="10"
-                    app:indicatorColor="#002266" />
+                    app:indicatorColor="#002266"
+                    app:trackThickness="10dp" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/lightSleepBar"
@@ -149,7 +156,8 @@
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progress="10"
-                    app:indicatorColor="#4D88FF" />
+                    app:indicatorColor="#4D88FF"
+                    app:trackThickness="10dp" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/remSleepBar"
@@ -157,7 +165,8 @@
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progress="10"
-                    app:indicatorColor="#FF99BB" />
+                    app:indicatorColor="#FF99BB"
+                    app:trackThickness="10dp" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/insomniaSleepBar"
@@ -165,7 +174,17 @@
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progress="10"
-                    app:indicatorColor="#FF8080" />
+                    app:indicatorColor="#FF8080"
+                    app:trackThickness="10dp" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/awakeTimesSleepBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="10"
+                    app:indicatorColor="#FFFF00"
+                    app:trackThickness="10dp" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline66"
@@ -188,7 +207,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="vertical"
-                    app:constraint_referenced_ids="deeSleepPercentageTextView,deepSleepBar,lightSleepPercenextView,lightSleepBar,remSleepPercenTextView,remSleepBar,insomniaPercenTextView,insomniaSleepBar"
+                    app:constraint_referenced_ids="deeSleepPercentageTextView,deepSleepBar,lightSleepPercenextView,lightSleepBar,remSleepPercenTextView,remSleepBar,insomniaPercenTextView,insomniaSleepBar,awakeTimesPercenTextView,awakeTimesSleepBar"
                     app:flow_verticalGap="5dp"
                     app:flow_verticalStyle="spread"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -440,7 +459,6 @@
                     android:id="@+id/flowCardsInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:orientation="horizontal"
                     android:padding="10dp"
                     app:constraint_referenced_ids="deepSleepCardView,lightSleepCardView,remSleepCardView,insomniaSleepCardView,awakeMinutessCardView,fallSleepTimeCardView,wakeUpTimeCardView,sleepTimeCardView"

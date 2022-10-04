@@ -31,16 +31,11 @@ import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SummarySleepFragmentV2 extends SummaryFragment {
     private static final String TAG = SummarySleepFragmentV2.class.getSimpleName();
@@ -109,64 +104,13 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
         }
         binding.imageViewSleep2.setVisibility(View.GONE);
         binding.groupViews.setVisibility(View.VISIBLE);
-
-        List<SleepDataUI> sortedSleepData = sortSleepListData(sleepDataUIS);
-        Map<Integer,List<SleepDataUI>> map = new HashMap<>();
-
-        int counter = 0;
-        for (int i = 0; i<sortedSleepData.size(); ++i) {
-            if (i > 0) {
-                LocalTime localTimeSleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i - 1).getSleepUp());
-                LocalTime localTimeSleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i).getSleepDown());
-                int differenceTime = localTimeSleepDown.getSecond() - localTimeSleepUp.getSecond();
-                if (differenceTime < 20 * 60) {
-                    map.computeIfAbsent(counter, k -> new ArrayList<>());
-                    map.get(counter).add(sortedSleepData.get(i - 1));
-                    //map.get(counter).add(sortedSleepData.get(i));
-
-                } else {
-                    map.get(counter).add(sortedSleepData.get(i - 1));
-                    ++counter;
-/*                    map.computeIfAbsent(counter, k -> new ArrayList<>());
-                    map.get(counter).add(sortedSleepData.get(i));*/
-                }
-
-            }
+        sleepDataUIS = PlotUtilsSleep.sortSleepListData(sleepDataUIS);
+        if(sleepDataUIS.get(0).idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+            sleepDataUIS = PlotUtilsSleep.joinSleepListData(sleepDataUIS);
         }
 
-        map.forEach((k,v)->{
-            Log.d(TAG, "setFragmentViews: joinData  k="+ k + "   " + v);
-        });
 
-
-
-        List<SleepDataUI> joinData = new ArrayList<>();
-        map.forEach((k, v)->{
-            List<SleepDataUI> sleepDataUIS1 = map.get(k);
-            if(sleepDataUIS1.size()>1){
-                String sleepUp = sleepDataUIS1.get(0).getSleepUp();
-                String sleepDown = sleepDataUIS1.get(sleepDataUIS1.size() - 1).getSleepDown();
-                SleepDataUI sleepDataUI = new SleepDataUI();
-                sleepDataUI.setSleepUp(sleepUp);
-                sleepDataUI.setSleepDown(sleepDown);
-                joinData.add(sleepDataUI);
-                String JoinDataSleepLine = sleepDataUIS1.stream().map(SleepDataUI::getData).collect(Collectors.joining());
-                sleepDataUI.setData(JoinDataSleepLine);
-                sleepDataUI.setIdTypeDataTable( sleepDataUIS1.get(0).idTypeDataTable);
-                int allSleepTime = sleepDataUIS1.stream().map(SleepDataUI::getAllSleepTime).mapToInt(Integer::intValue).sum();
-                sleepDataUI.setAllSleepTime(allSleepTime);
-                double avgScoreSleep = sleepDataUIS1.stream().map(SleepDataUI::getSleepQuality).mapToInt(Integer::intValue).average().orElse(0);
-                sleepDataUI.setSleepQuality((int) Math.ceil(avgScoreSleep));
-                joinData.add(sleepDataUI);
-
-            }else {
-                joinData.add(sleepDataUIS1.get(0));
-            }
-        });
-
-
-
-        buildViewPagerView(sortedSleepData,
+        buildViewPagerView(sleepDataUIS,
                 getContext(),
                 binding.viewPager,
                 R.layout.row_layout_sleep_card_v2,
@@ -177,31 +121,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
 
     }
 
-    private List<SleepDataUI> sortSleepListData(List<SleepDataUI> sleepDataUIS) {
-        List<Integer> collect = sleepDataUIS.stream().map(sleepDataUI -> {
-            LocalTime localTimeFromVeepooTimeDateObj;
-            localTimeFromVeepooTimeDateObj =
-                    DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
-            return localTimeFromVeepooTimeDateObj.toSecondOfDay();
-
-        }).collect(Collectors.toList());
-
-        Log.d(TAG, "collect.size() " + collect.size());
-        Map<Integer, SleepDataUI> mapSleep = new HashMap<>();
-        Stream.iterate(0, i -> ++i).limit(collect.size()).forEach(index -> {
-            Log.d(TAG, "Stream.iterate: " + collect.get(index) + "  index: " + index);
-
-            mapSleep.put(collect.get(index), sleepDataUIS.get(index));
-        });
-
-        Collections.sort(collect);
-
-        List<SleepDataUI> sortedSleepData = collect
-                .stream()
-                .map(mapSleep::get)
-                .collect(Collectors.toList());
-        return sortedSleepData;
-    }
 
     private void buildViewPagerView(List<? extends SleepDataUI> data,
                                     Context context,
@@ -225,6 +144,17 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                     binding.insomniaSleepCardView.setVisibility(View.GONE);
                     binding.flowCardsInfo.removeView(binding.remSleepCardView);
                     binding.remSleepCardView.setVisibility(View.GONE);
+
+                    binding.insomniaSleepBar.setVisibility(View.GONE);
+                    binding.flowCardsInfo.removeView(binding.insomniaSleepBar);
+                    binding.insomniaPercenTextView.setVisibility(View.GONE);
+                    binding.flowCardsInfo.removeView(binding.insomniaPercenTextView);
+
+                    binding.remSleepBar.setVisibility(View.GONE);
+                    binding.flowCardsInfo.removeView(binding.remSleepBar);
+                    binding.remSleepPercenTextView.setVisibility(View.GONE);
+                    binding.flowCardsInfo.removeView(binding.remSleepPercenTextView);
+
                     sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
                     PlotUtilsSleep.plotSleepIntegerListData(sleepDataUI,
                             sleepData.get("lightSleep"),
@@ -285,25 +215,13 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 allSleepTime = getStringTimeFormatted(hours, minutes);
 
                 long allSleepTimeMinutes = hours * 60L + minutes;
+                Map<String, List<Integer>> sleepDataMapLines;
 
+                if(sleepDataUI.getIdTypeDataTable().equals(IdTypeDataTable.Sleep)){
+                    sleepDataMapLines = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
 
-                Map<String, List<Integer>> sleepDataMapLines = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
-                List<Integer> deepSleep = sleepDataMapLines.get("deepSleep");
-                String deepSleepTime = getTypeSleepFormattedStringCount(deepSleep, sleepDataUI.idTypeDataTable);
-                long deepSleepCountMin = getTypeSleepFormattedCountHourMin(deepSleep, sleepDataUI.idTypeDataTable);
-                int deepSleepPercen = (int) (deepSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                binding.deepSleepBar.setProgress(deepSleepPercen);
-                binding.deeSleepPercentageTextView.setText(String.format(Locale.JAPAN, "%d%c of deep sleep", deepSleepPercen, '%'));
-
-                List<Integer> lightSleep = sleepDataMapLines.get("lightSleep");
-                String lightSleepTime = getTypeSleepFormattedStringCount(lightSleep, sleepDataUI.idTypeDataTable);
-                long lightSleepCountMin = getTypeSleepFormattedCountHourMin(lightSleep, sleepDataUI.idTypeDataTable);
-                int lightSleepPercen = (int) (lightSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                binding.lightSleepBar.setProgress(lightSleepPercen);
-                binding.lightSleepPercenextView.setText(String.format(Locale.JAPAN, "%d%c of light sleep", lightSleepPercen, '%'));
-
-
-                if( sleepDataUI.getIdTypeDataTable().equals(IdTypeDataTable.SleepPrecision)){
+                }else {
+                    sleepDataMapLines = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
                     List<Integer> rapidEyeMovement = sleepDataMapLines.get("rapidEyeMovement");
                     String rapidEyeMovementTime = getTypeSleepFormattedStringCount(rapidEyeMovement, sleepDataUI.idTypeDataTable);
                     List<Integer> insomnia = sleepDataMapLines.get("insomnia");
@@ -321,9 +239,30 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                     binding.insomniaPercenTextView.setText(String.format(Locale.JAPAN, "%d%c of insomnia", insomniaPercen, '%'));
                 }
 
-                List<Integer> awakeLine = sleepDataMapLines.get("wakeUp");
-                String awakeTime = getTypeSleepFormattedStringCount(awakeLine, sleepDataUI.idTypeDataTable);
 
+
+
+                List<Integer> deepSleep = sleepDataMapLines.get("deepSleep");
+                String deepSleepTime = getTypeSleepFormattedStringCount(deepSleep, sleepDataUI.idTypeDataTable);
+                long deepSleepCountMin = getTypeSleepFormattedCountHourMin(deepSleep, sleepDataUI.idTypeDataTable);
+                int deepSleepPercen = (int) (deepSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                binding.deepSleepBar.setProgress(deepSleepPercen);
+                binding.deeSleepPercentageTextView.setText(String.format(Locale.JAPAN, "%d%c of deep sleep", deepSleepPercen, '%'));
+
+                List<Integer> lightSleep = sleepDataMapLines.get("lightSleep");
+                String lightSleepTime = getTypeSleepFormattedStringCount(lightSleep, sleepDataUI.idTypeDataTable);
+                long lightSleepCountMin = getTypeSleepFormattedCountHourMin(lightSleep, sleepDataUI.idTypeDataTable);
+                int lightSleepPercen = (int) (lightSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                binding.lightSleepBar.setProgress(lightSleepPercen);
+                binding.lightSleepPercenextView.setText(String.format(Locale.JAPAN, "%d%c of light sleep", lightSleepPercen, '%'));
+
+                List<Integer> awakeLine = sleepDataMapLines.get("wakeUp");
+                Log.d(TAG, "onPageSelected: " + awakeLine);
+                String awakeTime = getTypeSleepFormattedStringCount(awakeLine, sleepDataUI.idTypeDataTable);
+                long awakeLineCountMin = getTypeSleepFormattedCountHourMin(awakeLine, sleepDataUI.idTypeDataTable);
+                int awakeSleepPercen = (int) (awakeLineCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                binding.awakeTimesSleepBar.setProgress(awakeSleepPercen);
+                binding.awakeTimesPercenTextView.setText(String.format(Locale.JAPAN, "%d%c awake", awakeSleepPercen, '%'));
 
                 int wakeCount1 = sleepDataUI.getWakeCount();
                 String wakeCount;
@@ -373,6 +312,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
         viewPager.registerOnPageChangeCallback(callback);
         dashBoardViewModel.getViewPagerCallBack().setValue(callback);
     }
+
 
     @NonNull
     private String getTypeSleepFormattedStringCount(List<Integer> typeSleep, IdTypeDataTable idTypeDataTable) {

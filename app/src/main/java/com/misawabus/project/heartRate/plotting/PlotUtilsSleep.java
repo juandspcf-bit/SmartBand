@@ -1,7 +1,12 @@
 package com.misawabus.project.heartRate.plotting;
 
+import static java.util.stream.Collectors.toList;
+
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.BarRenderer;
@@ -19,7 +24,11 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PlotUtilsSleep {
@@ -30,6 +39,7 @@ public class PlotUtilsSleep {
     private static final int rapidEyeMovementColor = Color.rgb(255, 153, 187);
     private static final int lightSleepColor = Color.rgb(77, 136, 255);
     private static final int deepSleepColor = Color.rgb(0, 34, 102);
+    private static final String TAG = PlotUtilsSleep.class.getSimpleName();
 
     public static void plotSleepIntegerListData(SleepDataUI sleepDataUI,
                                                 List<Integer> lightSleep,
@@ -214,5 +224,100 @@ public class PlotUtilsSleep {
 
         plot.redraw();
 
+    }
+
+
+    @NonNull
+    public static List<SleepDataUI> joinSleepListData(List<SleepDataUI> sortedSleepData) {
+        Map<Integer,List<SleepDataUI>> map = new HashMap<>();
+
+        int counter = 0;
+        for (int i = 0; i< sortedSleepData.size(); ++i) {
+            if (i > 0) {
+                LocalTime localTimeSleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i - 1).getSleepUp());
+                LocalTime localTimeSleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i).getSleepDown());
+                int differenceTime = localTimeSleepDown.getHour()*60 + localTimeSleepDown.getMinute()
+                        - localTimeSleepUp.getHour()*60 - localTimeSleepUp.getMinute();
+                if (Math.abs(differenceTime) < 20 ) {
+                    map.computeIfAbsent(counter, k -> new ArrayList<>());
+                    map.get(counter).add(sortedSleepData.get(i - 1));
+                    if(i== sortedSleepData.size()-1){
+                        map.get(counter).add(sortedSleepData.get(i));
+                    }
+
+                } else {
+                    map.get(counter).add(sortedSleepData.get(i - 1));
+                    ++counter;
+
+                    if(i== sortedSleepData.size()-1){
+                        map.computeIfAbsent(counter, k -> new ArrayList<>());
+                        map.get(counter).add(sortedSleepData.get(i));
+                    }
+
+                }
+
+            }
+        }
+
+
+        List<SleepDataUI> joinData = new ArrayList<>();
+        map.forEach((k, v)->{
+            List<SleepDataUI> sleepDataUIS1 = map.get(k);
+            sleepDataUIS1.forEach(sleepDataUI -> Log.d(TAG, "setFragmentViews: " +sleepDataUI.getSleepUp() + " : " + sleepDataUI.getSleepDown()));
+            Log.d(TAG, "setFragmentViews: joinData  "+ k + " : " + v.size());
+            if(sleepDataUIS1.size()>1){
+                SleepDataUI sleepDataUI = new SleepDataUI();
+
+                String sleepDown = sleepDataUIS1.get(0).getSleepDown();
+                Log.d(TAG, "setFragmentViews: sleepDown " + sleepDown);
+                String  sleepUp = sleepDataUIS1.get(sleepDataUIS1.size() - 1).getSleepUp();
+                Log.d(TAG, "setFragmentViews: sleepUp " + sleepUp);
+                sleepDataUI.setSleepUp(sleepUp);
+                sleepDataUI.setSleepDown(sleepDown);
+
+                String JoinDataSleepLine = sleepDataUIS1.stream().map(SleepDataUI::getData).collect(Collectors.joining());
+                sleepDataUI.setData(JoinDataSleepLine);
+
+                sleepDataUI.setIdTypeDataTable( sleepDataUIS1.get(0).idTypeDataTable);
+
+                double avgScoreSleep = sleepDataUIS1.stream().map(SleepDataUI::getSleepQuality).mapToInt(Integer::intValue).average().orElse(0);
+                sleepDataUI.setSleepQuality((int) Math.ceil(avgScoreSleep));
+
+                long countWakeUp = sleepDataUIS1.stream().map(SleepDataUI::getWakeCount).mapToInt(Integer::intValue).count();
+                sleepDataUI.setWakeCount((int) countWakeUp);
+
+                joinData.add(sleepDataUI);
+
+            }else {
+                joinData.add(sleepDataUIS1.get(0));
+            }
+        });
+        return joinData;
+    }
+
+    public static List<SleepDataUI> sortSleepListData(List<SleepDataUI> sleepDataUIS) {
+        List<Integer> collect = sleepDataUIS.stream().map(sleepDataUI -> {
+            LocalTime localTimeFromVeepooTimeDateObj;
+            localTimeFromVeepooTimeDateObj =
+                    DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
+            return localTimeFromVeepooTimeDateObj.toSecondOfDay();
+
+        }).collect(toList());
+
+        Log.d(TAG, "collect.size() " + collect.size());
+        Map<Integer, SleepDataUI> mapSleep = new HashMap<>();
+        Stream.iterate(0, i -> ++i).limit(collect.size()).forEach(index -> {
+            Log.d(TAG, "Stream.iterate: " + collect.get(index) + "  index: " + index);
+
+            mapSleep.put(collect.get(index), sleepDataUIS.get(index));
+        });
+
+        Collections.sort(collect);
+
+        List<SleepDataUI> sortedSleepData = collect
+                .stream()
+                .map(mapSleep::get)
+                .collect(toList());
+        return sortedSleepData;
     }
 }
