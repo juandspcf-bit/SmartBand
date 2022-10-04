@@ -278,13 +278,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                     wakeCount = String.valueOf(wakeCount1);
                 }
 
-
-
-
-
-
-
-
                 int sleepQuality= sleepDataUI.getSleepQuality();
 
 
@@ -294,7 +287,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 binding.wakeUpTimeTextView.setText(sleepUp);
                 binding.deepSleepTextView.setText(deepSleepTime);
                 binding.lightSleepTextView.setText(lightSleepTime);
-
+                binding.wakeUpNumberTimesTextView.setText(wakeCount);
                 binding.ratingBarSleepQuality2.setRating(sleepQuality);
 
 
