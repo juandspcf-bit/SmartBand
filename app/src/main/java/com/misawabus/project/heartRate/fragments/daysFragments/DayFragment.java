@@ -41,6 +41,7 @@ import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryHRFragm
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragmentV2;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySportsFragment;
+import com.misawabus.project.heartRate.plotting.PlotUtilsSleep;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -67,31 +68,12 @@ public class DayFragment extends Fragment {
         if (sleepDataUIList == null || sleepDataUIList.size() == 0) return;
         dayFragment.sleepDataList = sleepDataUIList;
 
-        List<LocalTime> collect = sleepDataUIList.stream()
-                .map(sleepDataUI ->
-                {
-                    LocalTime localTimeFromVeepooTimeDateObj;
-                    localTimeFromVeepooTimeDateObj =
-                            DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
-                    return localTimeFromVeepooTimeDateObj;
-                })
-                .filter(localTime ->
-                {
-                    int hour = localTime.getHour();
-                    return hour <= 8;
-                })
-                .collect(Collectors.toList());
-
-
-        Log.d(TAG, "setDaySleepPlot: c" + collect);
-
         SleepDataUI sleepDataUI;
-        if (collect.size() == 0) {
-            sleepDataUI = sleepDataUIList.get(0);
-        } else {
-            sleepDataUI = sleepDataUIList.get(collect.size() - 1);
+        sleepDataUIList = PlotUtilsSleep.sortSleepListData(sleepDataUIList);
+        if(sleepDataUIList.get(0).idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+            sleepDataUIList = PlotUtilsSleep.joinSleepListData(sleepDataUIList);
         }
-
+        sleepDataUI=sleepDataUIList.get(0);
 
         Map<String, List<Integer>> sleepData;
         if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
