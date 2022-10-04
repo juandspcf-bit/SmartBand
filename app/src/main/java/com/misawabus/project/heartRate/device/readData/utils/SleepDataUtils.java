@@ -16,24 +16,6 @@ import java.util.List;
 
 public class SleepDataUtils {
 
-    public static String processingSleepData(SleepData sleepData) {
-        List<String> list= new ArrayList<>();
-        if (sleepData.getSleepLine().isEmpty()) return "";
-        list.add("date="+ sleepData.getSleepUp().year+"-" + sleepData.getSleepUp().getDate());
-        list.add("cali_flag=" + sleepData.getCali_flag());
-        list.add("sleepQulity=" + sleepData.getSleepQulity());
-        list.add("wakeCount=" + sleepData.getWakeCount());
-        list.add("deepSleepTime=" + sleepData.getDeepSleepTime());
-        list.add("lowSleepTime=" + sleepData.getLowSleepTime());
-        list.add("allSleepTime=" + sleepData.getAllSleepTime());
-        list.add("sleepLine=" + sleepData.getSleepLine());
-        list.add("sleepDown=" + sleepData.getSleepDown());
-        list.add("sleepUp=" + sleepData.getSleepUp());
-
-        return list.toString();
-
-    }
-
 
     @NonNull
     @Contract("_, _ -> new")
@@ -67,7 +49,7 @@ public class SleepDataUtils {
 
         if(sleepData instanceof SleepPrecisionData){
             sleepDataUIObject.setIdTypeDataTable(IdTypeDataTable.SleepPrecision);
-
+            sleepDataUIObject.setSleepEfficiencyScore(((SleepPrecisionData) sleepData).getSleepEfficiencyScore());
 
         }else {
             sleepDataUIObject.setIdTypeDataTable(IdTypeDataTable.Sleep);

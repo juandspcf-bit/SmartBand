@@ -443,7 +443,7 @@
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    app:constraint_referenced_ids="deepSleepCardView,lightSleepCardView,remSleepCardView,insomniaSleepCardView,wakeUpTimesCardView,fallSleepTimeCardView,wakeUpTimeCardView,sleepTimeCardView"
+                    app:constraint_referenced_ids="deepSleepCardView,lightSleepCardView,remSleepCardView,insomniaSleepCardView,awakeMinutessCardView,fallSleepTimeCardView,wakeUpTimeCardView,sleepTimeCardView"
                     app:flow_horizontalAlign="center"
                     app:flow_horizontalGap="10dp"
                     app:flow_horizontalStyle="spread"
@@ -462,7 +462,7 @@
                     app:layout_constraintGuide_percent="0.5" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/wakeUpTimesCardView"
+                    android:id="@+id/awakeMinutessCardView"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     app:cardCornerRadius="10dp"
@@ -473,12 +473,12 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/wakeUpTimesTitleTextView"
+                            android:id="@+id/awakeMinutesTitleTextView"
                             android:layout_width="90dp"
                             android:layout_height="0dp"
                             android:background="#FFFF00"
                             android:gravity="center"
-                            android:text="Wake up\ntimes"
+                            android:text="Awake\nminutes"
                             android:textColor="#220D49"
                             app:layout_constraintBottom_toTopOf="@+id/wakeUpTimesGuideline"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -487,7 +487,7 @@
                             tools:ignore="TextContrastCheck" />
 
                         <TextView
-                            android:id="@+id/wakeUpTimesTextView"
+                            android:id="@+id/awakeMinutesTextView"
                             android:layout_width="90dp"
                             android:layout_height="0dp"
                             android:gravity="center"
