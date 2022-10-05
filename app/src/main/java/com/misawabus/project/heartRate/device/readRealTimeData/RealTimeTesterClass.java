@@ -35,6 +35,7 @@ import com.veepoo.protocol.model.datas.RRIntervalData;
 import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TemptureDetectData;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
+import com.veepoo.protocol.model.enums.EHeartWaringStatus;
 import com.veepoo.protocol.model.settings.BpSetting;
 import com.veepoo.protocol.model.settings.HeartWaringSetting;
 
@@ -187,13 +188,13 @@ public class RealTimeTesterClass {
 
     }
 
-    public void setHeartRateAlert(int higValue, int lowValue, boolean isChecked, Consumer<Integer> code){
+    public void setHeartRateAlert(int higValue, int lowValue, boolean isChecked, Consumer<HeartWaringData> code){
         VPOperateManager.getMangerInstance(context).settingHeartWarning(writeResponse, new IHeartWaringDataListener() {
             @Override
             public void onHeartWaringDataChange(HeartWaringData heartWaringData) {
                 String message = "心率报警-打开:\n" + heartWaringData.toString();
                 Logger.t(TAG).i(message);
-                sendMsg(message, 1);
+                code.accept(heartWaringData);
             }
         }, new HeartWaringSetting(higValue, lowValue, isChecked));
     }

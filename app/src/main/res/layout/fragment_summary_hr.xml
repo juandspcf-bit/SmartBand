@@ -134,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
+            android:enabled="false"
             android:minHeight="5dp"
             android:text="heart rate\n alert"
             android:textAlignment="center"

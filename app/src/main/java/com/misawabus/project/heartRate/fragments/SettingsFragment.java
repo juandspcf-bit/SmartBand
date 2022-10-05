@@ -2,6 +2,7 @@ package com.misawabus.project.heartRate.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.datas.HeartWaringData;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
+import com.veepoo.protocol.model.enums.EHeartWaringStatus;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.util.function.Consumer;
@@ -81,14 +83,16 @@ public class SettingsFragment extends Fragment {
                 int heartHigh = numberPickerHighValue.getValue();
                 int heartLow = numberPickerLowValue.getValue();
                 if (heartLow > heartHigh) return;
-                dashBoardViewModel.getRealTimeTesterClass().setHeartRateAlert(heartHigh, heartLow, isOpen, code -> {
-                    if (code == Code.REQUEST_SUCCESS) {
-                        numberPickerHighValue.setValue(heartHigh);
-                        numberPickerLowValue.setValue(heartLow);
-                        Snackbar.make(view, "Yes", Snackbar.LENGTH_SHORT).show();
+
+                dashBoardViewModel.getRealTimeTesterClass().setHeartRateAlert(heartHigh, heartLow, isOpen, heartWaringData -> {
+                    if(!heartWaringData.isOpen()){
+                        Toast.makeText(getContext(), "Error, enable the switch alert in order to set its values", Toast.LENGTH_LONG).show();
+                        numberPickerHighValue.setValue(heartWaringData.getHeartHigh());
+                        numberPickerLowValue.setValue(heartWaringData.getHeartLow());
                         return;
                     }
-
+                    numberPickerHighValue.setValue(heartHigh);
+                    numberPickerLowValue.setValue(heartLow);
                 });
                 dialog.dismiss();
             }
@@ -98,7 +102,7 @@ public class SettingsFragment extends Fragment {
 
 
         dashBoardViewModel.getRealTimeTesterClass().readHeartRateAlertSettings(integer -> {
-                    Snackbar.make(view, integer == Code.REQUEST_SUCCESS ? "Yes" : "No", Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(view, integer == Code.REQUEST_SUCCESS ? "Yes" : "No", Snackbar.LENGTH_SHORT).show();
                 }
                 , new Consumer<HeartWaringData>() {
                     @Override

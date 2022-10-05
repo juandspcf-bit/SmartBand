@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.veepoo.protocol.model.datas.HeartWaringData;
+import com.veepoo.protocol.model.enums.EHeartWaringStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,6 +92,7 @@ public class SummaryHRFragment extends SummaryFragment {
         Button backToMainFragButton = binding.buttonBackFromSummaryHRFrag;
         Button selectDateButton = binding.selectDateHRButton;
         Button shareButton = binding.buttonShareHeartRate;
+        binding.heartRateAlertSwitch.setEnabled(false);
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
         shareButton.setOnClickListener(viewToShare -> shareScreen());
@@ -117,20 +120,39 @@ public class SummaryHRFragment extends SummaryFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 dashBoardViewModel
                         .getRealTimeTesterClass()
-                        .setHeartRateAlert(heartHigh, heartLow, isChecked, code -> {
+                        .setHeartRateAlert(heartHigh, heartLow, isChecked, heartWaringData -> {
+                            if (heartWaringData.getStatus() == EHeartWaringStatus.CLOSE_FAIL && !isChecked) {
+                                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                                binding.heartRateAlertSwitch.toggle();
+                            }else if(heartWaringData.getStatus() == EHeartWaringStatus.OPEN_FAIL && isChecked){
+                                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                                binding.heartRateAlertSwitch.toggle();
+                            }else if (heartWaringData.getStatus() == EHeartWaringStatus.OPEN_SUCCESS || heartWaringData.getStatus() == EHeartWaringStatus.CLOSE_SUCCESS){
+                                Toast.makeText(getContext(), "Successfully set", Toast.LENGTH_SHORT).show();
+                            }
 
                         });
             }
+        });
+
+        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(),  isBluetoothConnected-> {
+            if(!isBluetoothConnected) {
+                binding.heartRateAlertSwitch.setEnabled(false);
+                return;
+            }
+            binding.heartRateAlertSwitch.setEnabled(true);
+
         });
 
         dashBoardViewModel.getRealTimeTesterClass().readHeartRateAlertSettings(new Consumer<Integer>() {
             @Override
             public void accept(Integer integer) {
                 if (integer != Code.REQUEST_SUCCESS) {
-                    Snackbar.make(binding.selectDateHRButton, "No", Snackbar.LENGTH_SHORT).show();
+                    binding.heartRateAlertSwitch.setEnabled(false);
                     return;
                 }
-                Snackbar.make(binding.selectDateHRButton, "Yes", Snackbar.LENGTH_SHORT).show();
+                binding.heartRateAlertSwitch.setEnabled(true);
+
             }
         }, new Consumer<HeartWaringData>() {
             @Override
