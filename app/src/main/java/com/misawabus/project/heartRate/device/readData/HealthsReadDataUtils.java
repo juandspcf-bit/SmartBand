@@ -18,6 +18,7 @@ import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataC
 import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
@@ -25,6 +26,7 @@ import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.datas.OriginData;
 import com.veepoo.protocol.model.datas.OriginData3;
+import com.veepoo.protocol.model.datas.TemptureData;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import org.jetbrains.annotations.Contract;
@@ -45,7 +47,8 @@ public class HealthsReadDataUtils {
 
 
     public static DataFiveMinAvgDataContainer computeSportsDataFiveMinAVR(List<OriginData3> originData3List,
-                                                                          List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList, DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
+                                                                          List<BiConsumer<Map<String, Double>, OriginData3>> biConsumerList,
+                                                                          DataFiveMinAvgDataContainer fieldDataFiveMinAVGAllIntervals) {
         computeDataFiveMinAVGOrigin3(originData3List, biConsumerList, fieldDataFiveMinAVGAllIntervals);
 
         return fieldDataFiveMinAVGAllIntervals;
@@ -219,6 +222,20 @@ public class HealthsReadDataUtils {
 
         return biConsumerList;
     }
+
+    public static List<BiConsumer<Map<String, Double>, TemptureData>> functionToSetFieldsInTemperatureData() {
+
+        List<BiConsumer<Map<String, Double>, TemptureData>> biConsumerList = new ArrayList<>();
+
+        biConsumerList.add((doubleMap, temperatureData) -> doubleMap.put("skinTemperature",
+                (double) temperatureData.getBaseTempture()));
+
+        biConsumerList.add((doubleMap, temperatureData) -> doubleMap.put("bodyTemperature",
+                (double) temperatureData.getTempture()));
+
+        return biConsumerList;
+    }
+
 
     public static List<BiConsumer<Map<String, Double>, OriginData>> functionToSetFieldsInSportsOrigin() {
 
@@ -658,4 +675,44 @@ public class HealthsReadDataUtils {
         return xyDataArraysForPlotting;
     }
 
+    public static void processTemperatureDataList(List<TemptureData> list,
+                                                  Handler mHandler,
+                                                  DashBoardViewModel dashBoardViewModel,
+                                                  AppCompatActivity activity,
+                                                  DeviceViewModel deviceViewModel) {
+
+        DataFiveMinAvgDataContainer temperatureFiveMinAvgDataContainer = computeTemperatureDataFiveMinAVR(list,
+                functionToSetFieldsInTemperatureData(),
+                new Temperature5MinDataContainer());
+
+        Log.d(TAG, "processTemperatureDataList: " + temperatureFiveMinAvgDataContainer.getDoubleMap());
+
+    }
+
+    private static DataFiveMinAvgDataContainer computeTemperatureDataFiveMinAVR(List<TemptureData> list,
+                                                                                List<BiConsumer<Map<String, Double>, TemptureData>> functionToSetFieldsInTemperatureData,
+                                                                                Temperature5MinDataContainer temperature5MinDataContainer) {
+
+        computeDataFiveMinTemperature(list,
+                functionToSetFieldsInTemperatureData,
+                temperature5MinDataContainer);
+
+        return temperature5MinDataContainer;
+
+    }
+
+    private static void computeDataFiveMinTemperature(List<TemptureData> list,
+                                                      List<BiConsumer<Map<String, Double>, TemptureData>> biConsumerList,
+                                                      Temperature5MinDataContainer temperature5MinDataContainer) {
+        list
+            .forEach(data -> {
+                TimeData timeData = data.getmTime();
+                if (timeData == null) return;
+                int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
+                        timeData.getMinute());
+                Map<String, Double> mapValues = new HashMap<>();
+                biConsumerList.forEach(bi -> bi.accept(mapValues, data));
+                temperature5MinDataContainer.getDoubleMap().put(interval, mapValues);
+            });
+    }
 }

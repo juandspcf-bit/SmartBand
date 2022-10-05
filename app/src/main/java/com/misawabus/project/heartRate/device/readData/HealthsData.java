@@ -377,7 +377,12 @@ public class HealthsData {
         }, new ITemptureDataListener() {
             @Override
             public void onTemptureDataListDataChange(List<TemptureData> list) {
-
+                Log.d(TAG, "onTemptureDataListDataChange: "+list);
+                HealthsReadDataUtils.processTemperatureDataList(list,
+                        mHandler,
+                        dashBoardViewModel,
+                        activity,
+                        deviceViewModel);
             }
 
             @Override
