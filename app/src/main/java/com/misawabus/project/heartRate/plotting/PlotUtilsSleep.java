@@ -230,35 +230,44 @@ public class PlotUtilsSleep {
     @NonNull
     public static List<SleepDataUI> joinSleepListData(List<SleepDataUI> sortedSleepData) {
         Map<Integer,List<SleepDataUI>> map = new HashMap<>();
+        Log.d(TAG, "List<SleepDataUI>:  " + sortedSleepData);
 
         int counter = 0;
-        for (int i = 0; i< sortedSleepData.size(); ++i) {
-            if (i > 0) {
-                LocalTime localTimeSleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i - 1).getSleepUp());
-                LocalTime localTimeSleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i).getSleepDown());
-                int differenceTime = localTimeSleepDown.getHour()*60 + localTimeSleepDown.getMinute()
-                        - localTimeSleepUp.getHour()*60 - localTimeSleepUp.getMinute();
-                if (Math.abs(differenceTime) < 20 ) {
-                    map.computeIfAbsent(counter, k -> new ArrayList<>());
-                    map.get(counter).add(sortedSleepData.get(i - 1));
-                    if(i== sortedSleepData.size()-1){
-                        map.get(counter).add(sortedSleepData.get(i));
-                    }
+        if(sortedSleepData.size()==1){
+            map.computeIfAbsent(counter, k -> new ArrayList<>());
+            map.get(counter).add(sortedSleepData.get(0));
+        }else {
+            for (int i = 0; i< sortedSleepData.size(); ++i) {
 
-                } else {
-                    map.get(counter).add(sortedSleepData.get(i - 1));
-                    ++counter;
+                if (i > 0) {
+                    LocalTime localTimeSleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i - 1).getSleepUp());
+                    LocalTime localTimeSleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i).getSleepDown());
+                    int differenceTime = localTimeSleepDown.getHour()*60 + localTimeSleepDown.getMinute()
+                            - localTimeSleepUp.getHour()*60 - localTimeSleepUp.getMinute();
 
-                    if(i== sortedSleepData.size()-1){
+                    if (Math.abs(differenceTime) < 20 ) {
                         map.computeIfAbsent(counter, k -> new ArrayList<>());
-                        map.get(counter).add(sortedSleepData.get(i));
+                        map.get(counter).add(sortedSleepData.get(i - 1));
+                        if(i== sortedSleepData.size()-1){
+                            map.get(counter).add(sortedSleepData.get(i));
+                        }
+
+                    } else {
+                        map.computeIfAbsent(counter, k -> new ArrayList<>());
+                        map.get(counter).add(sortedSleepData.get(i - 1));
+                        ++counter;
+
+                        if(i== sortedSleepData.size()-1){
+                            map.computeIfAbsent(counter, k -> new ArrayList<>());
+                            map.get(counter).add(sortedSleepData.get(i));
+                        }
                     }
-
                 }
-
             }
         }
 
+
+        Log.d(TAG, "joinSleepListData: map   " + map);
 
         List<SleepDataUI> joinData = new ArrayList<>();
         map.forEach((k, v)->{

@@ -70,9 +70,12 @@ public class DayFragment extends Fragment {
 
         SleepDataUI sleepDataUI;
         sleepDataUIList = PlotUtilsSleep.sortSleepListData(sleepDataUIList);
+        Log.d(TAG, "PlotUtilsSleep: " + sleepDataUIList.size());
         if(sleepDataUIList.get(0).idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
             sleepDataUIList = PlotUtilsSleep.joinSleepListData(sleepDataUIList);
         }
+        Log.d(TAG, "PlotUtilsSleep: " + sleepDataUIList.size());
+        if(sleepDataUIList.size()==0) return;
         sleepDataUI=sleepDataUIList.get(0);
 
         Map<String, List<Integer>> sleepData;
