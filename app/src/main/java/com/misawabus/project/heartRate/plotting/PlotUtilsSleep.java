@@ -238,29 +238,22 @@ public class PlotUtilsSleep {
             map.get(counter).add(sortedSleepData.get(0));
         }else {
             for (int i = 0; i< sortedSleepData.size(); ++i) {
-
                 if (i > 0) {
                     LocalTime localTimeSleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i - 1).getSleepUp());
                     LocalTime localTimeSleepDown = DateUtils.getLocalTimeFromVeepooTimeDateObj(sortedSleepData.get(i).getSleepDown());
                     int differenceTime = localTimeSleepDown.getHour()*60 + localTimeSleepDown.getMinute()
                             - localTimeSleepUp.getHour()*60 - localTimeSleepUp.getMinute();
 
-                    if (Math.abs(differenceTime) < 20 ) {
-                        map.computeIfAbsent(counter, k -> new ArrayList<>());
-                        map.get(counter).add(sortedSleepData.get(i - 1));
-                        if(i== sortedSleepData.size()-1){
-                            map.get(counter).add(sortedSleepData.get(i));
-                        }
-
-                    } else {
-                        map.computeIfAbsent(counter, k -> new ArrayList<>());
-                        map.get(counter).add(sortedSleepData.get(i - 1));
+                    List<SleepDataUI> sleepDataUIS = map.computeIfAbsent(counter, k -> new ArrayList<>());
+                    sleepDataUIS.add(sortedSleepData.get(i - 1));
+                    if (Math.abs(differenceTime) < 20 && i== sortedSleepData.size()-1) {
+                        sleepDataUIS.add(sortedSleepData.get(i));
+                    } else if(Math.abs(differenceTime) >= 20 && i== sortedSleepData.size()-1){
                         ++counter;
-
-                        if(i== sortedSleepData.size()-1){
-                            map.computeIfAbsent(counter, k -> new ArrayList<>());
-                            map.get(counter).add(sortedSleepData.get(i));
-                        }
+                        map.computeIfAbsent(counter, k -> new ArrayList<>());
+                        map.get(counter).add(sortedSleepData.get(i));
+                    }else if(Math.abs(differenceTime) >= 20){
+                        ++counter;
                     }
                 }
             }
