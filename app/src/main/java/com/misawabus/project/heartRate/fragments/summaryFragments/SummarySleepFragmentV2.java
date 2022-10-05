@@ -41,7 +41,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
     private static final String TAG = SummarySleepFragmentV2.class.getSimpleName();
     private FragmentSummarySleepV2Binding binding;
     private DashBoardViewModel dashBoardViewModel;
-    private SleepDataUIViewModel sleepDataUIViewModel;
     private DeviceViewModel deviceViewModel;
 
     public SummarySleepFragmentV2() {
@@ -52,13 +51,12 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
-        sleepDataUIViewModel = new ViewModelProvider(requireActivity()).get(SleepDataUIViewModel.class);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_summary_sleep_v2,
@@ -230,13 +228,13 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                     binding.insomniaSleepTextView.setText(insomniaTime);
 
                     long remSleepCountMin = getTypeSleepFormattedCountHourMin(rapidEyeMovement, sleepDataUI.idTypeDataTable);
-                    int remSleepPercen = (int) (remSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                    binding.remSleepBar.setProgress(remSleepPercen);
-                    binding.remSleepPercenTextView.setText(String.format(Locale.JAPAN, "%d%c of rem sleep", remSleepPercen, '%'));
+                    int remSleepPercent = (int) (remSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                    binding.remSleepBar.setProgress(remSleepPercent);
+                    binding.remSleepPercenTextView.setText(String.format(Locale.JAPAN, "%d%c of rem sleep", remSleepPercent, '%'));
                     long insomniaSleepCountMin = getTypeSleepFormattedCountHourMin(insomnia, sleepDataUI.idTypeDataTable);
-                    int insomniaPercen = (int) (insomniaSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                    binding.insomniaSleepBar.setProgress(insomniaPercen);
-                    binding.insomniaPercenTextView.setText(String.format(Locale.JAPAN, "%d%c of insomnia", insomniaPercen, '%'));
+                    int insomniaPercent = (int) (insomniaSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                    binding.insomniaSleepBar.setProgress(insomniaPercent);
+                    binding.insomniaPercenTextView.setText(String.format(Locale.JAPAN, "%d%c of insomnia", insomniaPercent, '%'));
                 }
 
 
@@ -245,24 +243,24 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 List<Integer> deepSleep = sleepDataMapLines.get("deepSleep");
                 String deepSleepTime = getTypeSleepFormattedStringCount(deepSleep, sleepDataUI.idTypeDataTable);
                 long deepSleepCountMin = getTypeSleepFormattedCountHourMin(deepSleep, sleepDataUI.idTypeDataTable);
-                int deepSleepPercen = (int) (deepSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                binding.deepSleepBar.setProgress(deepSleepPercen);
-                binding.deeSleepPercentageTextView.setText(String.format(Locale.JAPAN, "%d%c of deep sleep", deepSleepPercen, '%'));
+                int deepSleepPercent = (int) (deepSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                binding.deepSleepBar.setProgress(deepSleepPercent);
+                binding.deeSleepPercentageTextView.setText(String.format(Locale.JAPAN, "%d%c of deep sleep", deepSleepPercent, '%'));
 
                 List<Integer> lightSleep = sleepDataMapLines.get("lightSleep");
                 String lightSleepTime = getTypeSleepFormattedStringCount(lightSleep, sleepDataUI.idTypeDataTable);
                 long lightSleepCountMin = getTypeSleepFormattedCountHourMin(lightSleep, sleepDataUI.idTypeDataTable);
-                int lightSleepPercen = (int) (lightSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                binding.lightSleepBar.setProgress(lightSleepPercen);
-                binding.lightSleepPercenextView.setText(String.format(Locale.JAPAN, "%d%c of light sleep", lightSleepPercen, '%'));
+                int lightSleepPercent = (int) (lightSleepCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                binding.lightSleepBar.setProgress(lightSleepPercent);
+                binding.lightSleepPercenextView.setText(String.format(Locale.JAPAN, "%d%c of light sleep", lightSleepPercent, '%'));
 
                 List<Integer> awakeLine = sleepDataMapLines.get("wakeUp");
                 Log.d(TAG, "onPageSelected: " + awakeLine);
                 String awakeTime = getTypeSleepFormattedStringCount(awakeLine, sleepDataUI.idTypeDataTable);
                 long awakeLineCountMin = getTypeSleepFormattedCountHourMin(awakeLine, sleepDataUI.idTypeDataTable);
-                int awakeSleepPercen = (int) (awakeLineCountMin*(1.0/allSleepTimeMinutes)*100.0);
-                binding.awakeTimesSleepBar.setProgress(awakeSleepPercen);
-                binding.awakeTimesPercenTextView.setText(String.format(Locale.JAPAN, "%d%c awake", awakeSleepPercen, '%'));
+                int awakeSleepPercent = (int) (awakeLineCountMin*(1.0/allSleepTimeMinutes)*100.0);
+                binding.awakeTimesSleepBar.setProgress(awakeSleepPercent);
+                binding.awakeTimesPercenTextView.setText(String.format(Locale.JAPAN, "%d%c awake", awakeSleepPercent, '%'));
 
                 int wakeCount1 = sleepDataUI.getWakeCount();
                 String wakeCount;
@@ -310,7 +308,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
     @NonNull
     private String getTypeSleepFormattedStringCount(List<Integer> typeSleep, IdTypeDataTable idTypeDataTable) {
         String typeSleepTime = "0";
-        long countTypeSleep=0;
+        long countTypeSleep;
 
         if(typeSleep !=null && idTypeDataTable.equals(IdTypeDataTable.Sleep)){
             countTypeSleep = typeSleep.stream().filter(data -> data > 0).count()*5;
@@ -326,18 +324,14 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
     private String getIntervalTime(long countDeepSleep) {
         long hours = (long) Math.floor(countDeepSleep / 60.0);
         long minutes = countDeepSleep - 60 * hours;
-        String time = getStringTimeFormatted(hours, minutes);
-        return time;
+        return getStringTimeFormatted(hours, minutes);
     }
 
 
 
-    @NonNull
     private long getTypeSleepFormattedCountHourMin(List<Integer> typeSleep, IdTypeDataTable idTypeDataTable) {
          long countDeepSleep=0;
 
-        long hours = 0;
-        long minutes = 0;
         if(typeSleep !=null && idTypeDataTable.equals(IdTypeDataTable.Sleep)){
             countDeepSleep = typeSleep.stream().filter(data -> data > 0).count()*5;
 

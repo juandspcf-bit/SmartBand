@@ -19,6 +19,7 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IOriginData3Listener;
 import com.veepoo.protocol.listener.data.IOriginDataListener;
 import com.veepoo.protocol.listener.data.IOriginProgressListener;
+import com.veepoo.protocol.listener.data.ITemptureDataListener;
 import com.veepoo.protocol.model.datas.HRVOriginData;
 import com.veepoo.protocol.model.datas.OriginData;
 import com.veepoo.protocol.model.datas.OriginData3;
@@ -26,7 +27,9 @@ import com.veepoo.protocol.model.datas.OriginHalfHourData;
 import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.SleepPrecisionData;
 import com.veepoo.protocol.model.datas.Spo2hOriginData;
+import com.veepoo.protocol.model.datas.TemptureData;
 import com.veepoo.protocol.model.datas.TimeData;
+import com.veepoo.protocol.model.settings.ReadOriginSetting;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -166,7 +169,7 @@ public class HealthsData {
                 LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
                 if (localDate.compareTo(LocalDate.now()) == 0) {
                     originData3List.forEach(originData3 -> {
-                        Log.d(TAG, "onOriginFiveMinuteListDataChange: " + originData3.getmTime() + " : " + Arrays.toString(originData3.getCorrects()));
+                        Log.d(TAG, "onOriginFiveMinuteListDataChange: " + originData3.getmTime() + " : " + originData3.getTempTwo());
                     });
 
                 }
@@ -313,7 +316,6 @@ public class HealthsData {
         IOriginProgressListener originData3Listener = new IOriginData3Listener() {
             @Override
             public void onOriginFiveMinuteListDataChange(List<OriginData3> originData3List) {
-                Log.d(TAG, "getSmartWatchDataSingleDay: " + originData3List);
                 HealthsReadDataUtils.processOriginData3List(originData3List,
                         mHandler,
                         dashBoardViewModel,
@@ -363,6 +365,39 @@ public class HealthsData {
                 //readHealthData();
             }
         }
+    }
+
+
+    public void readTemperature() {
+        VPOperateManager.getMangerInstance(context).readTemptureDataBySetting(new IBleWriteResponse() {
+            @Override
+            public void onResponse(int i) {
+
+            }
+        }, new ITemptureDataListener() {
+            @Override
+            public void onTemptureDataListDataChange(List<TemptureData> list) {
+
+            }
+
+            @Override
+            public void onReadOriginProgressDetail(int i, String s, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onReadOriginProgress(float v) {
+
+            }
+
+            @Override
+            public void onReadOriginComplete() {
+
+            }
+        }, new ReadOriginSetting(0,
+                1,
+                false, dashBoardViewModel.getWatchData()
+        ));
     }
 
     public void readSingleDaySleepData(int day) {

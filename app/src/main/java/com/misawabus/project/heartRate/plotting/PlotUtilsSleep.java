@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.toList;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -34,7 +33,7 @@ import java.util.stream.Stream;
 public class PlotUtilsSleep {
 
 
-    private static final int wakeUpColor = Color.rgb(255, 255, 0);;
+    private static final int wakeUpColor = Color.rgb(255, 255, 0);
     private static final int insomniaColor = Color.rgb(255, 128, 128);
     private static final int rapidEyeMovementColor = Color.rgb(255, 153, 187);
     private static final int lightSleepColor = Color.rgb(77, 136, 255);
@@ -226,16 +225,15 @@ public class PlotUtilsSleep {
 
     }
 
-
     @NonNull
     public static List<SleepDataUI> joinSleepListData(List<SleepDataUI> sortedSleepData) {
         Map<Integer,List<SleepDataUI>> map = new HashMap<>();
-        Log.d(TAG, "List<SleepDataUI>:  " + sortedSleepData);
+
 
         int counter = 0;
         if(sortedSleepData.size()==1){
-            map.computeIfAbsent(counter, k -> new ArrayList<>());
-            map.get(counter).add(sortedSleepData.get(0));
+            List<SleepDataUI> sleepDataUIS = map.computeIfAbsent(counter, k -> new ArrayList<>());
+            sleepDataUIS.add(sortedSleepData.get(0));
         }else {
             for (int i = 0; i< sortedSleepData.size(); ++i) {
                 if (i > 0) {
@@ -250,8 +248,8 @@ public class PlotUtilsSleep {
                         sleepDataUIS.add(sortedSleepData.get(i));
                     } else if(Math.abs(differenceTime) >= 20 && i== sortedSleepData.size()-1){
                         ++counter;
-                        map.computeIfAbsent(counter, k -> new ArrayList<>());
-                        map.get(counter).add(sortedSleepData.get(i));
+                        List<SleepDataUI> sleepDataUIS1 = map.computeIfAbsent(counter, k -> new ArrayList<>());
+                        sleepDataUIS1.add(sortedSleepData.get(i));
                     }else if(Math.abs(differenceTime) >= 20){
                         ++counter;
                     }
@@ -259,21 +257,17 @@ public class PlotUtilsSleep {
             }
         }
 
-
-        Log.d(TAG, "joinSleepListData: map   " + map);
-
         List<SleepDataUI> joinData = new ArrayList<>();
         map.forEach((k, v)->{
             List<SleepDataUI> sleepDataUIS1 = map.get(k);
-            sleepDataUIS1.forEach(sleepDataUI -> Log.d(TAG, "setFragmentViews: " +sleepDataUI.getSleepUp() + " : " + sleepDataUI.getSleepDown()));
-            Log.d(TAG, "setFragmentViews: joinData  "+ k + " : " + v.size());
-            if(sleepDataUIS1.size()>1){
+
+            if(sleepDataUIS1 != null && sleepDataUIS1.size()>1){
                 SleepDataUI sleepDataUI = new SleepDataUI();
 
                 String sleepDown = sleepDataUIS1.get(0).getSleepDown();
-                Log.d(TAG, "setFragmentViews: sleepDown " + sleepDown);
+
                 String  sleepUp = sleepDataUIS1.get(sleepDataUIS1.size() - 1).getSleepUp();
-                Log.d(TAG, "setFragmentViews: sleepUp " + sleepUp);
+
                 sleepDataUI.setSleepUp(sleepUp);
                 sleepDataUI.setSleepDown(sleepDown);
 
@@ -291,7 +285,7 @@ public class PlotUtilsSleep {
                 joinData.add(sleepDataUI);
 
             }else {
-                joinData.add(sleepDataUIS1.get(0));
+                if(sleepDataUIS1!=null) joinData.add(sleepDataUIS1.get(0));
             }
         });
         return joinData;
@@ -306,20 +300,15 @@ public class PlotUtilsSleep {
 
         }).collect(toList());
 
-        Log.d(TAG, "collect.size() " + collect.size());
-        Map<Integer, SleepDataUI> mapSleep = new HashMap<>();
-        Stream.iterate(0, i -> ++i).limit(collect.size()).forEach(index -> {
-            Log.d(TAG, "Stream.iterate: " + collect.get(index) + "  index: " + index);
 
-            mapSleep.put(collect.get(index), sleepDataUIS.get(index));
-        });
+        Map<Integer, SleepDataUI> mapSleep = new HashMap<>();
+        Stream.iterate(0, i -> ++i).limit(collect.size()).forEach(index -> mapSleep.put(collect.get(index), sleepDataUIS.get(index)));
 
         Collections.sort(collect);
 
-        List<SleepDataUI> sortedSleepData = collect
+        return collect
                 .stream()
                 .map(mapSleep::get)
                 .collect(toList());
-        return sortedSleepData;
     }
 }

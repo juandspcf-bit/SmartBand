@@ -8,14 +8,13 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.inuker.bluetooth.library.Code;
+import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
-import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
@@ -25,6 +24,7 @@ import com.veepoo.protocol.listener.data.IHeartDataListener;
 import com.veepoo.protocol.listener.data.IHeartWaringDataListener;
 import com.veepoo.protocol.listener.data.IRRIntervalProgressListener;
 import com.veepoo.protocol.listener.data.ISportDataListener;
+import com.veepoo.protocol.listener.data.ITemptureDataListener;
 import com.veepoo.protocol.listener.data.ITemptureDetectDataListener;
 import com.veepoo.protocol.model.DayState;
 import com.veepoo.protocol.model.datas.BpData;
@@ -33,11 +33,12 @@ import com.veepoo.protocol.model.datas.HeartData;
 import com.veepoo.protocol.model.datas.HeartWaringData;
 import com.veepoo.protocol.model.datas.RRIntervalData;
 import com.veepoo.protocol.model.datas.SportData;
+import com.veepoo.protocol.model.datas.TemptureData;
 import com.veepoo.protocol.model.datas.TemptureDetectData;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
-import com.veepoo.protocol.model.enums.EHeartWaringStatus;
 import com.veepoo.protocol.model.settings.BpSetting;
 import com.veepoo.protocol.model.settings.HeartWaringSetting;
+import com.veepoo.protocol.model.settings.ReadOriginSetting;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,20 +46,13 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class RealTimeTesterClass {
+    private static final String TAG = RealTimeTesterClass.class.getSimpleName();
     private final Context context;
     private final DashBoardViewModel dashBoardViewModel;
     private final DeviceViewModel deviceViewModel;
-
-
-    private static final String TAG = RealTimeTesterClass.class.getSimpleName();
-
     private final WriteResponse writeResponse = new WriteResponse();
 
     private final Application application;
-    private HeartRateViewModel heartRateViewModel;
-
-
-
     Message msg;
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -82,6 +76,7 @@ public class RealTimeTesterClass {
             }
         }
     };
+    private HeartRateViewModel heartRateViewModel;
 
 
     public RealTimeTesterClass(Context context, AppCompatActivity activity, Application application) {
@@ -90,7 +85,6 @@ public class RealTimeTesterClass {
         dashBoardViewModel = new ViewModelProvider(activity).get(DashBoardViewModel.class);
         deviceViewModel = new ViewModelProvider(activity).get(DeviceViewModel.class);
     }
-
 
 
     public void readSportSteps() {
@@ -161,8 +155,7 @@ public class RealTimeTesterClass {
     }
 
 
-
-    public void startTemperatureDetection(Consumer<Map<String, Double>> consumer){
+    public void startTemperatureDetection(Consumer<Map<String, Double>> consumer) {
         VPOperateManager.getMangerInstance(context).startDetectTempture(writeResponse, new ITemptureDetectDataListener() {
             @Override
             public void onDataChange(TemptureDetectData temptureDetectData) {
@@ -177,7 +170,7 @@ public class RealTimeTesterClass {
 
     }
 
-    public void stopTemperatureDetection(){
+    public void stopTemperatureDetection() {
         VPOperateManager.getMangerInstance(context).stopDetectTempture(writeResponse, new ITemptureDetectDataListener() {
             @Override
             public void onDataChange(TemptureDetectData temptureDetectData) {
@@ -188,7 +181,7 @@ public class RealTimeTesterClass {
 
     }
 
-    public void setHeartRateAlert(int higValue, int lowValue, boolean isChecked, Consumer<HeartWaringData> code){
+    public void setHeartRateAlert(int higValue, int lowValue, boolean isChecked, Consumer<HeartWaringData> code) {
         VPOperateManager.getMangerInstance(context).settingHeartWarning(writeResponse, new IHeartWaringDataListener() {
             @Override
             public void onHeartWaringDataChange(HeartWaringData heartWaringData) {
@@ -199,15 +192,17 @@ public class RealTimeTesterClass {
         }, new HeartWaringSetting(higValue, lowValue, isChecked));
     }
 
-    public void readHeartRateAlertSettings(@NonNull Consumer<Integer> receivingCode, @NonNull Consumer<HeartWaringData> receivingSettings){
+    public void readHeartRateAlertSettings(@NonNull Consumer<Integer> receivingCode, @NonNull Consumer<HeartWaringData> receivingSettings) {
         VPOperateManager.getMangerInstance(context).readHeartWarning(receivingCode::accept, receivingSettings::accept);
     }
 
-    public void readReadRRIntervalByDay(){
+    public void readReadRRIntervalByDay() {
         VPOperateManager.getMangerInstance(context).readRRIntervalByDay(new IBleWriteResponse() {
             @Override
             public void onResponse(int i) {
-                if(i != Code.REQUEST_SUCCESS) Log.d(TAG, "onReadRRIntervalProgressChanged: " + "no success");;
+                if (i != Code.REQUEST_SUCCESS)
+                    Log.d(TAG, "onReadRRIntervalProgressChanged: " + "no success");
+                ;
             }
         }, new IRRIntervalProgressListener() {
             @Override
@@ -231,7 +226,6 @@ public class RealTimeTesterClass {
         msg.obj = message;
         mHandler.sendMessage(msg);
     }
-
 
 
     static class WriteResponse implements IBleWriteResponse {
