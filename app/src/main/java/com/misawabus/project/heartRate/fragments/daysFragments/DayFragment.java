@@ -22,10 +22,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.misawabus.project.heartRate.DashBoardActivity;
 import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
-import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.Utils.ExcelConversionUtils;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
@@ -48,12 +48,10 @@ import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class DayFragment extends Fragment {
     private static final String TAG = DayFragment.class.getSimpleName();
@@ -63,6 +61,10 @@ public class DayFragment extends Fragment {
     protected String macAddress;
     protected List<SleepDataUI> sleepDataList;
     protected Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap;
+    final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
     static void setDaySleepPlot(DayFragment dayFragment, List<SleepDataUI> sleepDataUIList) {
         if (sleepDataUIList == null || sleepDataUIList.size() == 0) return;
@@ -322,7 +324,7 @@ public class DayFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: My fragement");
+
         if(getActivity()!=null){
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -337,7 +339,7 @@ public class DayFragment extends Fragment {
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         }else {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            DashBoardActivity.hideWindowForLesR(getActivity());
         }
 
     }

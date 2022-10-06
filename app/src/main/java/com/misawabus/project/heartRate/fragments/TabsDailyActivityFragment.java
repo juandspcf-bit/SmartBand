@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,12 @@ import com.misawabus.project.heartRate.databinding.FragmentTabsDailyActivityBind
 
 
 public class TabsDailyActivityFragment extends Fragment {
+    private static final String TAG = TabsDailyActivityFragment.class.getSimpleName();
     private FragmentTabsDailyActivityBinding binding;
+    final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
     public TabsDailyActivityFragment() {
         // Required empty public constructor
@@ -105,8 +111,6 @@ public class TabsDailyActivityFragment extends Fragment {
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     }
 }

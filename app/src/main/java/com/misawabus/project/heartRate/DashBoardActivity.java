@@ -8,6 +8,7 @@ import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.inuker.bluetooth.library.Constants;
@@ -36,6 +38,13 @@ import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
 import java.time.LocalDate;
 
 public class DashBoardActivity extends AppCompatActivity {
+    public static final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+    public static final int flags2 = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
     private final static String TAG = DashBoardActivity.class.getSimpleName();
     private ActivityDashBoardV2Binding binding;
     private DashBoardViewModel dashBoardViewModel;
@@ -57,6 +66,13 @@ public class DashBoardActivity extends AppCompatActivity {
     };
     private VPOperateManager mVpoperateManager;
 
+    public static void hideWindowForLesR(FragmentActivity activity) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(flags);
+
+
+    }
+
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -70,14 +86,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         hideBottomNavigationBar();
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-
-
-            }
-        });
 
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
@@ -147,7 +155,7 @@ public class DashBoardActivity extends AppCompatActivity {
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         }else {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            hideWindowForLesR(this);
         }
     }
 

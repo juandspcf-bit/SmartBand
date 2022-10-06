@@ -24,6 +24,7 @@ import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 
 public class MainDashBoardFragment extends Fragment{
+    private static final String TAG = MainDashBoardFragment.class.getSimpleName();
     private FragmentMainDashboardBinding binding;
     private DashBoardViewModel dashBoardViewModel;
     private DeviceViewModel deviceViewModel;
@@ -71,9 +72,8 @@ public class MainDashBoardFragment extends Fragment{
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
+
 
 
 
@@ -176,13 +176,26 @@ public class MainDashBoardFragment extends Fragment{
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
+        }/*else {
+            Log.d(TAG, "onResume: MainDashBoard");
+            hideWindowForLesR(getActivity());
+            View decorView = getActivity().getWindow().getDecorView();
+            decorView.setOnSystemUiVisibilityChangeListener
+                    (new View.OnSystemUiVisibilityChangeListener() {
+                        @Override
+                        public void onSystemUiVisibilityChange(int visibility) {
+                            hideWindowForLesR(getActivity());
+                        }
+                    });
+        }*/
     }
 
     private void hideProgressBar(ValueAnimator animation) {
         dashBoardViewModel.setIsFetching(View.INVISIBLE);
         animation.start();
     }
+
+
+
+
 }
