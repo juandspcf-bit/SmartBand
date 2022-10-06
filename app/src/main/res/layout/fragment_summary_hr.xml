@@ -286,8 +286,8 @@
             android:id="@+id/group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:constraint_referenced_ids="recyclerViewSummHR, flow5, flow3, flow4, fragmentRatePlotCardViewSummary" />
+            android:visibility="gone"
+            app:constraint_referenced_ids="recyclerViewSummHR,flow5,flow3,flow4,fragmentRatePlotCardViewSummary,heartRateAlertSwitch,divider8" />
 
         <ImageView
             android:id="@+id/imageView6"
