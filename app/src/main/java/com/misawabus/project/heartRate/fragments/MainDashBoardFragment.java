@@ -82,16 +82,16 @@ public class MainDashBoardFragment extends Fragment{
         binding.bottomNavigationV2.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.page_1){
                 getChildFragmentManager().beginTransaction().replace(R.id.navigationFragmentContainer, new TabsDailyActivityFragment())
-                        .addToBackStack(null).commit();
+                        .commit();
             }else if(item.getItemId()==R.id.page_2){
                 getChildFragmentManager().beginTransaction().replace(R.id.navigationFragmentContainer, new RealTimeInfoFragment())
-                        .addToBackStack(null).commit();
+                        .commit();
             }else if(item.getItemId()==R.id.page_3){
                 getChildFragmentManager().beginTransaction().replace(R.id.navigationFragmentContainer, new PersonalFieldsScrollingFragment())
-                        .addToBackStack(null).commit();
+                        .commit();
             }else if(item.getItemId()==R.id.page_4){
                 getChildFragmentManager().beginTransaction().replace(R.id.navigationFragmentContainer, new SettingsFragment())
-                        .addToBackStack(null).commit();
+                        ..commit();
             }
 
             return true;
