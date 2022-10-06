@@ -91,7 +91,7 @@ public class MainDashBoardFragment extends Fragment{
                         .commit();
             }else if(item.getItemId()==R.id.page_4){
                 getChildFragmentManager().beginTransaction().replace(R.id.navigationFragmentContainer, new SettingsFragment())
-                        ..commit();
+                        .commit();
             }
 
             return true;
