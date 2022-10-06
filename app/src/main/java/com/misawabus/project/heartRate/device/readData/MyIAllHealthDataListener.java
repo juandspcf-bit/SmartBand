@@ -21,7 +21,6 @@ import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -184,19 +183,19 @@ public class MyIAllHealthDataListener implements IAllHealthDataListener {
 
     @Override
     public void onReadOriginComplete() {
-        HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
+        HealthsReadDataController.processOriginDataList(List.copyOf(todayList5Min),
                 mHandler,
                 dashBoardViewModel,
                 deviceViewModel,
                 activity,
                 DateUtils.getLocalDate(DateUtils.getTodayFormattedDate(), "/").toString());
-        HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
+        HealthsReadDataController.processOriginDataList(List.copyOf(yesterdayList5Min),
                 mHandler,
                 dashBoardViewModel,
                 deviceViewModel,
                 activity,
                 DateUtils.getLocalDate(DateUtils.getYesterdayFormattedDate(), "/").toString());
-        HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
+        HealthsReadDataController.processOriginDataList(List.copyOf(pastYesterdayList5Min),
                 mHandler,
                 dashBoardViewModel,
                 deviceViewModel,

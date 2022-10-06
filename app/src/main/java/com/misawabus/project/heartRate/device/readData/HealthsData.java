@@ -32,7 +32,6 @@ import com.veepoo.protocol.model.datas.TimeData;
 import com.veepoo.protocol.model.settings.ReadOriginSetting;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -106,19 +105,19 @@ public class HealthsData {
             public void onReadOriginComplete() {
 
 
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
+                HealthsReadDataController.processOriginDataList(List.copyOf(todayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
                         HealthsData.this.activity,
                         DateUtils.getLocalDate(DateUtils.getTodayFormattedDate(), "/").toString());
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
+                HealthsReadDataController.processOriginDataList(List.copyOf(yesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
                         HealthsData.this.activity,
                         DateUtils.getLocalDate(DateUtils.getYesterdayFormattedDate(), "/").toString());
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
+                HealthsReadDataController.processOriginDataList(List.copyOf(pastYesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
@@ -173,7 +172,7 @@ public class HealthsData {
                     });
 
                 }
-                HealthsReadDataUtils.processOriginData3List(originData3List,
+                HealthsReadDataController.processOriginData3List(originData3List,
                         mHandler,
                         dashBoardViewModel,
                         activity,
@@ -209,7 +208,7 @@ public class HealthsData {
             @Override
             public void onReadOriginComplete() {
                 String message = "sports-complete";
-                Logger.t(HealthsReadDataUtils.TAG).i(message);
+                Logger.t(HealthsReadDataController.TAG).i(message);
 
                 mHandler.post(() -> readSleepData());
 
@@ -278,19 +277,19 @@ public class HealthsData {
             @Override
             public void onReadOriginComplete() {
 
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(todayList5Min),
+                HealthsReadDataController.processOriginDataList(List.copyOf(todayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
                         HealthsData.this.activity,
                         DateUtils.getLocalDate(DateUtils.getTodayFormattedDate(), "/").toString());
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(yesterdayList5Min),
+                HealthsReadDataController.processOriginDataList(List.copyOf(yesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
                         HealthsData.this.activity,
                         DateUtils.getLocalDate(DateUtils.getYesterdayFormattedDate(), "/").toString());
-                HealthsReadDataUtils.processOriginDataList(List.copyOf(pastYesterdayList5Min),
+                HealthsReadDataController.processOriginDataList(List.copyOf(pastYesterdayList5Min),
                         mHandler,
                         HealthsData.this.dashBoardViewModel,
                         HealthsData.this.deviceViewModel,
@@ -316,7 +315,7 @@ public class HealthsData {
         IOriginProgressListener originData3Listener = new IOriginData3Listener() {
             @Override
             public void onOriginFiveMinuteListDataChange(List<OriginData3> originData3List) {
-                HealthsReadDataUtils.processOriginData3List(originData3List,
+                HealthsReadDataController.processOriginData3List(originData3List,
                         mHandler,
                         dashBoardViewModel,
                         activity,
@@ -345,7 +344,7 @@ public class HealthsData {
             @Override
             public void onReadOriginProgress(float progress) {
                 String message = "健康数据[5分钟]-读取进度:" + progress;
-                Logger.t(HealthsReadDataUtils.TAG).i(message);
+                Logger.t(HealthsReadDataController.TAG).i(message);
             }
 
             @Override
@@ -378,7 +377,7 @@ public class HealthsData {
             @Override
             public void onTemptureDataListDataChange(List<TemptureData> list) {
                 Log.d(TAG, "onTemptureDataListDataChange: "+list);
-                HealthsReadDataUtils.processTemperatureDataList(list,
+                HealthsReadDataController.processTemperatureDataList(list,
                         mHandler,
                         dashBoardViewModel,
                         activity,
