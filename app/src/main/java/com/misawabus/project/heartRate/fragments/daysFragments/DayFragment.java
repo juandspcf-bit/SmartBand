@@ -134,30 +134,29 @@ public class DayFragment extends Fragment {
         deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
             @Override
             public void onChanged(CustomSettingData customSettingData) {
-                if(customSettingData!=null){
-                    EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
-                    EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
-                    EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
-                    EFunctionStatus ppgSupport = customSettingData.getPpg();
-                    EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
+                if(customSettingData==null)return;
+                Log.d(TAG, "CustomSettingData" + customSettingData.getAutoTemperatureDetect());
+                EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
+                EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
+                EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
+                EFunctionStatus ppgSupport = customSettingData.getPpg();
+                EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
 /*                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
                             || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);*/
 /*                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
                             || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);*/
-                    if (EFunctionStatus.SUPPORT != autoBpDetect
-                            && EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
-                        binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
-                        binding.cardPlotsflow.removeView(binding.fragmentBloodPressureCardView);
-                    }
-                    if (EFunctionStatus.SUPPORT != lowSpo2hRemain
-                            && EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain) {
-                        binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
-                        binding.cardPlotsflow.removeView(binding.fragmentSop2PlotCardView);
-                    }
-/*                    binding.imageButtonEcg.setEnabled(EFunctionStatus.SUPPORT == ppgSupport
-                            || EFunctionStatus.SUPPORT_OPEN == ppgSupport);*/
-                }else {
+                if (EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
+                    binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
+                    binding.cardPlotsflow.removeView(binding.fragmentBloodPressureCardView);
+                }
+                if (EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain) {
+                    binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
+                    binding.cardPlotsflow.removeView(binding.fragmentSop2PlotCardView);
+                }
 
+                if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect) {
+                    binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
+                    binding.cardPlotsflow.removeView(binding.fragmentTemperaturePlotCardView);
                 }
             }
         });
@@ -352,7 +351,6 @@ public class DayFragment extends Fragment {
         XYDataArraysForPlotting tempBodyXYDataArraysForPlotting;
         tempBodyXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
                 .get(Temperature5MinDataContainer.class.getSimpleName()+":body");
-        Log.d(TAG, "setTemperaturePlot: " + Arrays.toString(tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR()));
         if (tempBodyXYDataArraysForPlotting != null && tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentTemperaturePlot.setVisibility(View.VISIBLE);
             binding.flowNoTemperature2Data.setVisibility(View.GONE);
@@ -362,9 +360,5 @@ public class DayFragment extends Fragment {
     }
 
 
-        @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach: ");
-    }
+
 }

@@ -61,9 +61,6 @@ public class TodayFragment extends DayFragment {
             }
         });
 
-
-
-
         dashBoardViewModel.getTodayArray5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
             @Override
             public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
