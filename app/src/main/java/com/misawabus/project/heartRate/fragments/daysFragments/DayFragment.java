@@ -34,6 +34,7 @@ import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataC
 import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryBPFragment;
@@ -48,6 +49,7 @@ import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -345,7 +347,22 @@ public class DayFragment extends Fragment {
 
     }
 
-    @Override
+
+    protected void setTemperaturePlot(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+        XYDataArraysForPlotting tempBodyXYDataArraysForPlotting;
+        tempBodyXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
+                .get(Temperature5MinDataContainer.class.getSimpleName()+":body");
+        Log.d(TAG, "setTemperaturePlot: " + Arrays.toString(tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR()));
+        if (tempBodyXYDataArraysForPlotting != null && tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+            binding.fragmentTemperaturePlot.setVisibility(View.VISIBLE);
+            binding.flowNoTemperature2Data.setVisibility(View.GONE);
+            SetDataInViews.plotTemperatureData(tempBodyXYDataArraysForPlotting,
+                    binding.fragmentTemperaturePlot);
+        }
+    }
+
+
+        @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Log.d(TAG, "onAttach: ");

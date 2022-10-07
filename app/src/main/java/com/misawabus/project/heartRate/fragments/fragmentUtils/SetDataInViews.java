@@ -69,6 +69,13 @@ public class SetDataInViews {
                 plot);
     }
 
+    public static void plotTemperatureData(XYDataArraysForPlotting tempBodyXYDataArraysForPlotting, XYPlot plot) {
+        PlotUtilsHeartRate.plotTemperatureDoubleIntervalsData(tempBodyXYDataArraysForPlotting.getPeriodIntervalsArray(),
+                tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR(),
+                plot
+        );
+    }
+
     public static void setSleepValues(SleepDataUI sleepDataUI,
                                       List<Integer> lightSleep,
                                       List<Integer> deepSleep,
@@ -106,4 +113,6 @@ public class SetDataInViews {
                 fragmentSleepPlot);
 
     }
+
+
 }

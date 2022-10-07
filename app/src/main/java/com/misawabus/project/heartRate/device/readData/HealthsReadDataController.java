@@ -300,10 +300,10 @@ public class HealthsReadDataController {
 
             Map<String, XYDataArraysForPlotting> arraysMap = new HashMap<>();
             arraysMap
-                    .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                    .put(Temperature5MinDataContainer.class.getSimpleName()+":body",
                             bodyTemperatureArraysForPlotting);
             arraysMap
-                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                    .put(Temperature5MinDataContainer.class.getSimpleName()+":skin",
                             skinTemperatureArraysForPlotting);
 
             mHandler.post(() -> {
@@ -319,10 +319,6 @@ public class HealthsReadDataController {
             });
 
         });
-
-
-
-
 
     }
 

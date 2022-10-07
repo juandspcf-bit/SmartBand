@@ -43,17 +43,25 @@ public class TodayFragment extends DayFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            setDaySleepPlot(this, sleepDataUIList);
-        });
-
-
         dashBoardViewModel.getTodaySummary().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
             @Override
             public void onChanged(Map<String, Double> doubleMap) {
                 setSummaryViews(doubleMap);
             }
         });
+
+        dashBoardViewModel.getTodayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
+            setDaySleepPlot(this, sleepDataUIList);
+        });
+
+        dashBoardViewModel.getTodayArrayTempAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
+            @Override
+            public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+                setTemperaturePlot(stringXYDataArraysForPlottingMap);
+            }
+        });
+
+
 
 
         dashBoardViewModel.getTodayArray5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {

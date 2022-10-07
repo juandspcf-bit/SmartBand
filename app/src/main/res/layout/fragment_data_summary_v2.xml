@@ -282,7 +282,7 @@
                             android:layout_height="68dp"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="No data"
+                            android:text="No data for heart rate"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             tools:layout_editor_absoluteX="207dp"
@@ -362,7 +362,7 @@
                             android:layout_height="68dp"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="No data"
+                            android:text="No data for steps"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             tools:layout_editor_absoluteX="207dp"
@@ -435,7 +435,7 @@
                             android:id="@+id/noDataBPImageView"
                             android:layout_width="92dp"
                             android:layout_height="108dp"
-                            app:srcCompat="@drawable/_184202"
+                            app:srcCompat="@drawable/blood_pressure_gauge"
                             tools:layout_editor_absoluteX="464dp"
                             tools:layout_editor_absoluteY="130dp" />
 
@@ -445,7 +445,7 @@
                             android:layout_height="68dp"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="No data"
+                            android:text="No data for blood pressure"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             tools:layout_editor_absoluteX="207dp"
@@ -528,7 +528,7 @@
                             android:layout_height="68dp"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="No data"
+                            android:text="No data for Sleep"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             tools:layout_editor_absoluteX="207dp"
@@ -611,7 +611,7 @@
                             android:layout_height="68dp"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="No data"
+                            android:text="No data for Spo2"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             tools:layout_editor_absoluteX="207dp"
@@ -625,6 +625,89 @@
                             android:orientation="vertical"
                             android:visibility="visible"
                             app:constraint_referenced_ids="noDataSop2TextView,noDataSop2ImageView"
+                            app:flow_verticalStyle="packed"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragmentTemperaturePlotCardView"
+                    style="@style/cardViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="5dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/fragmentTemperaturePlot"
+                            style="@style/APDefacto.Light"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            app:backgroundColor="@color/white"
+                            app:domainLineColor="@color/ap_transparent"
+                            app:domainOriginLineColor="@color/ap_transparent"
+                            app:graphBackgroundColor="@color/white"
+                            app:graphMarginLeft="25dp"
+                            app:graphMarginTop="30dp"
+                            app:graphWidthMode="fill"
+                            app:gridBackgroundColor="@color/white"
+                            app:gridClippingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+
+                            app:legendVisible="false"
+                            app:lineLabelInsetLeft="4dp"
+
+                            app:lineLabelRotationBottom="-45"
+                            app:lineLabelTextColorLeft="#4B1263"
+                            app:lineLabels="left|bottom"
+
+                            app:rangeLineColor="#646D71"
+                            app:rangeStep="2dp"
+                            app:title="Temperature" />
+
+                        <ImageView
+                            android:id="@+id/noDataTemperatureImageView"
+                            android:layout_width="92dp"
+                            android:layout_height="108dp"
+                            app:srcCompat="@drawable/thermometer3"
+                            tools:layout_editor_absoluteX="464dp"
+                            tools:layout_editor_absoluteY="130dp" />
+
+                        <TextView
+                            android:id="@+id/noDataTemperatureTextView"
+                            android:layout_width="204dp"
+                            android:layout_height="68dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center"
+                            android:text="No data for temperature"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="207dp"
+                            tools:layout_editor_absoluteY="50dp" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flowNoTemperature2Data"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="1dp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="noDataTemperatureTextView,noDataTemperatureImageView"
                             app:flow_verticalStyle="packed"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -663,7 +746,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    app:constraint_referenced_ids="fragmentStepsPlotCardView,fragmentRatePlotCardView,fragmentBloodPressureCardView,fragmentSleepPlotCardView,fragmentSop2PlotCardView"
+                    app:constraint_referenced_ids="fragmentStepsPlotCardView,fragmentRatePlotCardView,fragmentBloodPressureCardView,fragmentSleepPlotCardView,fragmentSop2PlotCardView,fragmentTemperaturePlotCardView"
                     app:flow_verticalGap="25dp"
                     app:layout_constraintBottom_toBottomOf="@id/linearLayout7"
                     app:layout_constraintEnd_toEndOf="parent"
