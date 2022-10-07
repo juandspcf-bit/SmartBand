@@ -19,8 +19,6 @@ import java.util.stream.Stream;
 public class FragmentUtil {
     public static final String TAG = FragmentUtil.class.getSimpleName();
 
-
-
     public static List<Integer> getSleepDataForExcel(@NonNull String sleepLine) {
 
         char[] chars = sleepLine.toCharArray();
@@ -51,7 +49,6 @@ public class FragmentUtil {
             list.add(map != null ? map : new HashMap<>());
 
         });
-        Log.d(TAG, "mapToList: index: " + list);
         return list;
     }
 
@@ -94,8 +91,6 @@ public class FragmentUtil {
         List<Double> listStep30Min = new ArrayList<>();
         List<Double> listCalories30Min = new ArrayList<>();
         List<Double> listDistance30Min = new ArrayList<>();
-
-
 
         int size =48;
         for (int i = 0; i < size; i++) {
@@ -374,33 +369,6 @@ public class FragmentUtil {
             } else return 3;
 
         }).collect(Collectors.toList());
-/*        List<Integer> lightSleep = integerSleeps.stream().map(sleepLineV -> {
-            if (sleepLineV == 0) {
-                return 2;
-            } else if (sleepLineV == 1) {
-                return 0;
-            } else return 0;
-
-        }).collect(Collectors.toList());
-
-        List<Integer> deepSleep = integerSleeps.stream().map(sleepLineV -> {
-            if (sleepLineV == 0) {
-                return 0;
-            } else if (sleepLineV == 1) {
-                return 1;
-            } else return 0;
-
-        }).collect(Collectors.toList());
-
-        List<Integer> wakeUp = integerSleeps.stream().map(sleepLineV -> {
-            if (sleepLineV == 0) {
-                return 0;
-            } else if (sleepLineV == 1) {
-                return 0;
-            } else return 3;
-
-        }).collect(Collectors.toList());*/
-
 
         Map<String, List<Integer>> mapSleepDegree = new HashMap<>();
         mapSleepDegree.put("lightSleep", lightSleep);

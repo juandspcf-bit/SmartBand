@@ -177,7 +177,7 @@ public class HealthsReadDataController {
 
 
             Map<String, XYDataArraysForPlotting> arraysMap;
-            arraysMap = HealthsReadDataGeneratorsForPlotting.getStringXYOriginDataArraysForPlottingMap(sportsArraysForPlotting,
+            arraysMap = HealthsReadDataGeneratorsForPlotting.getMapContainerXYOriginDataArraysForPlotting(sportsArraysForPlotting,
                     heartRateArraysForPlotting,
                     highBPArraysForPlotting,
                     lowBPArraysForPlotting);
@@ -286,11 +286,43 @@ public class HealthsReadDataController {
                                                   AppCompatActivity activity,
                                                   DeviceViewModel deviceViewModel) {
 
-        DataFiveMinAvgDataContainer temperatureFiveMinAvgDataContainer = computeTemperatureDataFiveMinAVR(list,
-                HealthsReadDataGeneratorsForDB.functionToSetFieldsInTemperatureData(),
-                new Temperature5MinDataContainer());
+        HealthsData.databaseWriteExecutor.execute(() -> {
+            DataFiveMinAvgDataContainer temperatureFiveMinAvgDataContainer = computeTemperatureDataFiveMinAVR(list,
+                    HealthsReadDataGeneratorsForDB.functionToSetFieldsInTemperatureData(),
+                    new Temperature5MinDataContainer());
 
-        Log.d(TAG, "processTemperatureDataList: " + temperatureFiveMinAvgDataContainer.getDoubleMap());
+            Log.d(TAG, "processTemperatureDataList: " + temperatureFiveMinAvgDataContainer.getDoubleMap());
+
+            XYDataArraysForPlotting bodyTemperatureArraysForPlotting;
+            bodyTemperatureArraysForPlotting = HealthsReadDataGeneratorsForPlotting.getBodyTemperatureArraysForPlotting(temperatureFiveMinAvgDataContainer);
+            XYDataArraysForPlotting skinTemperatureArraysForPlotting;
+            skinTemperatureArraysForPlotting = HealthsReadDataGeneratorsForPlotting.getBodyTemperatureArraysForPlotting(temperatureFiveMinAvgDataContainer);
+
+            Map<String, XYDataArraysForPlotting> arraysMap = new HashMap<>();
+            arraysMap
+                    .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                            bodyTemperatureArraysForPlotting);
+            arraysMap
+                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                            skinTemperatureArraysForPlotting);
+
+            mHandler.post(() -> {
+                TimeData timeData = list.get(0).getmTime();
+                LocalDate localDate = DateUtils.getLocalDateFromVeepooTimeDateObj(timeData.toString());
+                if (localDate.compareTo(LocalDate.now()) == 0) {
+                    dashBoardViewModel.setTodayArrayTempAllIntervals(arraysMap);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
+                    dashBoardViewModel.setYesterdayArrayTempAllIntervals(arraysMap);
+                } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
+                    dashBoardViewModel.setPastYesterdayArrayTempAllIntervals(arraysMap);
+                }
+            });
+
+        });
+
+
+
+
 
     }
 
@@ -310,14 +342,14 @@ public class HealthsReadDataController {
                                                      List<BiConsumer<Map<String, Double>, TemptureData>> biConsumerList,
                                                      Temperature5MinDataContainer temperature5MinDataContainer) {
         list
-                .forEach(data -> {
-                    TimeData timeData = data.getmTime();
-                    if (timeData == null) return;
-                    int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
-                            timeData.getMinute());
-                    Map<String, Double> mapValues = new HashMap<>();
-                    biConsumerList.forEach(bi -> bi.accept(mapValues, data));
-                    temperature5MinDataContainer.getDoubleMap().put(interval, mapValues);
-                });
+            .forEach(data -> {
+                TimeData timeData = data.getmTime();
+                if (timeData == null) return;
+                int interval = IntervalUtils.getInterval5Min(timeData.getHour(),
+                        timeData.getMinute());
+                Map<String, Double> mapValues = new HashMap<>();
+                biConsumerList.forEach(bi -> bi.accept(mapValues, data));
+                temperature5MinDataContainer.getDoubleMap().put(interval, mapValues);
+            });
     }
 }

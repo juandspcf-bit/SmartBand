@@ -36,9 +36,9 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isTodayFragmentRefreshing = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isConnected = new MutableLiveData<>();
     private final MutableLiveData<Observer<Boolean>> observerMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<Observer<Boolean>> observerEnabledMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Observer<Boolean>> observerEnabledMutableLiveData = new MutableLiveData<>();
 
-    private MutableLiveData<ViewPager2.OnPageChangeCallback> viewPagerCallBack = new MutableLiveData<>();
+    private final MutableLiveData<ViewPager2.OnPageChangeCallback> viewPagerCallBack = new MutableLiveData<>();
 
     private final MutableLiveData<List<SleepDataUI>> todayUpdateSleepFullData = new MutableLiveData<>();
     private final MutableLiveData<List<SleepDataUI>> yesterdayUpdateSleepFullData = new MutableLiveData<>();
@@ -61,6 +61,9 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Map<String, Double>> mapTodaySummary = new MutableLiveData<>();
     private final MutableLiveData<Map<String, Double>> mapYesterdaySummary = new MutableLiveData<>();
     private final MutableLiveData<Map<String, Double>> mapPastYesterdaySummary = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, XYDataArraysForPlotting>> todayArrayTempAllIntervals = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, XYDataArraysForPlotting>> yesterdayArrayTempAllIntervals= new MutableLiveData<>();
+    private final MutableLiveData<Map<String, XYDataArraysForPlotting>>  pastYesterdayArrayTempAllIntervals= new MutableLiveData<>();
 
     public DashBoardViewModel() {
         isEnableFeatures.setValue(false);
@@ -328,5 +331,29 @@ public class DashBoardViewModel extends ViewModel {
 
     public void setViewPagerCallBack(ViewPager2.OnPageChangeCallback viewPagerCallBack) {
         this.viewPagerCallBack.setValue(viewPagerCallBack);
+    }
+
+    public void setTodayArrayTempAllIntervals(Map<String, XYDataArraysForPlotting> todayArrayTempAllIntervals) {
+        this.todayArrayTempAllIntervals.setValue(todayArrayTempAllIntervals);
+    }
+
+    public MutableLiveData<Map<String, XYDataArraysForPlotting>> getTodayArrayTempAllIntervals() {
+        return todayArrayTempAllIntervals;
+    }
+
+    public void setYesterdayArrayTempAllIntervals(Map<String, XYDataArraysForPlotting> yesterdayArrayTempAllIntervals) {
+        this.yesterdayArrayTempAllIntervals.setValue(yesterdayArrayTempAllIntervals);
+    }
+
+    public MutableLiveData<Map<String, XYDataArraysForPlotting>> getYesterdayArrayTempAllIntervals() {
+        return yesterdayArrayTempAllIntervals;
+    }
+
+    public void setPastYesterdayArrayTempAllIntervals(Map<String, XYDataArraysForPlotting> pastYesterdayArrayTempAllIntervals) {
+        this.pastYesterdayArrayTempAllIntervals.setValue(pastYesterdayArrayTempAllIntervals);
+    }
+
+    public MutableLiveData<Map<String, XYDataArraysForPlotting>>  getPastYesterdayArrayTempAllIntervals() {
+        return pastYesterdayArrayTempAllIntervals;
     }
 }

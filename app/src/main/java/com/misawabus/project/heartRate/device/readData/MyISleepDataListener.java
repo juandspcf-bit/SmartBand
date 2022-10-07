@@ -136,8 +136,9 @@ public class MyISleepDataListener implements ISleepDataListener {
             yesterdaySleepDataList.clear();
             pastYesterdaySleepDataList.clear();
 
-            dashBoardViewModel.setIsEnableFeatures(true);
-            dashBoardViewModel.setIsTodayFragmentRefreshing(false);
+            dashBoardViewModel.getHealthsReadDataManager().readTemperature();
+
+
 
         });
 

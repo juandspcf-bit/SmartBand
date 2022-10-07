@@ -38,7 +38,7 @@ public class UtilsSummaryFrag {
                 seriesList.add(join);
             }
         }
-        Log.d(TAG, "interpolateSeries: " + seriesList);
+
         if(seriesList.size()<3) return;
 
         var filteredLengthSeries = seriesList.size();

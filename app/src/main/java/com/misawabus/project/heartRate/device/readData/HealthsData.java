@@ -361,7 +361,6 @@ public class HealthsData {
                 VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originData3Listener, day, 1, dashBoardViewModel.getWatchData());
             } else if (originProtocolVersion != null) {
                 VPOperateManager.getMangerInstance(context).readOriginDataSingleDay(writeResponse, originDataListener, day, 1, dashBoardViewModel.getWatchData());
-                //readHealthData();
             }
         }
     }
@@ -377,6 +376,7 @@ public class HealthsData {
             @Override
             public void onTemptureDataListDataChange(List<TemptureData> list) {
                 Log.d(TAG, "onTemptureDataListDataChange: "+list);
+
                 HealthsReadDataController.processTemperatureDataList(list,
                         mHandler,
                         dashBoardViewModel,
@@ -396,7 +396,8 @@ public class HealthsData {
 
             @Override
             public void onReadOriginComplete() {
-
+                dashBoardViewModel.setIsEnableFeatures(true);
+                dashBoardViewModel.setIsTodayFragmentRefreshing(false);
             }
         }, new ReadOriginSetting(0,
                 1,

@@ -47,10 +47,10 @@ public class HealthsReadDataGeneratorsForPlotting {
     }
 
     @NonNull
-    public static Map<String, XYDataArraysForPlotting> getStringXYOriginDataArraysForPlottingMap(XYDataArraysForPlotting sportsArraysForPlotting,
-                                                                                                  XYDataArraysForPlotting heartRateArraysForPlotting,
-                                                                                                  XYDataArraysForPlotting highBPArraysForPlotting,
-                                                                                                  XYDataArraysForPlotting lowBPArraysForPlotting) {
+    public static Map<String, XYDataArraysForPlotting> getMapContainerXYOriginDataArraysForPlotting(XYDataArraysForPlotting sportsArraysForPlotting,
+                                                                                                    XYDataArraysForPlotting heartRateArraysForPlotting,
+                                                                                                    XYDataArraysForPlotting highBPArraysForPlotting,
+                                                                                                    XYDataArraysForPlotting lowBPArraysForPlotting) {
         Map<String, XYDataArraysForPlotting> arraysMap = new HashMap<>();
         arraysMap
                 .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
@@ -196,6 +196,52 @@ public class HealthsReadDataGeneratorsForPlotting {
         xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
                 subArrayWithReplacedZeroValuesAsAvg);
 
+        return xyDataArraysForPlotting;
+    }
+
+    public static XYDataArraysForPlotting getBodyTemperatureArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
+        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "bodyTemperature");
+        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        if (lengthSubArray < 3) {
+            return new XYDataArraysForPlotting();
+        }
+        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
+                subArrayWithReplacedZeroValuesAsAvg);
+        return xyDataArraysForPlotting;
+    }
+
+    public static XYDataArraysForPlotting getSkinTemperatureArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
+        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
+        Map<Integer, Map<String, Double>> dataIntervalsMap;
+        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
+        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
+            return new XYDataArraysForPlotting();
+
+        List<Map<String, Double>> dataIntervalsList;
+        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
+
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "skinTemperature");
+        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        if (lengthSubArray < 3) {
+            return new XYDataArraysForPlotting();
+        }
+        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
+                subArrayWithReplacedZeroValuesAsAvg);
         return xyDataArraysForPlotting;
     }
 }
