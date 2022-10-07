@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.misawabus.project.heartRate.DashBoardActivity;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentMainDashboardBinding;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -72,6 +73,9 @@ public class MainDashBoardFragment extends Fragment{
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        }else {
+            Log.d(TAG, "onResume: DayFragment");
+            DashBoardActivity.hideWindowForLesR(getActivity());
         }
 
 
@@ -176,18 +180,10 @@ public class MainDashBoardFragment extends Fragment{
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }/*else {
-            Log.d(TAG, "onResume: MainDashBoard");
-            hideWindowForLesR(getActivity());
-            View decorView = getActivity().getWindow().getDecorView();
-            decorView.setOnSystemUiVisibilityChangeListener
-                    (new View.OnSystemUiVisibilityChangeListener() {
-                        @Override
-                        public void onSystemUiVisibilityChange(int visibility) {
-                            hideWindowForLesR(getActivity());
-                        }
-                    });
-        }*/
+        }else {
+            Log.d(TAG, "onResume: DayFragment");
+            DashBoardActivity.hideWindowForLesR(getActivity());
+        }
     }
 
     private void hideProgressBar(ValueAnimator animation) {

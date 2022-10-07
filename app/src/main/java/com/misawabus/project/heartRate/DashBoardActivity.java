@@ -42,12 +42,16 @@ public class DashBoardActivity extends AppCompatActivity {
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-    public static final int flags2 = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    public static final int flags2 = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
     private final static String TAG = DashBoardActivity.class.getSimpleName();
     private ActivityDashBoardV2Binding binding;
     private DashBoardViewModel dashBoardViewModel;
+    public String marginTopValue="10dp";
 
 
     ConnectivityManager connectivityManager;
@@ -80,6 +84,11 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+/*
+        binding.setVariable(BR.marginTop, this);
+*/
+
 
         Bundle extras = getIntent().getExtras();
         String macAddress = extras.getString("deviceAddress");
@@ -119,14 +128,6 @@ public class DashBoardActivity extends AppCompatActivity {
             dashBoardViewModel.setAge(age);
         });
 
-
-/*        DeviceViewModel.getSingleDeviceRow(macAddress).observe(this, device -> {
-            if (device == null || device.getBirthDate() == null) return;
-            LocalDate localDateBirthDate = DateUtils.getLocalDate(device.getBirthDate(), "-");
-            int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
-            dashBoardViewModel.setAge(age);
-        });*/
-
         VPOperateManager.getMangerInstance(this).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {
 
             @Override
@@ -141,8 +142,6 @@ public class DashBoardActivity extends AppCompatActivity {
         });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard, new MainDashBoardFragment()).commit();
-
-
 
     }
 
