@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.Build;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,6 +49,7 @@ import java.util.stream.Stream;
 public class PlotUtilsSports {
 
 
+    private static final String TAG = PlotUtilsSports.class.getSimpleName();
     static Pair<Integer, XYSeries> selection;
     static SimpleXYSeries seriesBarRepresentation;
     static XYPlot xyPlotForSummarySteps;
@@ -208,11 +210,13 @@ public class PlotUtilsSports {
             selectionWidget.setBackgroundPaint(p);
 
 
+            float X = plot.getWidth()/2.0f + plot.getLeft();
+            float Y = plot.getBottom()-20.0f;
+            Log.d(TAG, "onPlotClicked: " + plot.getGraph().getGridRect());
             selectionWidget.position(
-                    PixelUtils.dpToPix(plot.getMeasuredWidth() / 4.0f),
+                    X,
                     HorizontalPositioning.ABSOLUTE_FROM_LEFT,
-                    //plot.getMeasuredHeight(),
-                    PixelUtils.dpToPix(0.95f * plot.getMeasuredHeight() / 2.0f),
+                   Y,
                     VerticalPositioning.ABSOLUTE_FROM_TOP,
                     Anchor.CENTER);
             int position = selection.second.getX(selection.first).intValue();

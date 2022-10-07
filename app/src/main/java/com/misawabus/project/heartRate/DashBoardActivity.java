@@ -105,7 +105,7 @@ public class DashBoardActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String macAddress = extras.getString("deviceAddress");
 
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         hideBottomNavigationBar();
 
 
