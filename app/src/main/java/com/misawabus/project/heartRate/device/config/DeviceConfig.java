@@ -92,7 +92,7 @@ public class DeviceConfig {
         VPOperateManager.getMangerInstance(context).confirmDevicePwd(writeResponse, new IPwdDataListener() {
                     @Override
                     public void onPwdDataChange(PwdData pwdData) {
-                        mHandler.postDelayed(healthsData::readOriginData,500);
+                        mHandler.postDelayed(healthsData::readOriginData,5000);
 
                     }
                 },

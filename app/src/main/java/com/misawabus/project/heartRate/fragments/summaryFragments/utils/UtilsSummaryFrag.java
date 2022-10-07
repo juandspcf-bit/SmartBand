@@ -6,6 +6,8 @@ import android.util.Log;
 
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.apache.commons.math3.fitting.PolynomialCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoints;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +56,13 @@ public class UtilsSummaryFrag {
         LinearInterpolator interpolator = new LinearInterpolator();
         PolynomialSplineFunction interpolate = interpolator.interpolate(axisPointsFiltered,
                 seriesDoubleFiltered);
+
+//        final WeightedObservedPoints obs = new WeightedObservedPoints();
+//        for (int i = 0; i < filteredLengthSeries; i++) {
+//            obs.add(axisPointsFiltered[i], seriesDoubleFiltered[i]);
+//        }
+//        final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(3);
+//        final double[] coeff = fitter.fit(obs.toList());
 
         for (int i = 0; i < fullLengthSeries; i++) {
             if(seriesDouble[i]==0.0 && interpolate.isValidPoint(axisPoints[i])){

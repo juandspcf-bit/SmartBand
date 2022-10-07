@@ -305,7 +305,7 @@ public class HealthsData {
                 pastYesterdayList5Min = Stream.generate((OriginData::new)).limit(288)
                         .collect(Collectors.toList());
 
-                //mHandler.post(() -> readSleepData());
+
                 mHandler.post(() -> readSingleDaySleepData(day));
 
 

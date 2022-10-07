@@ -131,35 +131,7 @@ public class DayFragment extends Fragment {
         Objects.requireNonNull(binding.refreshLayout).setEnabled(false);
         binding.refreshLayout.setSize(SwipeRefreshLayout.LARGE);
 
-        deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
-            @Override
-            public void onChanged(CustomSettingData customSettingData) {
-                if(customSettingData==null)return;
-                Log.d(TAG, "CustomSettingData" + customSettingData.getAutoTemperatureDetect());
-                EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
-                EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
-                EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
-                EFunctionStatus ppgSupport = customSettingData.getPpg();
-                EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
-/*                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);*/
-/*                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);*/
-                if (EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
-                    binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
-                    binding.cardPlotsflow.removeView(binding.fragmentBloodPressureCardView);
-                }
-                if (EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain) {
-                    binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
-                    binding.cardPlotsflow.removeView(binding.fragmentSop2PlotCardView);
-                }
 
-                if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect) {
-                    binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
-                    binding.cardPlotsflow.removeView(binding.fragmentTemperaturePlotCardView);
-                }
-            }
-        });
 
 
 
@@ -343,6 +315,40 @@ public class DayFragment extends Fragment {
             Log.d(TAG, "onResume: DayFragment");
             DashBoardActivity.hideWindowForLesR(getActivity());
         }
+
+
+        deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
+            @Override
+            public void onChanged(CustomSettingData customSettingData) {
+                if(customSettingData==null)return;
+                Log.d(TAG, "Live data CustomSettingData" + customSettingData.getAutoTemperatureDetect());
+                EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
+                EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
+                EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
+                EFunctionStatus ppgSupport = customSettingData.getPpg();
+                EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
+/*                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);*/
+/*                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
+                            || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);*/
+                if (EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
+                    binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
+                    binding.cardPlotsflow.removeView(binding.fragmentBloodPressureCardView);
+                }
+                if (EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain) {
+                    binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
+                    binding.cardPlotsflow.removeView(binding.fragmentSop2PlotCardView);
+                }
+
+                if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect) {
+                    binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
+                    binding.cardPlotsflow.removeView(binding.fragmentTemperaturePlotCardView);
+                }else{
+                    binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
+                    binding.cardPlotsflow.addView(binding.fragmentTemperaturePlotCardView);
+                }
+            }
+        });
 
     }
 

@@ -70,6 +70,11 @@ public class PlotUtils {
     @NonNull
     private static Double[] setArrayZeroValuesWithAvg(Double[] subArray) {
         int lengthSubArray = subArray.length;
+        Double[] numericalTimeAxisSubArray = new Double[lengthSubArray];
+
+        var seriesList = new ArrayList<List<Double>>();
+        if (lengthSubArray > 3)
+            interpolateSeries(subArray, numericalTimeAxisSubArray, lengthSubArray, seriesList);
 
         Double average = Arrays
                 .stream(subArray)
@@ -80,10 +85,9 @@ public class PlotUtils {
                 .map(value -> value != null && value > 20.0 ? value : average)
                 .collect(toList()).toArray(new Double[lengthSubArray]);
 
-        Double[] numericalTimeAxisSubArray = new Double[lengthSubArray];
-        var seriesList = new ArrayList<List<Double>>();
-        if (lengthSubArray > 3)
-            interpolateSeries(subArray, numericalTimeAxisSubArray, lengthSubArray, seriesList);
+
+
+
 
         return subArray;
 
