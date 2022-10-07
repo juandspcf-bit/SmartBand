@@ -2,6 +2,7 @@ package com.misawabus.project.heartRate;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -86,6 +88,12 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
 
