@@ -3,16 +3,19 @@ package com.misawabus.project.heartRate;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.Window;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -51,7 +54,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private final static String TAG = DashBoardActivity.class.getSimpleName();
     private ActivityDashBoardV2Binding binding;
     private DashBoardViewModel dashBoardViewModel;
-    public String marginTopValue="10dp";
+    public int marginTopValue=10;
 
 
     ConnectivityManager connectivityManager;
@@ -77,7 +80,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,16 +87,28 @@ public class DashBoardActivity extends AppCompatActivity {
         binding = ActivityDashBoardV2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-/*
-        binding.setVariable(BR.marginTop, this);
-*/
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
 
+            int height;
+            Resources myResources = getResources();
+            int idStatusBarHeight = myResources.getIdentifier( "status_bar_height", "dimen", "android");
+            if (idStatusBarHeight > 0) {
+                height = getResources().getDimensionPixelSize(idStatusBarHeight);
+                Log.d(TAG, "onCreate: " + height);
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+                params.setMargins(0, height, 0, 0);
+                binding.mainDashBoardFragmentContainerInActivityDashBoard.setLayoutParams(params);
+            }
+
+        }
 
         Bundle extras = getIntent().getExtras();
         String macAddress = extras.getString("deviceAddress");
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         hideBottomNavigationBar();
+
+
 
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
