@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.device.readData;
 
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgHeartRate;
 
 import androidx.annotation.NonNull;
 
@@ -106,7 +107,7 @@ public class HealthsReadDataGeneratorsForPlotting {
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "Ppgs");
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvgHeartRate(dataIntervalsList, "Ppgs");
         int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
         if (lengthSubArray < 3) {
             return new XYDataArraysForPlotting();

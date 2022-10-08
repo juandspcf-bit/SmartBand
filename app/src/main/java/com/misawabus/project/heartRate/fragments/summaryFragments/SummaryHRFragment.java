@@ -18,7 +18,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.inuker.bluetooth.library.Code;
 import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
@@ -51,6 +50,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -62,6 +63,9 @@ public class SummaryHRFragment extends SummaryFragment {
     private DashBoardViewModel dashBoardViewModel;
     private int heartHigh;
     private int heartLow;
+
+    public static final ExecutorService databaseSingleExecutor =
+            Executors.newSingleThreadExecutor();
 
     public SummaryHRFragment() {
 
@@ -164,70 +168,78 @@ public class SummaryHRFragment extends SummaryFragment {
             }
         });
 
-        String heartRateData = dataFromDB.getData();
 
-        List<Map<String, Double>> heartRateDataMap = FragmentUtil.parse5MinFieldData(heartRateData);
+        databaseSingleExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                String heartRateData = dataFromDB.getData();
 
-        Map<String, List<Double>> heartRateGroupByFieldsWith30MinSumValues;
-        heartRateGroupByFieldsWith30MinSumValues = FragmentUtil
-                .getHeartRateDataGroupByFieldsWith30MinSumValues(heartRateDataMap);
+                List<Map<String, Double>> heartRateDataMap = FragmentUtil.parse5MinFieldData(heartRateData);
 
-        XYDataArraysForPlotting fieldXYDataArraysForPlotting =
-                PlotUtils.get5MinFieldXYDataArraysForPlotting(heartRateDataMap, "Ppgs");
+                Map<String, List<Double>> heartRateGroupByFieldsWith30MinSumValues;
+                heartRateGroupByFieldsWith30MinSumValues = FragmentUtil
+                        .getHeartRateDataGroupByFieldsWith30MinSumValues(heartRateDataMap);
 
-        Double[] seriesDoubleAVR = fieldXYDataArraysForPlotting.getSeriesDoubleAVR();
+                XYDataArraysForPlotting fieldXYDataArraysForPlotting =
+                        PlotUtils.get5MinFieldXYDataArraysForPlottingHeartRate(heartRateDataMap, "Ppgs");
 
-        Optional<Double> max = Arrays
-                .stream(seriesDoubleAVR)
-                .max(Comparator.naturalOrder());
-        Optional<Double> min = Arrays
-                .stream(seriesDoubleAVR).filter(value -> value > 0.0)
-                .min(Comparator.naturalOrder());
-        var maxString = String.format(Locale.getDefault(),
-                "%.1f",
-                max.orElse(0.0));
-        var minString = String.format(Locale.getDefault(),
-                "%.1f",
-                min.orElse(0.0));
+                Double[] seriesDoubleAVR = fieldXYDataArraysForPlotting.getSeriesDoubleAVR();
 
-        Double average = Arrays
-                .stream(seriesDoubleAVR)
-                .collect(averagingDouble(Double::doubleValue));
-        var averageString = String.format(Locale.getDefault(),
-                "%.1f",
-                average);
+                Optional<Double> max = Arrays
+                        .stream(seriesDoubleAVR)
+                        .max(Comparator.naturalOrder());
+                Optional<Double> min = Arrays
+                        .stream(seriesDoubleAVR).filter(value -> value > 0.0)
+                        .min(Comparator.naturalOrder());
+                var maxString = String.format(Locale.getDefault(),
+                        "%.1f",
+                        max.orElse(0.0));
+                var minString = String.format(Locale.getDefault(),
+                        "%.1f",
+                        min.orElse(0.0));
+
+                Double average = Arrays
+                        .stream(seriesDoubleAVR)
+                        .collect(averagingDouble(Double::doubleValue));
+                var averageString = String.format(Locale.getDefault(),
+                        "%.1f",
+                        average);
 
 
-        Double[] ppgs = heartRateGroupByFieldsWith30MinSumValues.get("Ppgs").toArray(new Double[0]);
-        String[] domainLabels = IntervalUtils.intervalLabels30Min;
+                Double[] ppgs = heartRateGroupByFieldsWith30MinSumValues.get("Ppgs").toArray(new Double[0]);
+                String[] domainLabels = IntervalUtils.intervalLabels30Min;
 
-        setTextButtonDate(selectedDate, binding.selectDateHRButton);
+                List<String> intervals = new ArrayList<>();
+                Stream.iterate(0, i -> ++i).limit(domainLabels.length).forEach(position -> {
+                    String interval = position < (domainLabels.length - 1) ?
+                            domainLabels[position] + " - " + domainLabels[position + 1] :
+                            domainLabels[position] + "-" + "00:00";
+                    intervals.add(interval);
+                });
 
-        binding.imageView6.setVisibility(View.GONE);
-        binding.group.setVisibility(View.VISIBLE);
+                if (getActivity()==null) return;
+                getActivity().runOnUiThread(() -> {
+                    setTextButtonDate(selectedDate, binding.selectDateHRButton);
+                    binding.imageView6.setVisibility(View.GONE);
+                    binding.group.setVisibility(View.VISIBLE);
+                    binding.highestHR.setText(maxString);
+                    binding.lowestHR.setText(minString);
+                    binding.averageHR.setText(averageString);
 
-        SetDataInViews.plotHeartRateData(fieldXYDataArraysForPlotting,
-                binding.fragmentRatePlotSummary);
+                    SetDataInViews.plotHeartRateData(fieldXYDataArraysForPlotting,
+                            binding.fragmentRatePlotSummary);
 
-        binding.highestHR.setText(maxString);
-        binding.lowestHR.setText(minString);
-        binding.averageHR.setText(averageString);
+                    buildRecyclerView(Arrays.asList(ppgs),
+                            intervals,
+                            getContext(),
+                            binding.recyclerViewSummHR,
+                            R.layout.row_layou_hr,
+                            new ViewsInHRRowHolder());
+                });
 
-        List<String> intervals = new ArrayList<>();
-        Stream.iterate(0, i -> ++i).limit(domainLabels.length).forEach(position -> {
-            String interval = position < (domainLabels.length - 1) ?
-                    domainLabels[position] + " - " + domainLabels[position + 1] :
-                    domainLabels[position] + "-" + "00:00";
-            intervals.add(interval);
+
+            }
         });
-
-
-        buildRecyclerView(Arrays.asList(ppgs),
-                intervals,
-                getContext(),
-                binding.recyclerViewSummHR,
-                R.layout.row_layou_hr,
-                new ViewsInHRRowHolder());
     }
 
 

@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.plotting;
 
 import static com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag.interpolateSeries;
+import static com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag.interpolateSeriesHeartRate;
 import static java.util.stream.Collectors.averagingDouble;
 import static java.util.stream.Collectors.toList;
 
@@ -41,6 +42,16 @@ public class PlotUtils {
     }
 
     @NonNull
+    public static XYDataArraysForPlotting get5MinFieldXYDataArraysForPlottingHeartRate(List<Map<String, Double>> mapsSop2,
+                                                                              String field) {
+        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvgHeartRate(mapsSop2, field);
+        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
+        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+
+        return new XYDataArraysForPlotting(timeAxisSubArray, subArrayWithReplacedZeroValuesAsAvg);
+    }
+
+    @NonNull
     public static XYDataArraysForPlotting get30MinFieldXYDataArraysForPlotting(List<Map<String, Double>> data,
                                                                                String field) {
         Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(data, field);
@@ -58,6 +69,13 @@ public class PlotUtils {
     }
 
     @NonNull
+    public static Double[] getSubArrayWithReplacedZeroValuesAsAvgHeartRate(List<Map<String, Double>> data, String field) {
+        int indexOfLastNonZeroElement = getIndexOfLastNonZeroElement(data, field);
+        Double[] subArray = getSubArrayFromFieldList(data, field, indexOfLastNonZeroElement);
+        return setArrayZeroValuesWithAvgHeartRate(subArray);
+    }
+
+    @NonNull
     private static Double[] getSubArrayFromFieldList(List<Map<String, Double>> mapsSop2, String field, int indexOfLastNonZeroElement) {
         List<Map<String, Double>> maps = mapsSop2.subList(0, indexOfLastNonZeroElement + 1);
 
@@ -72,9 +90,28 @@ public class PlotUtils {
         int lengthSubArray = subArray.length;
         Double[] numericalTimeAxisSubArray = new Double[lengthSubArray];
 
+        Double average = Arrays
+                .stream(subArray)
+                .filter(value -> value != null && value > 20.0)
+                .collect(averagingDouble(Double::doubleValue));
+
+        subArray = Arrays.stream(subArray)
+                .map(value -> value != null && value > 20.0 ? value : average)
+                .collect(toList()).toArray(new Double[lengthSubArray]);
+
         var seriesList = new ArrayList<List<Double>>();
         if (lengthSubArray > 3)
             interpolateSeries(subArray, numericalTimeAxisSubArray, lengthSubArray, seriesList);
+
+        return subArray;
+
+    }
+
+
+    @NonNull
+    private static Double[] setArrayZeroValuesWithAvgHeartRate(Double[] subArray) {
+        int lengthSubArray = subArray.length;
+        Double[] numericalTimeAxisSubArray = new Double[lengthSubArray];
 
         Double average = Arrays
                 .stream(subArray)
@@ -85,12 +122,11 @@ public class PlotUtils {
                 .map(value -> value != null && value > 20.0 ? value : average)
                 .collect(toList()).toArray(new Double[lengthSubArray]);
 
-
-
-
+        var seriesList = new ArrayList<List<Double>>();
+        if (lengthSubArray > 3)
+            interpolateSeriesHeartRate(subArray, numericalTimeAxisSubArray, lengthSubArray, seriesList);
 
         return subArray;
-
 
     }
 

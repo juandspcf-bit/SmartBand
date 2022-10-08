@@ -4,12 +4,13 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.misawabus.project.heartRate.Utils.Smooth;
+
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.apache.commons.math3.fitting.PolynomialCurveFitter;
-import org.apache.commons.math3.fitting.WeightedObservedPoints;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,19 +58,62 @@ public class UtilsSummaryFrag {
         PolynomialSplineFunction interpolate = interpolator.interpolate(axisPointsFiltered,
                 seriesDoubleFiltered);
 
-//        final WeightedObservedPoints obs = new WeightedObservedPoints();
-//        for (int i = 0; i < filteredLengthSeries; i++) {
-//            obs.add(axisPointsFiltered[i], seriesDoubleFiltered[i]);
-//        }
-//        final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(3);
-//        final double[] coeff = fitter.fit(obs.toList());
+        for (int i = 0; i < fullLengthSeries; i++) {
+            if(seriesDouble[i]==0.0 && interpolate.isValidPoint(axisPoints[i])){
+                seriesDouble[i] = interpolate.value(axisPoints[i]);
+            }
+        }
+
+    }
+
+    public static void interpolateSeriesHeartRate(Double[] seriesDouble, Double[] axisPoints, int fullLengthSeries, List<List<Double>> seriesList) {
+        if(seriesDouble.length==1) return;
+        for(int i = 0; i< fullLengthSeries; i++){
+            axisPoints[i]= (double) i;
+            if(seriesDouble[i]>0.0){
+                var join = new ArrayList<Double>();
+                join.add(seriesDouble[i]);
+                join.add(axisPoints[i]);
+                seriesList.add(join);
+            }
+        }
+
+        if(seriesList.size()<3) return;
+
+        var filteredLengthSeries = seriesList.size();
+        var seriesDoubleFiltered = new double[filteredLengthSeries];
+        var axisPointsFiltered = new double[filteredLengthSeries];
+
+        for (int i = 0; i < filteredLengthSeries; i++) {
+            seriesDoubleFiltered[i] = seriesList.get(i).get(0);
+            axisPointsFiltered[i] = seriesList.get(i).get(1);
+        }
+
+
+        LinearInterpolator interpolator = new LinearInterpolator();
+        PolynomialSplineFunction interpolate = interpolator.interpolate(axisPointsFiltered,
+                seriesDoubleFiltered);
 
         for (int i = 0; i < fullLengthSeries; i++) {
             if(seriesDouble[i]==0.0 && interpolate.isValidPoint(axisPoints[i])){
                 seriesDouble[i] = interpolate.value(axisPoints[i]);
             }
         }
+
+        double[] seriesDoublePrimitive = new double[seriesDouble.length];
+        for (int i = 0; i < seriesDoublePrimitive.length; i++) {
+            seriesDoublePrimitive[i]=seriesDouble[i];
+        }
+
+        Smooth smooth = new Smooth(seriesDoublePrimitive, 6, "rectangular");
+        Log.d(TAG, "interpolateSeries: smo : seri" + smooth.smoothSignal().length +" : " +seriesDouble.length);
+        for (int i = 0; i < smooth.smoothSignal().length; i++) {
+
+            seriesDouble[i]=smooth.smoothSignal()[i];
+        }
     }
+
+
 
     public static ZoneObject testZone(double x, double y){
         int[][] states = new int[][] {
