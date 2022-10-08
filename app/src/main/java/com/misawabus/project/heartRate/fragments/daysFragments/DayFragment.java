@@ -342,10 +342,10 @@ public class DayFragment extends Fragment {
 
                 if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect) {
                     binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
-                    binding.cardPlotsflow.removeView(binding.fragmentTemperaturePlotCardView);
+
                 }else{
                     binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
-                    binding.cardPlotsflow.addView(binding.fragmentTemperaturePlotCardView);
+
                 }
             }
         });

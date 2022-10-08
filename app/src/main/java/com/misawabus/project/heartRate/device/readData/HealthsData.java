@@ -235,7 +235,7 @@ public class HealthsData {
         VPOperateManager
                 .getMangerInstance(context)
                 .readSleepData(writeResponse,
-                        new MyISleepDataListener(dashBoardViewModel, deviceViewModel, activity),
+                        new MyISleepDataListener(dashBoardViewModel, deviceViewModel, activity, 3),
                         dashBoardViewModel.getWatchData());
     }
 
@@ -366,7 +366,7 @@ public class HealthsData {
     }
 
 
-    public void readTemperature() {
+    public void readTemperature(boolean onlyOneDay) {
         VPOperateManager.getMangerInstance(context).readTemptureDataBySetting(new IBleWriteResponse() {
             @Override
             public void onResponse(int i) {
@@ -401,7 +401,7 @@ public class HealthsData {
             }
         }, new ReadOriginSetting(0,
                 1,
-                false, dashBoardViewModel.getWatchData()
+                onlyOneDay, dashBoardViewModel.getWatchData()
         ));
     }
 
@@ -409,7 +409,7 @@ public class HealthsData {
         VPOperateManager
                 .getMangerInstance(context)
                 .readSleepDataSingleDay(writeResponse,
-                        new MyISleepDataListener(dashBoardViewModel, deviceViewModel, activity),
+                        new MyISleepDataListener(dashBoardViewModel, deviceViewModel, activity, day),
                         day,
                         dashBoardViewModel.getWatchData());
 

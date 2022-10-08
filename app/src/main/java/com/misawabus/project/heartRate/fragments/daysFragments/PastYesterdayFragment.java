@@ -36,6 +36,13 @@ public class PastYesterdayFragment extends DayFragment {
             }
         });
 
+        dashBoardViewModel.getPastYesterdayArrayTempAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
+            @Override
+            public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+                setTemperaturePlot(stringXYDataArraysForPlottingMap);
+            }
+        });
+
         dashBoardViewModel.getPastYesterdayArray5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
             @Override
             public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {

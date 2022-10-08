@@ -41,6 +41,13 @@ public class YesterdayFragment extends DayFragment {
             setDaySleepPlot(this, sleepDataUIList);
         });
 
+        dashBoardViewModel.getYesterdayArrayTempAllIntervals().observe(getViewLifecycleOwner(), new Observer<Map<String, XYDataArraysForPlotting>>() {
+            @Override
+            public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+                setTemperaturePlot(stringXYDataArraysForPlottingMap);
+            }
+        });
+
        dashBoardViewModel.getYesterdayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAvgDataContainerMap) {

@@ -37,13 +37,16 @@ public class MyISleepDataListener implements ISleepDataListener {
     private final DashBoardViewModel dashBoardViewModel;
     private final DeviceViewModel deviceViewModel;
     private final AppCompatActivity activity;
+    private int days;
 
     public MyISleepDataListener(DashBoardViewModel dashBoardViewModel,
                                 DeviceViewModel deviceViewModel,
-                                AppCompatActivity activity) {
+                                AppCompatActivity activity,
+                                int days) {
         this.dashBoardViewModel = dashBoardViewModel;
         this.deviceViewModel = deviceViewModel;
         this.activity = activity;
+        this.days = days;
     }
 
     @Override
@@ -136,9 +139,12 @@ public class MyISleepDataListener implements ISleepDataListener {
             yesterdaySleepDataList.clear();
             pastYesterdaySleepDataList.clear();
 
-            dashBoardViewModel.getHealthsReadDataManager().readTemperature();
 
-
+            if(days==3){
+                dashBoardViewModel.getHealthsReadDataManager().readTemperature(false);
+            }else if(days==0){
+                dashBoardViewModel.getHealthsReadDataManager().readTemperature(true);
+            }
 
         });
 
