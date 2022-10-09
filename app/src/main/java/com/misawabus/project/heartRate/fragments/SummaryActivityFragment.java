@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,15 @@ import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentGeneralSummaryBinding;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
+import com.orhanobut.logger.Logger;
+import com.veepoo.protocol.shareprence.VpSpGetUtil;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 public class SummaryActivityFragment extends Fragment {
+    private static final String TAG = MainDashBoardFragment.class.getSimpleName();
     private FragmentGeneralSummaryBinding binding;
     private DeviceViewModel deviceViewModel;
     private DashBoardViewModel dashBoardViewModel;
@@ -65,10 +69,15 @@ public class SummaryActivityFragment extends Fragment {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //dashBoardViewModel.getRealTimeTesterClass().startTemperatureDetection();
-                //dashBoardViewModel.getDeviceSettingsManager().readDeviceSettings();
-                //dashBoardViewModel.getRealTimeTesterClass().readTemperature();
-                dashBoardViewModel.getHealthsReadDataManager().readTemperature(false);
+                boolean isSupportSettingsTemperatureUnit = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportSettingsTemperatureUnit();//是否支持温度单位设置
+                boolean isSupportSleep = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportPreciseSleep();//是否支持精准睡眠
+
+                boolean isCanReadTempture = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportReadTempture();//是否支持读取温度
+                boolean isCanDetectTempByApp = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportCheckTemptureByApp();//是否可以通过app监测体温
+
+
+                Log.d(TAG, "onClick: " + isCanReadTempture);
+
             }
         });
 
