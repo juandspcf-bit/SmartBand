@@ -1,5 +1,7 @@
 package com.misawabus.project.heartRate.device.readData;
 
+import static com.misawabus.project.heartRate.constans.IdTypeDataTable.HighPressure;
+
 import android.os.Handler;
 import android.util.Log;
 
@@ -17,6 +19,7 @@ import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDat
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
+import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -26,11 +29,13 @@ import com.veepoo.protocol.model.datas.TemptureData;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 public class HealthsReadDataController {
 
@@ -347,5 +352,16 @@ public class HealthsReadDataController {
                 biConsumerList.forEach(bi -> bi.accept(mapValues, data));
                 temperature5MinDataContainer.getDoubleMap().put(interval, mapValues);
             });
+    }
+
+
+    @NonNull
+    public Stream<SummaryFragment.ContainerDouble> getContainerDoubleStream(Double[] collect, long sizeList) {
+        return Stream.iterate(0, i -> ++i).limit(sizeList - 1)
+                .map(index -> {
+                    double nonNullVal = collect[index];
+                    return new SummaryFragment.ContainerDouble(nonNullVal, index);
+                })
+                .filter(container -> container.getValue() > 0);
     }
 }

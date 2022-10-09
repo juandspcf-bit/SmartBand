@@ -89,10 +89,6 @@ public class SummaryActivityFragment extends Fragment {
         });
 
 
-
-
-
-
     }
 
 

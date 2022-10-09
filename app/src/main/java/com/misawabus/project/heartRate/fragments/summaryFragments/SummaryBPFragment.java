@@ -125,27 +125,35 @@ public class SummaryBPFragment extends SummaryFragment {
             return;
         }
 
+        List<Map<String, Double>> bloodPressureDataMap = FragmentUtil.parse5MinFieldData(bloodPressure.getData());
+        List<Map<String, Double>> bPMapFieldsForEach30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(bloodPressureDataMap);
+
+
+        XYDataArraysForPlotting highValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "highValue");
+        XYDataArraysForPlotting lowValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "lowVaamlue");
+        Double[] highValuesSampleArray = highValuesSampleContainer.getSeriesDoubleAVR();
+        Double[] lowValuesSampleArray = lowValuesSampleContainer.getSeriesDoubleAVR();
+        List<Double> HPList = Arrays.asList(highValuesSampleArray);
+        List<Double> LPlist = Arrays.asList(lowValuesSampleArray);
+        List<String> stringsIntervalHours = Arrays.asList(highValuesSampleContainer.getPeriodIntervalsArray());
+        int fullLengthSeries = highValuesSampleArray.length;
+
+
+        Map<IdTypeDataTable, List<Double>> mapForHighPressureLowPressure = new HashMap<>();
+        mapForHighPressureLowPressure.put(HighPressure, HPList);
+        mapForHighPressureLowPressure.put(LowPressure, LPlist);
+
+        int fullDataSize = 48;
+        List<String> intervalsFull = Arrays.asList(IntervalUtils.getStringHalfHourMinutesIntervals(fullDataSize));
+        buildRecyclerView(mapForHighPressureLowPressure,
+                intervalsFull,
+                getContext(),
+                binding.recyclerViewBP,
+                R.layout.row_layout_bp,
+                new ViewsInBPRowHolder()
+        );
 
         databaseWriteExecutor.execute(() -> {
-            List<Map<String, Double>> bloodPressureDataMap = FragmentUtil.parse5MinFieldData(bloodPressure.getData());
-            List<Map<String, Double>> bPMapFieldsForEach30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(bloodPressureDataMap);
-
-
-            XYDataArraysForPlotting highValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "highValue");
-            XYDataArraysForPlotting lowValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "lowVaamlue");
-
-
-            Double[] highValuesSampleArray = highValuesSampleContainer.getSeriesDoubleAVR();
-            Double[] lowValuesSampleArray = lowValuesSampleContainer.getSeriesDoubleAVR();
-            List<Double> HPList = Arrays.asList(highValuesSampleArray);
-            List<Double> LPlist = Arrays.asList(lowValuesSampleArray);
-            List<String> stringsIntervalHours = Arrays.asList(highValuesSampleContainer.getPeriodIntervalsArray());
-            int fullLengthSeries = highValuesSampleArray.length;
-
-
-            Map<IdTypeDataTable, List<Double>> mapForHighPressureLowPressure = new HashMap<>();
-            mapForHighPressureLowPressure.put(HighPressure, HPList);
-            mapForHighPressureLowPressure.put(LowPressure, LPlist);
 
             Optional<ContainerDouble> optionalMaxIndex =
                     getContainerDoubleStream(mapForHighPressureLowPressure, fullLengthSeries)
@@ -201,15 +209,7 @@ public class SummaryBPFragment extends SummaryFragment {
         binding.lowestBP.setText(stringMin);
         binding.lowestBPTime.setText(stringsIntervalHours.get(minIndex));
 
-        int fullDataSize = 48;
-        List<String> intervalsFull = Arrays.asList(IntervalUtils.getStringHalfHourMinutesIntervals(fullDataSize));
-        buildRecyclerView(mapForHighPressureLowPressure,
-                intervalsFull,
-                getContext(),
-                binding.recyclerViewBP,
-                R.layout.row_layout_bp,
-                new ViewsInBPRowHolder()
-        );
+
     }
 
     @NonNull

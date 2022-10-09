@@ -140,12 +140,12 @@ public class SummaryFragment extends Fragment {
         buttonDate.setText(DateUtils.getStringFormattedDate(dateS, "/"));
     }
 
-    protected static class ContainerDouble {
+    public static class ContainerDouble {
 
         private final Double value;
         private final int index;
 
-        ContainerDouble(Double value, int index) {
+        public ContainerDouble(Double value, int index) {
             this.value = value;
             this.index = index;
         }
