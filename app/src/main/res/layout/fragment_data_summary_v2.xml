@@ -239,11 +239,38 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/heartRateSummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="-1dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.96"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/heartRateTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Heart Rate"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/fragmentRatePlot"
                             style="@style/APDefacto.Light"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
@@ -251,22 +278,20 @@
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="25dp"
-                            app:graphMarginTop="30dp"
-                            app:graphWidthMode="fill"
+                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/ap_transparent"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/heartRateTitleTextView"
                             app:legendVisible="false"
                             app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
                             app:lineLabelTextColorLeft="#4B1263"
                             app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
-                            app:rangeStep="5dp"
-                            app:title="Heart Rate" />
+                            app:rangeStep="5dp" />
 
                         <ImageView
                             android:id="@+id/noDataHRImageView"
@@ -320,11 +345,39 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/stepsSummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="-1dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.96"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/stepsTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Steps"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/fragmentPlot"
                             style="@style/APDefacto.Light"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
@@ -332,22 +385,22 @@
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="25dp"
-                            app:graphMarginTop="20dp"
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/stepsTitleTextView"
                             app:legendVisible="false"
+
                             app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
-
                             app:lineLabelTextColorLeft="#4B1263"
                             app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
                             app:rangeStep="4dp"
-                            app:title="Steps" />
+                            />
 
                         <ImageView
                             android:id="@+id/noDataStepsImageView"
@@ -401,6 +454,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/bpSummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="-1dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.96"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/bpTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Blood Pressure"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/fragmentBloodPressurePlot"
                             style="@style/APDefacto.Light"
@@ -414,14 +494,13 @@
                             app:domainStep="10dp"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="25dp"
-                            app:graphMarginTop="30dp"
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/ap_transparent"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/bpTitleTextView"
                             app:legendVisible="false"
                             app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
@@ -429,7 +508,7 @@
                             app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
                             app:rangeStep="5dp"
-                            app:title="Blood Pressure" />
+                            />
 
                         <ImageView
                             android:id="@+id/noDataBPImageView"
@@ -483,6 +562,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/sleepSummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="-1dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="00:00-00:00"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.96"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/sleepTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Sleep"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/fragmentSleepPlot"
                             style="@style/APDefacto.Light"
@@ -495,14 +601,14 @@
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="10dp"
-                            app:graphMarginTop="20dp"
+
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sleepTitleTextView"
 
                             app:legendVisible="false"
                             app:lineLabelInsetLeft="4dp"
@@ -512,7 +618,7 @@
                             app:lineLabels="bottom"
                             app:rangeLineColor="#646D71"
                             app:rangeStep="2dp"
-                            app:title="Sleep" />
+                             />
 
                         <ImageView
                             android:id="@+id/noDataSleepImageView"
@@ -565,6 +671,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/spo2SummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="-1dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.96"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/spo2TitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Spo2"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/fragmentSop2Plot"
                             style="@style/APDefacto.Light"
@@ -577,14 +711,14 @@
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="25dp"
-                            app:graphMarginTop="30dp"
+
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/spo2TitleTextView"
 
                             app:legendVisible="false"
                             app:lineLabelInsetLeft="4dp"
@@ -595,7 +729,7 @@
 
                             app:rangeLineColor="#646D71"
                             app:rangeStep="2dp"
-                            app:title="Spo2" />
+                         />
 
                         <ImageView
                             android:id="@+id/noDataSop2ImageView"
@@ -648,6 +782,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/tempSummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="-1dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.96"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tempTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Temperature"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/fragmentTemperaturePlot"
                             style="@style/APDefacto.Light"
@@ -660,14 +821,14 @@
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="25dp"
-                            app:graphMarginTop="30dp"
+
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tempTitleTextView"
 
                             app:legendVisible="false"
                             app:lineLabelInsetLeft="4dp"
@@ -678,7 +839,7 @@
 
                             app:rangeLineColor="#646D71"
                             app:rangeStep="2dp"
-                            app:title="Temperature" />
+                            />
 
                         <ImageView
                             android:id="@+id/noDataTemperatureImageView"

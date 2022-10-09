@@ -123,7 +123,7 @@ public class PlotUtils {
                 .collect(toList()).toArray(new Double[lengthSubArray]);
 
         var seriesList = new ArrayList<List<Double>>();
-        if (lengthSubArray > 3)
+        if (lengthSubArray > 6)
             interpolateSeriesHeartRate(subArray, numericalTimeAxisSubArray, lengthSubArray, seriesList);
 
         return subArray;

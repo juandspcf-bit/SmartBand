@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments.daysFragments;
 
-import android.content.Context;
+import static java.util.stream.Collectors.averagingDouble;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.misawabus.project.heartRate.DashBoardActivity;
 import com.misawabus.project.heartRate.Database.entities.Device;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.R;
+import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.Utils.ExcelConversionUtils;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
@@ -38,6 +40,7 @@ import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinData
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryBPFragment;
+import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryHRFragment;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySleepFragmentV2;
 import com.misawabus.project.heartRate.fragments.summaryFragments.SummarySop2Fragment;
@@ -49,24 +52,33 @@ import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DayFragment extends Fragment {
+    public static final ExecutorService databaseSingleExecutor =
+            Executors.newSingleThreadExecutor();
     private static final String TAG = DayFragment.class.getSimpleName();
+    final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
     protected DeviceViewModel deviceViewModel;
     protected FragmentDataSummaryV2Binding binding;
     protected DashBoardViewModel dashBoardViewModel;
     protected String macAddress;
     protected List<SleepDataUI> sleepDataList;
     protected Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap;
-    final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
     static void setDaySleepPlot(DayFragment dayFragment, List<SleepDataUI> sleepDataUIList) {
         if (sleepDataUIList == null || sleepDataUIList.size() == 0) return;
@@ -75,22 +87,31 @@ public class DayFragment extends Fragment {
         SleepDataUI sleepDataUI;
         sleepDataUIList = PlotUtilsSleep.sortSleepListData(sleepDataUIList);
         Log.d(TAG, "PlotUtilsSleep: " + sleepDataUIList.size());
-        if(sleepDataUIList.get(0).idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+        if (sleepDataUIList.get(0).idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)) {
             sleepDataUIList = PlotUtilsSleep.joinSleepListData(sleepDataUIList);
         }
         Log.d(TAG, "PlotUtilsSleep: " + sleepDataUIList.size());
-        if(sleepDataUIList.size()==0) return;
-        sleepDataUI=sleepDataUIList.get(0);
+        if (sleepDataUIList.size() == 0) return;
+        sleepDataUI = sleepDataUIList.get(0);
+
+        dayFragment.binding.sleepTitleTextView.setVisibility(View.VISIBLE);
+        dayFragment.binding.sleepSummaryTextView.setVisibility(View.VISIBLE);
+        String sleepDown = sleepDataUI.getSleepDown();
+        LocalTime dateObj1 = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDown);
+        String sleepUp = sleepDataUI.getSleepUp();
+        LocalTime dateObj = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepUp);
+        String s = dateObj1 + " to " + dateObj;
+        dayFragment.binding.sleepSummaryTextView.setText(s);
 
         Map<String, List<Integer>> sleepData;
-        if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)){
+        if (sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)) {
             sleepData = FragmentUtil.getSleepDataForPlotting(sleepDataUI.getData());
             SetDataInViews.setSleepValues(sleepDataUI, sleepData.get("lightSleep"),
                     sleepData.get("deepSleep"),
                     sleepData.get("wakeUp"),
                     dayFragment.binding.fragmentSleepPlot,
                     dayFragment.binding);
-        }else if(sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
+        } else if (sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)) {
             sleepData = FragmentUtil.getSleepPrecisionDataForPlotting(sleepDataUI.getData());
             SetDataInViews.setSleepPrecisionValues(sleepDataUI, sleepData.get("deepSleep"),
                     sleepData.get("lightSleep"),
@@ -102,6 +123,16 @@ public class DayFragment extends Fragment {
         }
 
 
+    }
+
+    @NonNull
+    public static Stream<SummaryFragment.ContainerDouble> getContainerDoubleStream(Double[] collect, long sizeList) {
+        return Stream.iterate(0, i -> ++i).limit(sizeList - 1)
+                .map(index -> {
+                    double nonNullVal = collect[index];
+                    return new SummaryFragment.ContainerDouble(nonNullVal, index);
+                })
+                .filter(container -> container.getValue() > 0);
     }
 
     public FragmentDataSummaryV2Binding getBinding() {
@@ -130,9 +161,6 @@ public class DayFragment extends Fragment {
 
         Objects.requireNonNull(binding.refreshLayout).setEnabled(false);
         binding.refreshLayout.setSize(SwipeRefreshLayout.LARGE);
-
-
-
 
 
         binding.fragmentPlot.setVisibility(View.GONE);
@@ -168,7 +196,6 @@ public class DayFragment extends Fragment {
         });
 
 
-
     }
 
     protected void onClickCardFitnessArea(View view) {
@@ -185,7 +212,7 @@ public class DayFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
                         new SummarySleepFragmentV2())
-                        //new SummarySleepFragment())
+                //new SummarySleepFragment())
                 .addToBackStack(null)
                 .commit();
     }
@@ -217,7 +244,6 @@ public class DayFragment extends Fragment {
                 .commit();
     }
 
-
     protected void setSummaryViews(Map<String, Double> doubleMap) {
         Double stepCountDouble = doubleMap.get("stepCount");
         if (stepCountDouble != null) {
@@ -245,6 +271,8 @@ public class DayFragment extends Fragment {
                 .get(SportsData5MinAvgDataContainer.class.getSimpleName());
         if (sportsXYDataArraysForPlotting != null && sportsXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentPlot.setVisibility(View.VISIBLE);
+            binding.stepsTitleTextView.setVisibility(View.VISIBLE);
+            binding.stepsSummaryTextView.setVisibility(View.VISIBLE);
             binding.flowNoStepsData.setVisibility(View.GONE);
             SetDataInViews.plotStepsData(sportsXYDataArraysForPlotting,
                     binding.fragmentPlot);
@@ -255,6 +283,8 @@ public class DayFragment extends Fragment {
                 .get(HeartRateData5MinAvgDataContainer.class.getSimpleName());
         if (heartRateXYDataArraysForPlotting != null && heartRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentRatePlot.setVisibility(View.VISIBLE);
+            binding.heartRateTitleTextView.setVisibility(View.VISIBLE);
+            binding.heartRateSummaryTextView.setVisibility(View.VISIBLE);
             binding.flowNoHeartRateData.setVisibility(View.GONE);
             SetDataInViews.plotHeartRateData(heartRateXYDataArraysForPlotting,
                     binding.fragmentRatePlot);
@@ -272,6 +302,8 @@ public class DayFragment extends Fragment {
                 && lowBPRateXYDataArraysForPlotting != null
                 && lowBPRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentBloodPressurePlot.setVisibility(View.VISIBLE);
+            binding.bpTitleTextView.setVisibility(View.VISIBLE);
+            binding.bpSummaryTextView.setVisibility(View.VISIBLE);
             binding.flowNoBPData.setVisibility(View.GONE);
             SetDataInViews.plotBloodPressureData(highBPRateXYDataArraysForPlotting,
                     lowBPRateXYDataArraysForPlotting,
@@ -287,10 +319,87 @@ public class DayFragment extends Fragment {
                 && binding.fragmentSop2Plot != null
                 && binding.flowNoSop2Data != null) {
             binding.fragmentSop2Plot.setVisibility(View.VISIBLE);
+            binding.spo2SummaryTextView.setVisibility(View.VISIBLE);
+            binding.spo2TitleTextView.setVisibility(View.VISIBLE);
             binding.flowNoSop2Data.setVisibility(View.GONE);
             SetDataInViews.plotSop2Data(sop2XYDataArraysForPlotting,
                     binding.fragmentSop2Plot);
         }
+
+        databaseSingleExecutor.submit(() -> {
+
+            if (sportsXYDataArraysForPlotting != null && sportsXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+
+                Double[] rangeDouble = sportsXYDataArraysForPlotting.getSeriesDoubleAVR();
+                Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
+                String formattedMaxValue = String.format(Locale.getDefault(), "Total steps: %d", collect.longValue());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.stepsSummaryTextView.setText(formattedMaxValue);
+                    }
+                });
+            }
+
+
+            if (heartRateXYDataArraysForPlotting != null && heartRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+                Double[] rangeDouble = heartRateXYDataArraysForPlotting.getSeriesDoubleAVR();
+                Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                        getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                                .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+                Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+                String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.heartRateSummaryTextView.setText(formattedMaxValue);
+                    }
+                });
+            }
+
+            if (highBPRateXYDataArraysForPlotting != null
+                    && highBPRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null
+                    && lowBPRateXYDataArraysForPlotting != null
+                    && lowBPRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+
+
+                Double[] rangeDouble = highBPRateXYDataArraysForPlotting.getSeriesDoubleAVR();
+                Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                        getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                                .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+                int index = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getIndex();
+                Double higValue = highBPRateXYDataArraysForPlotting.getSeriesDoubleAVR()[index];
+                Double lowValue = lowBPRateXYDataArraysForPlotting.getSeriesDoubleAVR()[index];
+                String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f / %.1f mmHg", higValue, lowValue);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.bpSummaryTextView.setText(formattedMaxValue);
+                    }
+                });
+
+            }
+
+            if (sop2XYDataArraysForPlotting != null
+                    && sop2XYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
+
+                Double[] rangeDouble = sop2XYDataArraysForPlotting.getSeriesDoubleAVR();
+                Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                        getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                                .min(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+                Double minValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+                String formattedMinValue = String.format(Locale.getDefault(), "Min value: %.1f%s", minValue, "%");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.spo2SummaryTextView.setText(formattedMinValue);
+                    }
+                });
+            }
+
+
+        });
+
 
     }
 
@@ -298,7 +407,7 @@ public class DayFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
@@ -311,7 +420,7 @@ public class DayFragment extends Fragment {
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else {
+        } else {
             Log.d(TAG, "onResume: DayFragment");
             DashBoardActivity.hideWindowForLesR(getActivity());
         }
@@ -320,7 +429,7 @@ public class DayFragment extends Fragment {
         deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
             @Override
             public void onChanged(CustomSettingData customSettingData) {
-                if(customSettingData==null)return;
+                if (customSettingData == null) return;
                 Log.d(TAG, "Live data CustomSettingData" + customSettingData.getAutoTemperatureDetect());
                 EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
                 EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
@@ -343,7 +452,7 @@ public class DayFragment extends Fragment {
                 if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect) {
                     binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
 
-                }else{
+                } else {
                     binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
 
                 }
@@ -352,19 +461,26 @@ public class DayFragment extends Fragment {
 
     }
 
-
     protected void setTemperaturePlot(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
         XYDataArraysForPlotting tempBodyXYDataArraysForPlotting;
         tempBodyXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
-                .get(Temperature5MinDataContainer.class.getSimpleName()+":body");
+                .get(Temperature5MinDataContainer.class.getSimpleName() + ":body");
         if (tempBodyXYDataArraysForPlotting != null && tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentTemperaturePlot.setVisibility(View.VISIBLE);
+            binding.tempTitleTextView.setVisibility(View.VISIBLE);
+            binding.tempSummaryTextView.setVisibility(View.VISIBLE);
             binding.flowNoTemperature2Data.setVisibility(View.GONE);
             SetDataInViews.plotTemperatureData(tempBodyXYDataArraysForPlotting,
                     binding.fragmentTemperaturePlot);
+            Double[] rangeDouble = tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR();
+            Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+            Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+            String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
+            binding.tempSummaryTextView.setText(formattedMaxValue);
         }
     }
-
 
 
 }

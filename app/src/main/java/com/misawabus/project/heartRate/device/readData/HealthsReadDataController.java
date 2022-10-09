@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.device.readData;
 
 import static com.misawabus.project.heartRate.constans.IdTypeDataTable.HighPressure;
+import static com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment.*;
 
 import android.os.Handler;
 import android.util.Log;
@@ -30,10 +31,12 @@ import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
@@ -354,14 +357,4 @@ public class HealthsReadDataController {
             });
     }
 
-
-    @NonNull
-    public Stream<SummaryFragment.ContainerDouble> getContainerDoubleStream(Double[] collect, long sizeList) {
-        return Stream.iterate(0, i -> ++i).limit(sizeList - 1)
-                .map(index -> {
-                    double nonNullVal = collect[index];
-                    return new SummaryFragment.ContainerDouble(nonNullVal, index);
-                })
-                .filter(container -> container.getValue() > 0);
-    }
 }

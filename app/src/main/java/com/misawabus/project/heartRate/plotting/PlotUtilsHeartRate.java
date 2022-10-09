@@ -1,11 +1,23 @@
 package com.misawabus.project.heartRate.plotting;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.androidplot.Plot;
+import com.androidplot.PlotListener;
+import com.androidplot.ui.Anchor;
+import com.androidplot.ui.HorizontalPositioning;
+import com.androidplot.ui.Size;
+import com.androidplot.ui.SizeMode;
+import com.androidplot.ui.TextOrientation;
+import com.androidplot.ui.VerticalPositioning;
+import com.androidplot.ui.widget.TextLabelWidget;
+import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -14,12 +26,16 @@ import com.androidplot.xy.StepMode;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
+import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment;
 
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class PlotUtilsHeartRate {
 
@@ -84,8 +100,6 @@ public class PlotUtilsHeartRate {
 
         plot.setVisibility(View.VISIBLE);
         plot.redraw();
-
-
     }
 
     public static void plotTemperatureDoubleIntervalsData(String[] domainLabels,
