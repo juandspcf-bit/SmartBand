@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.device.readData;
 
 import static com.misawabus.project.heartRate.constans.IdTypeDataTable.HighPressure;
+import static com.misawabus.project.heartRate.fragments.daysFragments.DayFragment.getContainerDoubleStream;
 import static com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment.*;
 
 import android.os.Handler;
@@ -35,6 +36,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -87,6 +89,48 @@ public class HealthsReadDataController {
                     lowBPArraysForPlotting,
                     spo2PArraysForPlotting);
 
+            Map<String, String> summaryTitlesMap = new HashMap<>();
+
+            Double[] rangeDouble = sportsArraysForPlotting.getSeriesDoubleAVR();
+            Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
+            String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
+            summaryTitlesMap
+                    .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                            formattedMaxValue);
+
+            rangeDouble = heartRateArraysForPlotting.getSeriesDoubleAVR();
+            Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+            Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
+            summaryTitlesMap
+                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                            formattedMaxValue);
+
+
+            rangeDouble = highBPArraysForPlotting.getSeriesDoubleAVR();
+            optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+            int index = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getIndex();
+            Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
+            Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
+            summaryTitlesMap
+                    .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                            formattedMaxValue);
+
+            rangeDouble = spo2PArraysForPlotting.getSeriesDoubleAVR();
+            optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .min(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+            Double minValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+            String formattedMinValue = String.format(Locale.getDefault(), "Min value: %.1f%s", minValue, "%");
+            summaryTitlesMap
+                    .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
+                            formattedMinValue);
+
             mHandler.post(() -> {
 
                 String stringDate = sportsDataFiveMinAvgDataContainer.getStringDate();
@@ -95,14 +139,17 @@ public class HealthsReadDataController {
                 if (localDate.compareTo(LocalDate.now()) == 0) {
                     dashBoardViewModel.setTodaySummary(mapSummary);
                     dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setTodaySummaryTitles(summaryTitlesMap);
                     dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(mapDataForExcel);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
                     dashBoardViewModel.setYesterdaySummary(mapSummary);
                     dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setYesterdaySummaryTitles(summaryTitlesMap);
                     dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
                     dashBoardViewModel.setPastYesterdaySummary(mapSummary);
                     dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
+                    dashBoardViewModel.setPastYesterdaySummaryTitles(summaryTitlesMap);
                     dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
                 }
 

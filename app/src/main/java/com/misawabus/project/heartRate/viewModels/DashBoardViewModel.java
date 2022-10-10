@@ -64,6 +64,9 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> todayArrayTempAllIntervals = new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> yesterdayArrayTempAllIntervals= new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>>  pastYesterdayArrayTempAllIntervals= new MutableLiveData<>();
+    private MutableLiveData<Map<String, String>> todaySummaryTitles = new MutableLiveData<>();
+    private  MutableLiveData<Map<String, String>> yesterdaySummaryTitles = new MutableLiveData<>();
+    private MutableLiveData<Map<String, String>> pastYesterdaySummaryTitles = new MutableLiveData<>();
 
     public DashBoardViewModel() {
         isEnableFeatures.setValue(false);
@@ -355,5 +358,29 @@ public class DashBoardViewModel extends ViewModel {
 
     public MutableLiveData<Map<String, XYDataArraysForPlotting>>  getPastYesterdayArrayTempAllIntervals() {
         return pastYesterdayArrayTempAllIntervals;
+    }
+
+    public void setTodaySummaryTitles(Map<String, String> todaySummaryTitles) {
+        this.todaySummaryTitles.setValue(todaySummaryTitles);
+    }
+
+    public MutableLiveData<Map<String, String>> getTodaySummaryTitles() {
+        return todaySummaryTitles;
+    }
+
+    public void setYesterdaySummaryTitles(Map<String, String> yesterdaySummaryTitles) {
+        this.yesterdaySummaryTitles.setValue(yesterdaySummaryTitles);
+    }
+
+    public MutableLiveData<Map<String, String>> getYesterdaySummaryTitles() {
+        return yesterdaySummaryTitles;
+    }
+
+    public void setPastYesterdaySummaryTitles(Map<String, String> pastYesterdaySummaryTitles) {
+        this.pastYesterdaySummaryTitles.setValue(pastYesterdaySummaryTitles);
+    }
+
+    public MutableLiveData<Map<String, String>> getPastYesterdaySummaryTitles() {
+        return pastYesterdaySummaryTitles;
     }
 }
