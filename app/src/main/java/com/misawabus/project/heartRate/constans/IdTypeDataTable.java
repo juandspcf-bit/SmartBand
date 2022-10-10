@@ -10,4 +10,5 @@ public enum IdTypeDataTable {
     LowPressure,
     BloodPressure,
     Spo2hFiveMin,
+    Temperature
 }

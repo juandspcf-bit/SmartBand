@@ -395,7 +395,10 @@ public class HealthsReadDataController {
 
     public static void processTemperatureDataList(List<TemptureData> list,
                                                   Handler mHandler,
-                                                  DashBoardViewModel dashBoardViewModel) {
+                                                  DashBoardViewModel dashBoardViewModel,
+                                                  DeviceViewModel deviceViewModel,
+                                                  AppCompatActivity activity
+                                                  ) {
 
         HealthsData.databaseWriteExecutor.execute(() -> {
             DataFiveMinAvgDataContainer temperatureFiveMinAvgDataContainer = computeTemperatureDataFiveMinAVR(list,
@@ -451,6 +454,17 @@ public class HealthsReadDataController {
                     dashBoardViewModel.setPastYesterdayArrayTempAllIntervals(arraysMap);
                     dashBoardViewModel.setPastYesterdayTempSummaryTitle(arraysTempSummaryValuesMap);
                 }
+
+                if (temperatureFiveMinAvgDataContainer.getDoubleMap() != null
+                        && temperatureFiveMinAvgDataContainer.getDoubleMap().size() != 0) {
+                    DBops.updateTemperatureRow(IdTypeDataTable.Temperature,
+                            temperatureFiveMinAvgDataContainer.getDoubleMap().toString(),
+                            temperatureFiveMinAvgDataContainer.getStringDate(),
+                            deviceViewModel.getMacAddress(),
+                            activity);
+                }
+
+
             });
 
         });
@@ -460,7 +474,8 @@ public class HealthsReadDataController {
     public static DataFiveMinAvgDataContainer computeTemperatureDataFiveMinAVR(List<TemptureData> list,
                                                                                List<BiConsumer<Map<String, Double>, TemptureData>> functionToSetFieldsInTemperatureData,
                                                                                Temperature5MinDataContainer temperature5MinDataContainer) {
-
+        TimeData timeData = list.get(0).getmTime();
+        temperature5MinDataContainer.setStringDate(timeData.getYear()+"-"+timeData.getMonth()+"-"+ timeData.getDay());
         computeDataFiveMinTemperature(list,
                 functionToSetFieldsInTemperatureData,
                 temperature5MinDataContainer);

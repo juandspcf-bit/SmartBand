@@ -14,12 +14,14 @@ import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
 import com.misawabus.project.heartRate.Database.entities.Sop2;
 import com.misawabus.project.heartRate.Database.entities.Sports;
+import com.misawabus.project.heartRate.Database.entities.Temperature;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.viewModels.BloodPressureViewModel;
 import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.misawabus.project.heartRate.viewModels.SleepDataUIViewModel;
 import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
 import com.misawabus.project.heartRate.viewModels.SportsViewModel;
+import com.misawabus.project.heartRate.viewModels.TemperatureViewModel;
 
 import java.util.Date;
 
@@ -33,10 +35,13 @@ public class DBops {
     private SleepDataUIViewModel sleepDataUIViewModel;
     private SportsViewModel sportsViewModel;
     private Sop2ViewModel spo2ViewModel;
+    private TemperatureViewModel temperatureViewModel;
 
     public DBops(){
 
     }
+
+
 
 
     public void initViewModels(ViewModelStoreOwner viewModelStoreOwner){
@@ -45,6 +50,7 @@ public class DBops {
         bloodPressureViewModel = new ViewModelProvider(viewModelStoreOwner).get(BloodPressureViewModel.class);
         sleepDataUIViewModel = new ViewModelProvider(viewModelStoreOwner).get(SleepDataUIViewModel.class);
         spo2ViewModel = new ViewModelProvider(viewModelStoreOwner).get(Sop2ViewModel.class);
+        temperatureViewModel = new ViewModelProvider(viewModelStoreOwner).get(TemperatureViewModel.class);
     }
 
 
@@ -118,7 +124,12 @@ public class DBops {
     }
 
 
-    public static void updateHeartRateRow(IdTypeDataTable idTable, String data, String stringDate, String macAddress, LifecycleOwner lifecycleOwner){
+    public static void updateHeartRateRow(IdTypeDataTable idTable,
+                                          String data,
+                                          String stringDate,
+                                          String macAddress,
+                                          LifecycleOwner lifecycleOwner){
+
         Date formattedDate = DateUtils.getFormattedDate(stringDate,"-");
         LiveData<HeartRate> singleHeartRateRowForU = HeartRateViewModel.getSingleHeartRateRowForU(formattedDate, macAddress, idTable);
         Observer<HeartRate> MyObserver = new Observer<>() {
@@ -138,7 +149,11 @@ public class DBops {
     }
 
     //TODO remove unnecessary idTypeDataTable parameter
-    public static void updateBloodPressureRow(IdTypeDataTable idTypeDataTable, String data, String myDate, String macAddress, LifecycleOwner lifecycleOwner){
+    public static void updateBloodPressureRow(IdTypeDataTable idTypeDataTable,
+                                              String data,
+                                              String myDate,
+                                              String macAddress,
+                                              LifecycleOwner lifecycleOwner){
         Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
 
         LiveData<BloodPressure> singleBloodPressureRowForU = BloodPressureViewModel.getSingleRowForU(formattedDate, macAddress, idTypeDataTable);
@@ -156,6 +171,47 @@ public class DBops {
             }
         };
         singleBloodPressureRowForU.observe(lifecycleOwner, MyObserver);
+    }
+
+    public static void updateTemperatureRow(IdTypeDataTable idTypeDataTable,
+                                            String data,
+                                            String myDate,
+                                            String macAddress,
+                                            LifecycleOwner lifecycleOwner) {
+        Log.d(TAG, "updateTemperatureRow: " + myDate);
+        Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
+        LiveData<Temperature> singleTemperatureRowForU = TemperatureViewModel.getSingleRowForU(formattedDate, macAddress, idTypeDataTable);
+        Observer<Temperature> MyObserver = new Observer<>() {
+            @Override
+            public void onChanged(Temperature temperature) {
+                if (temperature == null) {
+                    insertTemperatureRow(data, myDate, macAddress);
+                    singleTemperatureRowForU.removeObserver(this);
+                } else if (!temperature.getData().equals(data)) {
+                    temperature.setData(data);
+                    TemperatureViewModel.updateSingleRow(temperature);
+                    singleTemperatureRowForU.removeObserver(this);
+                }
+            }
+        };
+
+        singleTemperatureRowForU.observe(lifecycleOwner, MyObserver);
+    }
+
+    private static void insertTemperatureRow(String data,
+                                             String myDate,
+                                             String macAddress) {
+        TemperatureViewModel.insertSingleRow(getNewTemperatureObject(data, myDate, macAddress));
+    }
+
+    private static Temperature getNewTemperatureObject(String data, String myDate, String macAddress) {
+        Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
+        Temperature temperature = new Temperature();
+        temperature.setIdTypeDataTable(IdTypeDataTable.Temperature);
+        temperature.setMacAddress(macAddress);
+        temperature.setData(data);
+        temperature.setDateData(formattedDate);
+        return temperature;
     }
 
     public static void updateSpo2Row(String data, String myDate, String macAddress, LifecycleOwner lifecycleOwner){
@@ -178,6 +234,7 @@ public class DBops {
         singleRow.observe(lifecycleOwner, MyObserver);
     }
 
+
     private static Sop2 getNewSop2Object(String data, String myDate, String macAddress) {
         Date formattedDate = DateUtils.getFormattedDate(myDate, "-");
         Sop2 sop2 = new Sop2();
@@ -187,6 +244,9 @@ public class DBops {
         sop2.setDateData(formattedDate);
         return sop2;
     }
+
+
+
 
     private static Sports getNewSportsObject(String data, String myDate, String macAddress) {
         Date formattedDate = DateUtils.getFormattedDate(myDate, "-");

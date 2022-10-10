@@ -2,6 +2,8 @@ package com.misawabus.project.heartRate.device.readData;
 
 import static java.util.Arrays.stream;
 
+import android.util.Log;
+
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFrag;
