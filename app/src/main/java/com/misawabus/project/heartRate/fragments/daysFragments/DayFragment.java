@@ -332,7 +332,7 @@ public class DayFragment extends Fragment {
 
                 Double[] rangeDouble = sportsXYDataArraysForPlotting.getSeriesDoubleAVR();
                 Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
-                String formattedMaxValue = String.format(Locale.getDefault(), "Total steps: %d", collect.longValue());
+                String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -370,7 +370,7 @@ public class DayFragment extends Fragment {
                 int index = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getIndex();
                 Double higValue = highBPRateXYDataArraysForPlotting.getSeriesDoubleAVR()[index];
                 Double lowValue = lowBPRateXYDataArraysForPlotting.getSeriesDoubleAVR()[index];
-                String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f / %.1f mmHg", higValue, lowValue);
+                String formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -271,6 +271,7 @@
                             style="@style/APDefacto.Light"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
@@ -278,7 +279,7 @@
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
                             app:graphMarginLeft="25dp"
-                             app:graphWidthMode="fill"
+                            app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/ap_transparent"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -335,7 +336,7 @@
                     android:id="@+id/fragmentStepsPlotCardView"
                     style="@style/cardViewStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="330dp"
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
@@ -378,6 +379,7 @@
                             style="@style/APDefacto.Light"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
@@ -392,15 +394,14 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/stepsTitleTextView"
-                            app:legendVisible="false"
 
+                            app:legendVisible="false"
                             app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
                             app:lineLabelTextColorLeft="#4B1263"
                             app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
-                            app:rangeStep="4dp"
-                            />
+                            app:rangeStep="4dp" />
 
                         <ImageView
                             android:id="@+id/noDataStepsImageView"
@@ -444,7 +445,7 @@
                     android:id="@+id/fragmentBloodPressureCardView"
                     style="@style/cardViewStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="330dp"
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
@@ -458,9 +459,9 @@
                             android:id="@+id/bpSummaryTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:elevation="-1dp"
                             android:fontFamily="@font/roboto_medium"
                             android:text="0"
+                            android:textAlignment="center"
                             android:textSize="16sp"
                             android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -486,6 +487,7 @@
                             style="@style/APDefacto.Light"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
@@ -507,8 +509,7 @@
                             app:lineLabelTextColorLeft="#4B1263"
                             app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
-                            app:rangeStep="5dp"
-                            />
+                            app:rangeStep="5dp" />
 
                         <ImageView
                             android:id="@+id/noDataBPImageView"
@@ -552,7 +553,7 @@
                     android:id="@+id/fragmentSleepPlotCardView"
                     style="@style/cardViewStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="330dp"
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp"
@@ -594,31 +595,31 @@
                             style="@style/APDefacto.Light"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
                             app:domainLineColor="@color/ap_transparent"
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
-                            app:graphMarginLeft="10dp"
 
+                            app:graphMarginLeft="10dp"
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+
                             app:layout_constraintTop_toBottomOf="@id/sleepTitleTextView"
-
                             app:legendVisible="false"
-                            app:lineLabelInsetLeft="4dp"
 
+                            app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
                             app:lineLabelTextColorLeft="#4B1263"
                             app:lineLabels="bottom"
                             app:rangeLineColor="#646D71"
-                            app:rangeStep="2dp"
-                             />
+                            app:rangeStep="2dp" />
 
                         <ImageView
                             android:id="@+id/noDataSleepImageView"
@@ -662,7 +663,7 @@
                     android:id="@+id/fragmentSop2PlotCardView"
                     style="@style/cardViewStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="330dp"
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp">
@@ -704,32 +705,32 @@
                             style="@style/APDefacto.Light"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
                             app:domainLineColor="@color/ap_transparent"
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
-                            app:graphMarginLeft="25dp"
 
+                            app:graphMarginLeft="25dp"
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+
                             app:layout_constraintTop_toBottomOf="@id/spo2TitleTextView"
-
                             app:legendVisible="false"
-                            app:lineLabelInsetLeft="4dp"
 
+                            app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
                             app:lineLabelTextColorLeft="#4B1263"
-                            app:lineLabels="left|bottom"
 
+                            app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
-                            app:rangeStep="2dp"
-                         />
+                            app:rangeStep="2dp" />
 
                         <ImageView
                             android:id="@+id/noDataSop2ImageView"
@@ -773,7 +774,7 @@
                     android:id="@+id/fragmentTemperaturePlotCardView"
                     style="@style/cardViewStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="330dp"
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="5dp">
@@ -814,32 +815,32 @@
                             style="@style/APDefacto.Light"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
                             android:background="@color/white"
                             android:visibility="gone"
                             app:backgroundColor="@color/white"
                             app:domainLineColor="@color/ap_transparent"
                             app:domainOriginLineColor="@color/ap_transparent"
                             app:graphBackgroundColor="@color/white"
-                            app:graphMarginLeft="25dp"
 
+                            app:graphMarginLeft="25dp"
                             app:graphWidthMode="fill"
                             app:gridBackgroundColor="@color/white"
                             app:gridClippingEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+
                             app:layout_constraintTop_toBottomOf="@id/tempTitleTextView"
-
                             app:legendVisible="false"
-                            app:lineLabelInsetLeft="4dp"
 
+                            app:lineLabelInsetLeft="4dp"
                             app:lineLabelRotationBottom="-45"
                             app:lineLabelTextColorLeft="#4B1263"
-                            app:lineLabels="left|bottom"
 
+                            app:lineLabels="left|bottom"
                             app:rangeLineColor="#646D71"
-                            app:rangeStep="2dp"
-                            />
+                            app:rangeStep="2dp" />
 
                         <ImageView
                             android:id="@+id/noDataTemperatureImageView"
