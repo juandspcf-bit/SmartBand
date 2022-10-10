@@ -379,9 +379,8 @@ public class HealthsData {
 
                 HealthsReadDataController.processTemperatureDataList(list,
                         mHandler,
-                        dashBoardViewModel,
-                        activity,
-                        deviceViewModel);
+                        dashBoardViewModel
+                );
             }
 
             @Override

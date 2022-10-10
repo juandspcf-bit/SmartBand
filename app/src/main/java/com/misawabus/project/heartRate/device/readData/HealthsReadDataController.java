@@ -164,8 +164,8 @@ public class HealthsReadDataController {
         Map<String, String> summaryTitlesMap = new HashMap<>();
 
         Double[] rangeDouble = sportsArraysForPlotting.getSeriesDoubleAVR();
-        Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
-        String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
+        double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
+        String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", Math.round(collect));
         summaryTitlesMap
                 .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
                         formattedMaxValue);
@@ -317,8 +317,8 @@ public class HealthsReadDataController {
         Map<String, String> summaryTitlesMap = new HashMap<>();
 
         Double[] rangeDouble = sportsArraysForPlotting.getSeriesDoubleAVR();
-        Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
-        String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
+        double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
+        String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", Math.round(collect));
         summaryTitlesMap
                 .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
                         formattedMaxValue);
@@ -394,9 +394,7 @@ public class HealthsReadDataController {
 
     public static void processTemperatureDataList(List<TemptureData> list,
                                                   Handler mHandler,
-                                                  DashBoardViewModel dashBoardViewModel,
-                                                  AppCompatActivity activity,
-                                                  DeviceViewModel deviceViewModel) {
+                                                  DashBoardViewModel dashBoardViewModel) {
 
         HealthsData.databaseWriteExecutor.execute(() -> {
             DataFiveMinAvgDataContainer temperatureFiveMinAvgDataContainer = computeTemperatureDataFiveMinAVR(list,
