@@ -1,6 +1,5 @@
 package com.misawabus.project.heartRate.device.readData;
 
-import static com.misawabus.project.heartRate.constans.IdTypeDataTable.HighPressure;
 import static com.misawabus.project.heartRate.fragments.daysFragments.DayFragment.getContainerDoubleStream;
 import static com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment.*;
 
@@ -21,7 +20,6 @@ import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDat
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
-import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -40,7 +38,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
 public class HealthsReadDataController {
 
@@ -89,47 +86,11 @@ public class HealthsReadDataController {
                     lowBPArraysForPlotting,
                     spo2PArraysForPlotting);
 
-            Map<String, String> summaryTitlesMap = new HashMap<>();
-
-            Double[] rangeDouble = sportsArraysForPlotting.getSeriesDoubleAVR();
-            Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
-            String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
-            summaryTitlesMap
-                    .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
-                            formattedMaxValue);
-
-            rangeDouble = heartRateArraysForPlotting.getSeriesDoubleAVR();
-            Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
-                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
-            Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
-            formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
-            summaryTitlesMap
-                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
-                            formattedMaxValue);
-
-
-            rangeDouble = highBPArraysForPlotting.getSeriesDoubleAVR();
-            optionalMaxIndex =
-                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
-            int index = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getIndex();
-            Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
-            Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
-            formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
-            summaryTitlesMap
-                    .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
-                            formattedMaxValue);
-
-            rangeDouble = spo2PArraysForPlotting.getSeriesDoubleAVR();
-            optionalMaxIndex =
-                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                            .min(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
-            Double minValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
-            String formattedMinValue = String.format(Locale.getDefault(), "Min value: %.1f%s", minValue, "%");
-            summaryTitlesMap
-                    .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
-                            formattedMinValue);
+            Map<String, String> summaryTitlesMap = getOrigin3StringSummaryTitlesMap(sportsArraysForPlotting,
+                    heartRateArraysForPlotting,
+                    highBPArraysForPlotting,
+                    lowBPArraysForPlotting,
+                    spo2PArraysForPlotting);
 
             mHandler.post(() -> {
 
@@ -194,6 +155,56 @@ public class HealthsReadDataController {
         });
     }
 
+    @NonNull
+    private static Map<String, String> getOrigin3StringSummaryTitlesMap(XYDataArraysForPlotting sportsArraysForPlotting,
+                                                                        XYDataArraysForPlotting heartRateArraysForPlotting,
+                                                                        XYDataArraysForPlotting highBPArraysForPlotting,
+                                                                        XYDataArraysForPlotting lowBPArraysForPlotting,
+                                                                        XYDataArraysForPlotting spo2PArraysForPlotting) {
+        Map<String, String> summaryTitlesMap = new HashMap<>();
+
+        Double[] rangeDouble = sportsArraysForPlotting.getSeriesDoubleAVR();
+        Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
+        String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
+        summaryTitlesMap
+                .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                        formattedMaxValue);
+
+        rangeDouble = heartRateArraysForPlotting.getSeriesDoubleAVR();
+        Optional<ContainerDouble> optionalMaxIndex =
+                getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                        .max(Comparator.comparing(ContainerDouble::getValue));
+        Double maxValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
+        formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
+        summaryTitlesMap
+                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                        formattedMaxValue);
+
+
+        rangeDouble = highBPArraysForPlotting.getSeriesDoubleAVR();
+        optionalMaxIndex =
+                getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                        .max(Comparator.comparing(ContainerDouble::getValue));
+        int index = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getIndex();
+        Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
+        Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
+        formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
+        summaryTitlesMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                        formattedMaxValue);
+
+        rangeDouble = spo2PArraysForPlotting.getSeriesDoubleAVR();
+        optionalMaxIndex =
+                getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                        .min(Comparator.comparing(ContainerDouble::getValue));
+        Double minValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
+        String formattedMinValue = String.format(Locale.getDefault(), "Min value: %.1f%s", minValue, "%");
+        summaryTitlesMap
+                .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
+                        formattedMinValue);
+        return summaryTitlesMap;
+    }
+
     static void processOriginDataList(List<OriginData> list5Min,
                                       Handler mHandler,
                                       DashBoardViewModel dashBoardViewModel,
@@ -237,21 +248,27 @@ public class HealthsReadDataController {
                     highBPArraysForPlotting,
                     lowBPArraysForPlotting);
 
-            mHandler.post(() -> {
+            Map<String, String> summaryTitlesMap = getOriginStringSummaryTitlesMap(sportsArraysForPlotting,
+                    heartRateArraysForPlotting,
+                    highBPArraysForPlotting,
+                    lowBPArraysForPlotting);
 
-                Log.d(TAG, "processOriginDataList: stringDate  " + date);
+            mHandler.post(() -> {
                 Date formattedDate = DateUtils.getFormattedDate(date, "-");
                 LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
                 if (localDate.compareTo(LocalDate.now()) == 0) {
                     dashBoardViewModel.setTodaySummary(mapSummary);
+                    dashBoardViewModel.setTodaySummaryTitles(summaryTitlesMap);
                     dashBoardViewModel.setTodayArray5MinAvgAllIntervals(arraysMap);
                     dashBoardViewModel.setTodayFullData5MinAvgAllIntervals(mapDataForExcel);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
                     dashBoardViewModel.setYesterdaySummary(mapSummary);
+                    dashBoardViewModel.setYesterdaySummaryTitles(summaryTitlesMap);
                     dashBoardViewModel.setYesterdayArray5MinAvgAllIntervals(arraysMap);
                     dashBoardViewModel.setYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
                     dashBoardViewModel.setPastYesterdaySummary(mapSummary);
+                    dashBoardViewModel.setPastYesterdaySummaryTitles(summaryTitlesMap);
                     dashBoardViewModel.setPastYesterdayArray5MinAvgAllIntervals(arraysMap);
                     dashBoardViewModel.setPastYesterdayFullData5MinAvgAllIntervals(mapDataForExcel);
                 }
@@ -289,6 +306,46 @@ public class HealthsReadDataController {
 
         });
 
+
+    }
+
+    @NonNull
+    private static Map<String, String> getOriginStringSummaryTitlesMap(XYDataArraysForPlotting sportsArraysForPlotting,
+                                                                       XYDataArraysForPlotting heartRateArraysForPlotting,
+                                                                       XYDataArraysForPlotting highBPArraysForPlotting,
+                                                                       XYDataArraysForPlotting lowBPArraysForPlotting) {
+        Map<String, String> summaryTitlesMap = new HashMap<>();
+
+        Double[] rangeDouble = sportsArraysForPlotting.getSeriesDoubleAVR();
+        Double collect = Arrays.stream(rangeDouble).mapToDouble(Double::doubleValue).sum();
+        String formattedMaxValue = String.format(Locale.getDefault(), "Total: %d steps", collect.longValue());
+        summaryTitlesMap
+                .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
+                        formattedMaxValue);
+
+        rangeDouble = heartRateArraysForPlotting.getSeriesDoubleAVR();
+        Optional<ContainerDouble> optionalMaxIndex =
+                getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                        .max(Comparator.comparing(ContainerDouble::getValue));
+        Double maxValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
+        formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
+        summaryTitlesMap
+                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                        formattedMaxValue);
+
+
+        rangeDouble = highBPArraysForPlotting.getSeriesDoubleAVR();
+        optionalMaxIndex =
+                getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                        .max(Comparator.comparing(ContainerDouble::getValue));
+        int index = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getIndex();
+        Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
+        Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
+        formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
+        summaryTitlesMap
+                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                        formattedMaxValue);
+        return summaryTitlesMap;
 
     }
 
