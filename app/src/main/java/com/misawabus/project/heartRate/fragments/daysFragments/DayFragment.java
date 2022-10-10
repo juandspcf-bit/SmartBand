@@ -339,6 +339,29 @@ public class DayFragment extends Fragment {
         }
     }
 
+    protected void setSummaryTitlesInPlots(Map<String, String> stringStringMap) {
+        String s = stringStringMap.get(SportsData5MinAvgDataContainer.class.getSimpleName());
+        String s1 = stringStringMap.get(HeartRateData5MinAvgDataContainer.class.getSimpleName());
+        String s2 = stringStringMap.get(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High");
+        String s3 = stringStringMap.get(Sop2HData5MinAvgDataContainer.class.getSimpleName());
+
+        if(binding.stepsSummaryTextView!=null){
+            binding.stepsSummaryTextView.setText(s);
+        }
+
+        if(binding.heartRateSummaryTextView!=null){
+            binding.heartRateSummaryTextView.setText(s1);
+        }
+
+        if(binding.bpSummaryTextView!=null){
+            binding.bpSummaryTextView.setText(s2);
+        }
+
+        if(binding.spo2SummaryTextView!=null){
+            binding.spo2SummaryTextView.setText(s3);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();

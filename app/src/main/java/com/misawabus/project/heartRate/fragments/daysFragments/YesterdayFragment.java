@@ -63,21 +63,7 @@ public class YesterdayFragment extends DayFragment {
             }
         });
 
-        dashBoardViewModel.getYesterdaySummaryTitles().observe(getViewLifecycleOwner(), new Observer<Map<String, String>>() {
-            @Override
-            public void onChanged(Map<String, String> stringStringMap) {
-                String s = stringStringMap.get(SportsData5MinAvgDataContainer.class.getSimpleName());
-                String s1 = stringStringMap.get(HeartRateData5MinAvgDataContainer.class.getSimpleName());
-                String s2 = stringStringMap.get(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High");
-                String s3 = stringStringMap.get(Sop2HData5MinAvgDataContainer.class.getSimpleName());
-
-                binding.stepsSummaryTextView.setText(s);
-                binding.heartRateSummaryTextView.setText(s1);
-                binding.bpSummaryTextView.setText(s2);
-                binding.spo2SummaryTextView.setText(s3);
-
-            }
-        });
+        dashBoardViewModel.getYesterdaySummaryTitles().observe(getViewLifecycleOwner(), this::setSummaryTitlesInPlots);
 
        dashBoardViewModel.getYesterdayFullData5MinAvgAllIntervals().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
