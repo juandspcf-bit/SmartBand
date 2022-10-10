@@ -1,7 +1,5 @@
 package com.misawabus.project.heartRate.fragments.daysFragments;
 
-import static java.util.stream.Collectors.averagingDouble;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -50,24 +47,17 @@ import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
-import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DayFragment extends Fragment {
-    public static final ExecutorService databaseSingleExecutor =
-            Executors.newSingleThreadExecutor();
     private static final String TAG = DayFragment.class.getSimpleName();
     final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -94,14 +84,20 @@ public class DayFragment extends Fragment {
         if (sleepDataUIList.size() == 0) return;
         sleepDataUI = sleepDataUIList.get(0);
 
-        dayFragment.binding.sleepTitleTextView.setVisibility(View.VISIBLE);
-        dayFragment.binding.sleepSummaryTextView.setVisibility(View.VISIBLE);
+        if(dayFragment.binding.sleepTitleTextView!= null && dayFragment.binding.sleepSummaryTextView!=null){
+            dayFragment.binding.sleepTitleTextView.setVisibility(View.VISIBLE);
+            dayFragment.binding.sleepSummaryTextView.setVisibility(View.VISIBLE);
+        }
+
         String sleepDown = sleepDataUI.getSleepDown();
         LocalTime dateObj1 = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDown);
         String sleepUp = sleepDataUI.getSleepUp();
         LocalTime dateObj = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepUp);
         String s = dateObj1 + " to " + dateObj;
-        dayFragment.binding.sleepSummaryTextView.setText(s);
+        if(dayFragment.binding.sleepSummaryTextView!=null){
+            dayFragment.binding.sleepSummaryTextView.setText(s);
+        }
+
 
         Map<String, List<Integer>> sleepData;
         if (sleepDataUI.idTypeDataTable.equals(IdTypeDataTable.Sleep)) {
@@ -198,7 +194,7 @@ public class DayFragment extends Fragment {
 
     }
 
-    protected void onClickCardFitnessArea(View view) {
+    protected void onClickCardFitnessArea() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
@@ -207,7 +203,7 @@ public class DayFragment extends Fragment {
                 .commit();
     }
 
-    protected void onClickCardSleepArea(View view) {
+    protected void onClickCardSleepArea() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
@@ -217,7 +213,7 @@ public class DayFragment extends Fragment {
                 .commit();
     }
 
-    protected void onClickCardBloodPressureArea(View view) {
+    protected void onClickCardBloodPressureArea() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
@@ -226,7 +222,7 @@ public class DayFragment extends Fragment {
                 .commit();
     }
 
-    protected void onClickCardHeartRateArea(View view) {
+    protected void onClickCardHeartRateArea() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
@@ -235,7 +231,7 @@ public class DayFragment extends Fragment {
                 .commit();
     }
 
-    protected void onClickCardSop2Area(View view) {
+    protected void onClickCardSop2Area() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
@@ -271,8 +267,13 @@ public class DayFragment extends Fragment {
                 .get(SportsData5MinAvgDataContainer.class.getSimpleName());
         if (sportsXYDataArraysForPlotting != null && sportsXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentPlot.setVisibility(View.VISIBLE);
-            binding.stepsTitleTextView.setVisibility(View.VISIBLE);
-            binding.stepsSummaryTextView.setVisibility(View.VISIBLE);
+            if(binding.stepsTitleTextView!=null){
+                binding.stepsTitleTextView.setVisibility(View.VISIBLE);
+            }
+            if (binding.stepsSummaryTextView!=null){
+                binding.stepsSummaryTextView.setVisibility(View.VISIBLE);
+            }
+
             binding.flowNoStepsData.setVisibility(View.GONE);
             SetDataInViews.plotStepsData(sportsXYDataArraysForPlotting,
                     binding.fragmentPlot);
@@ -283,8 +284,14 @@ public class DayFragment extends Fragment {
                 .get(HeartRateData5MinAvgDataContainer.class.getSimpleName());
         if (heartRateXYDataArraysForPlotting != null && heartRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentRatePlot.setVisibility(View.VISIBLE);
-            binding.heartRateTitleTextView.setVisibility(View.VISIBLE);
-            binding.heartRateSummaryTextView.setVisibility(View.VISIBLE);
+            if(binding.heartRateTitleTextView!=null){
+                binding.heartRateTitleTextView.setVisibility(View.VISIBLE);
+            }
+
+            if(binding.heartRateSummaryTextView!=null){
+                binding.heartRateSummaryTextView.setVisibility(View.VISIBLE);
+            }
+
             binding.flowNoHeartRateData.setVisibility(View.GONE);
             SetDataInViews.plotHeartRateData(heartRateXYDataArraysForPlotting,
                     binding.fragmentRatePlot);
@@ -302,8 +309,10 @@ public class DayFragment extends Fragment {
                 && lowBPRateXYDataArraysForPlotting != null
                 && lowBPRateXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
             binding.fragmentBloodPressurePlot.setVisibility(View.VISIBLE);
-            binding.bpTitleTextView.setVisibility(View.VISIBLE);
-            binding.bpSummaryTextView.setVisibility(View.VISIBLE);
+            if(binding.bpTitleTextView!=null && binding.bpSummaryTextView!=null){
+                binding.bpTitleTextView.setVisibility(View.VISIBLE);
+                binding.bpSummaryTextView.setVisibility(View.VISIBLE);
+            }
             binding.flowNoBPData.setVisibility(View.GONE);
             SetDataInViews.plotBloodPressureData(highBPRateXYDataArraysForPlotting,
                     lowBPRateXYDataArraysForPlotting,
@@ -319,8 +328,11 @@ public class DayFragment extends Fragment {
                 && binding.fragmentSop2Plot != null
                 && binding.flowNoSop2Data != null) {
             binding.fragmentSop2Plot.setVisibility(View.VISIBLE);
-            binding.spo2SummaryTextView.setVisibility(View.VISIBLE);
-            binding.spo2TitleTextView.setVisibility(View.VISIBLE);
+            if(binding.spo2SummaryTextView!=null && binding.spo2TitleTextView!=null){
+                binding.spo2SummaryTextView.setVisibility(View.VISIBLE);
+                binding.spo2TitleTextView.setVisibility(View.VISIBLE);
+            }
+
             binding.flowNoSop2Data.setVisibility(View.GONE);
             SetDataInViews.plotSop2Data(sop2XYDataArraysForPlotting,
                     binding.fragmentSop2Plot);
@@ -337,7 +349,7 @@ public class DayFragment extends Fragment {
             getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && getView()!=null) {
             WindowInsetsControllerCompat windowInsetsController =
                     WindowCompat.getInsetsController(getActivity().getWindow(), getView());
             windowInsetsController.setSystemBarsBehavior(
@@ -350,50 +362,50 @@ public class DayFragment extends Fragment {
         }
 
 
-        deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), new Observer<CustomSettingData>() {
-            @Override
-            public void onChanged(CustomSettingData customSettingData) {
-                if (customSettingData == null) return;
-                Log.d(TAG, "Live data CustomSettingData" + customSettingData.getAutoTemperatureDetect());
-                EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
-                EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
-                EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
-                EFunctionStatus ppgSupport = customSettingData.getPpg();
-                EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
-/*                    binding.imageButtonTemp.setEnabled(EFunctionStatus.SUPPORT == autoTemperatureDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoTemperatureDetect);*/
-/*                    binding.imageButtonHeartRate.setEnabled(EFunctionStatus.SUPPORT == autoHeartDetect
-                            || EFunctionStatus.SUPPORT_OPEN == autoHeartDetect);*/
-                if (EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
-                    binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
-                    binding.cardPlotsflow.removeView(binding.fragmentBloodPressureCardView);
-                }
-                if (EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain) {
-                    binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
-                    binding.cardPlotsflow.removeView(binding.fragmentSop2PlotCardView);
-                }
+        deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), customSettingData -> {
+            if (customSettingData == null) return;
+            EFunctionStatus autoTemperatureDetect = customSettingData.getAutoTemperatureDetect();
+            EFunctionStatus autoHeartDetect = customSettingData.getAutoHeartDetect();
+            EFunctionStatus autoBpDetect = customSettingData.getAutoBpDetect();
+            EFunctionStatus ppgSupport = customSettingData.getPpg();
+            EFunctionStatus lowSpo2hRemain = customSettingData.getLowSpo2hRemain();
 
-                if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect) {
-                    binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
-
-                } else {
-                    binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
-
-                }
+            if (EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
+                binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
             }
+            if (EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain && binding.fragmentSop2PlotCardView!=null) {
+                binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
+            }
+
+            if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect && binding.fragmentTemperaturePlotCardView!=null) {
+                binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
+
+            } else if(binding.fragmentTemperaturePlotCardView!=null){
+                binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
+            }
+
         });
 
     }
 
-    protected void setTemperaturePlot(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
+    protected void setTemperaturePlot(@NonNull Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
         XYDataArraysForPlotting tempBodyXYDataArraysForPlotting;
         tempBodyXYDataArraysForPlotting = stringXYDataArraysForPlottingMap
                 .get(Temperature5MinDataContainer.class.getSimpleName() + ":body");
         if (tempBodyXYDataArraysForPlotting != null && tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR() != null) {
-            binding.fragmentTemperaturePlot.setVisibility(View.VISIBLE);
-            binding.tempTitleTextView.setVisibility(View.VISIBLE);
-            binding.tempSummaryTextView.setVisibility(View.VISIBLE);
-            binding.flowNoTemperature2Data.setVisibility(View.GONE);
+            if(binding.fragmentTemperaturePlot!=null){
+                binding.fragmentTemperaturePlot.setVisibility(View.VISIBLE);
+            }
+            if(binding.tempTitleTextView!=null){
+                binding.tempTitleTextView.setVisibility(View.VISIBLE);
+            }
+            if(binding.tempSummaryTextView!=null){
+                binding.tempSummaryTextView.setVisibility(View.VISIBLE);
+            }
+            if(binding.flowNoTemperature2Data!=null){
+                binding.flowNoTemperature2Data.setVisibility(View.GONE);
+            }
+
             SetDataInViews.plotTemperatureData(tempBodyXYDataArraysForPlotting,
                     binding.fragmentTemperaturePlot);
             Double[] rangeDouble = tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR();

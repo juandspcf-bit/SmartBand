@@ -74,23 +74,23 @@ public class TodayFragment extends DayFragment {
 
     private void addClickObserversToPlotsWidgets(FragmentDataSummaryV2Binding binding) {
         if (binding == null) return;
-        binding.fragmentPlot.setOnClickListener(this::onClickCardFitnessArea);
-        binding.fragmentStepsPlotCardView.setOnClickListener(this::onClickCardFitnessArea);
+        binding.fragmentPlot.setOnClickListener(view1 -> onClickCardFitnessArea());
+        binding.fragmentStepsPlotCardView.setOnClickListener(view -> onClickCardFitnessArea());
 
-        binding.fragmentSleepPlot.setOnClickListener(this::onClickCardSleepArea);
-        binding.fragmentSleepPlotCardView.setOnClickListener(this::onClickCardSleepArea);
+        binding.fragmentSleepPlot.setOnClickListener(view1 -> onClickCardSleepArea());
+        binding.fragmentSleepPlotCardView.setOnClickListener(view -> onClickCardSleepArea());
 
-        binding.fragmentBloodPressurePlot.setOnClickListener(this::onClickCardBloodPressureArea);
-        binding.fragmentBloodPressureCardView.setOnClickListener(this::onClickCardBloodPressureArea);
+        binding.fragmentBloodPressurePlot.setOnClickListener(view1 -> onClickCardBloodPressureArea());
+        binding.fragmentBloodPressureCardView.setOnClickListener(view -> onClickCardBloodPressureArea());
 
-        binding.fragmentRatePlot.setOnClickListener(this::onClickCardHeartRateArea);
-        this.binding.fragmentRatePlotCardView.setOnClickListener(this::onClickCardHeartRateArea);
+        binding.fragmentRatePlot.setOnClickListener(view1 -> onClickCardHeartRateArea());
+        this.binding.fragmentRatePlotCardView.setOnClickListener(view -> onClickCardHeartRateArea());
 
         if (binding.fragmentSop2Plot != null) {
-            binding.fragmentSop2Plot.setOnClickListener(this::onClickCardSop2Area);
+            binding.fragmentSop2Plot.setOnClickListener(view -> onClickCardSop2Area());
         }
         if (binding.fragmentSop2PlotCardView != null) {
-            binding.fragmentSop2PlotCardView.setOnClickListener(this::onClickCardSop2Area);
+            binding.fragmentSop2PlotCardView.setOnClickListener(view -> onClickCardSop2Area());
         }
     }
 
