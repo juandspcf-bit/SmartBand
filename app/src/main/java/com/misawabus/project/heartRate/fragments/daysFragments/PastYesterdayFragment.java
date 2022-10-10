@@ -5,17 +5,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 
-import com.misawabus.project.heartRate.device.DataContainers.BloodPressureDataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
-import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
-import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
-
-import java.util.Map;
 
 public class PastYesterdayFragment extends DayFragment {
 
@@ -30,9 +21,7 @@ public class PastYesterdayFragment extends DayFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dashBoardViewModel.getPastYesterdayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> {
-            setDaySleepPlot(this, sleepDataUIList);
-        });
+        dashBoardViewModel.getPastYesterdayUpdateSleepFullData().observe(getViewLifecycleOwner(), sleepDataUIList -> setDaySleepPlot(this, sleepDataUIList));
 
         dashBoardViewModel.getPastYesterdaySummary().observe(getViewLifecycleOwner(), this::setSummaryViews);
 

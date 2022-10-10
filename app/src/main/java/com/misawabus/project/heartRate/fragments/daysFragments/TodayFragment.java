@@ -5,13 +5,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 
 import com.misawabus.project.heartRate.databinding.FragmentDataSummaryV2Binding;
 import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.daysFragments.lifecycleObservers.TodayLifeCycleObserverOnRefreshing;
-
-import java.util.Map;
 
 
 public class TodayFragment extends DayFragment {
@@ -37,13 +34,10 @@ public class TodayFragment extends DayFragment {
 
         dashBoardViewModel.getTodayArrayTempAllIntervals().observe(getViewLifecycleOwner(), this::setTemperaturePlot);
 
-        dashBoardViewModel.getTodayTempSummaryTitle().observe(getViewLifecycleOwner(), new Observer<Map<String, String>>() {
-            @Override
-            public void onChanged(Map<String, String> stringStringMap) {
-                String s = stringStringMap.get(Temperature5MinDataContainer.class.getSimpleName() + ":body");
-                if(binding.tempSummaryTextView!=null){
-                    binding.tempSummaryTextView.setText(s);
-                }
+        dashBoardViewModel.getTodayTempSummaryTitle().observe(getViewLifecycleOwner(), stringStringMap -> {
+            String s = stringStringMap.get(Temperature5MinDataContainer.class.getSimpleName() + ":body");
+            if(binding.tempSummaryTextView!=null){
+                binding.tempSummaryTextView.setText(s);
             }
         });
 
