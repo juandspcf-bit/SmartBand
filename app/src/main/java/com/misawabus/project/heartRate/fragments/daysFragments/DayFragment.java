@@ -49,12 +49,10 @@ import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
 
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class DayFragment extends Fragment {
@@ -395,16 +393,34 @@ public class DayFragment extends Fragment {
 
             if (EFunctionStatus.SUPPORT_OPEN != autoBpDetect) {
                 binding.fragmentBloodPressureCardView.setVisibility(View.GONE);
+                if(binding.bpSummaryTextView!=null && binding.bpTitleTextView!=null){
+                    binding.bpSummaryTextView.setVisibility(View.GONE);
+                    binding.bpTitleTextView.setVisibility(View.GONE);
+                }
+
+
             }
             if (EFunctionStatus.SUPPORT_OPEN != lowSpo2hRemain && binding.fragmentSop2PlotCardView!=null) {
                 binding.fragmentSop2PlotCardView.setVisibility(View.GONE);
+                if(binding.spo2SummaryTextView!=null && binding.spo2TitleTextView!=null){
+                    binding.spo2SummaryTextView.setVisibility(View.GONE);
+                    binding.spo2TitleTextView.setVisibility(View.GONE);
+                }
             }
 
             if (EFunctionStatus.SUPPORT_OPEN != autoTemperatureDetect && binding.fragmentTemperaturePlotCardView!=null) {
                 binding.fragmentTemperaturePlotCardView.setVisibility(View.GONE);
+                if(binding.tempSummaryTextView!=null && binding.tempTitleTextView!=null){
+                    binding.tempSummaryTextView.setVisibility(View.GONE);
+                    binding.tempTitleTextView.setVisibility(View.GONE);
+                }
 
             } else if(binding.fragmentTemperaturePlotCardView!=null){
                 binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
+                if(binding.tempSummaryTextView!=null && binding.tempTitleTextView!=null){
+                    binding.tempSummaryTextView.setVisibility(View.VISIBLE);
+                    binding.tempTitleTextView.setVisibility(View.VISIBLE);
+                }
             }
 
         });
