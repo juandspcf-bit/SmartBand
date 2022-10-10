@@ -2,6 +2,7 @@ package com.misawabus.project.heartRate.viewModels;
 
 import android.view.View;
 
+import androidx.arch.core.internal.SafeIterableMap;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -64,9 +65,12 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> todayArrayTempAllIntervals = new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>> yesterdayArrayTempAllIntervals= new MutableLiveData<>();
     private final MutableLiveData<Map<String, XYDataArraysForPlotting>>  pastYesterdayArrayTempAllIntervals= new MutableLiveData<>();
-    private MutableLiveData<Map<String, String>> todaySummaryTitles = new MutableLiveData<>();
-    private  MutableLiveData<Map<String, String>> yesterdaySummaryTitles = new MutableLiveData<>();
-    private MutableLiveData<Map<String, String>> pastYesterdaySummaryTitles = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> todaySummaryTitles = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> yesterdaySummaryTitles = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> pastYesterdaySummaryTitles = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>>  todayTempSummaryTitle = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> yesterdayTempSummaryTitle = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> pastYesterdayTempSummaryTitle = new MutableLiveData<>();
 
     public DashBoardViewModel() {
         isEnableFeatures.setValue(false);
@@ -383,4 +387,29 @@ public class DashBoardViewModel extends ViewModel {
     public MutableLiveData<Map<String, String>> getPastYesterdaySummaryTitles() {
         return pastYesterdaySummaryTitles;
     }
+
+    public void setTodayTempSummaryTitle(Map<String, String> todayTempSummaryTitle) {
+        this.todayTempSummaryTitle.setValue(todayTempSummaryTitle);
+    }
+
+    public MutableLiveData<Map<String, String>> getTodayTempSummaryTitle() {
+        return todayTempSummaryTitle;
+    }
+
+    public void setYesterdayTempSummaryTitle(Map<String, String> yesterdayTempSummaryTitle) {
+        this.yesterdayTempSummaryTitle.setValue(yesterdayTempSummaryTitle);
+    }
+
+    public MutableLiveData<Map<String, String>> getYesterdayTempSummaryTitle() {
+        return yesterdayTempSummaryTitle;
+    }
+
+    public void setPastYesterdayTempSummaryTitle(Map<String, String> pastYesterdayTempSummaryTitle) {
+        this.pastYesterdayTempSummaryTitle.setValue(pastYesterdayTempSummaryTitle);
+    }
+
+    public MutableLiveData<Map<String, String>> getPastYesterdayTempSummaryTitle() {
+        return pastYesterdayTempSummaryTitle;
+    }
+
 }

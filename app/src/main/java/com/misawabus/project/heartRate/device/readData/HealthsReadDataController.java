@@ -20,6 +20,7 @@ import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDat
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
+import com.misawabus.project.heartRate.fragments.summaryFragments.SummaryFragment;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -416,15 +417,39 @@ public class HealthsReadDataController {
                     .put(Temperature5MinDataContainer.class.getSimpleName()+":skin",
                             skinTemperatureArraysForPlotting);
 
+            Map<String, String> arraysTempSummaryValuesMap = new HashMap<>();
+
+            Double[] rangeDouble = bodyTemperatureArraysForPlotting.getSeriesDoubleAVR();
+            Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+            Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+            String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
+            arraysTempSummaryValuesMap.put(Temperature5MinDataContainer.class.getSimpleName()+":body",
+                    formattedMaxValue);
+
+            rangeDouble = skinTemperatureArraysForPlotting.getSeriesDoubleAVR();
+            optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+            maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
+            arraysTempSummaryValuesMap.put(Temperature5MinDataContainer.class.getSimpleName()+":skin",
+                    formattedMaxValue);
+
+
             mHandler.post(() -> {
                 TimeData timeData = list.get(0).getmTime();
                 LocalDate localDate = DateUtils.getLocalDateFromVeepooTimeDateObj(timeData.toString());
                 if (localDate.compareTo(LocalDate.now()) == 0) {
                     dashBoardViewModel.setTodayArrayTempAllIntervals(arraysMap);
+                    dashBoardViewModel.setTodayTempSummaryTitle(arraysTempSummaryValuesMap);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
                     dashBoardViewModel.setYesterdayArrayTempAllIntervals(arraysMap);
+                    dashBoardViewModel.setYesterdayTempSummaryTitle(arraysTempSummaryValuesMap);
                 } else if (localDate.compareTo(LocalDate.now().minusDays(2)) == 0) {
                     dashBoardViewModel.setPastYesterdayArrayTempAllIntervals(arraysMap);
+                    dashBoardViewModel.setPastYesterdayTempSummaryTitle(arraysTempSummaryValuesMap);
                 }
             });
 

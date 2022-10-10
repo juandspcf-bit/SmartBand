@@ -12,6 +12,7 @@ import com.misawabus.project.heartRate.device.DataContainers.DataFiveMinAvgDataC
 import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
+import com.misawabus.project.heartRate.device.DataContainers.Temperature5MinDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.SetDataInViews;
 import com.misawabus.project.heartRate.Database.entities.SleepDataUI;
@@ -49,6 +50,16 @@ public class YesterdayFragment extends DayFragment {
             @Override
             public void onChanged(Map<String, XYDataArraysForPlotting> stringXYDataArraysForPlottingMap) {
                 setTemperaturePlot(stringXYDataArraysForPlottingMap);
+            }
+        });
+
+        dashBoardViewModel.getYesterdayTempSummaryTitle().observe(getViewLifecycleOwner(), new Observer<Map<String, String>>() {
+            @Override
+            public void onChanged(Map<String, String> stringStringMap) {
+                String s = stringStringMap.get(Temperature5MinDataContainer.class.getSimpleName() + ":body");
+                if(binding.tempSummaryTextView!=null){
+                    binding.tempSummaryTextView.setText(s);
+                }
             }
         });
 

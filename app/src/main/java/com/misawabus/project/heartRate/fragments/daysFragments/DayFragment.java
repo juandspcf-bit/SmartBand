@@ -70,7 +70,7 @@ public class DayFragment extends Fragment {
     protected List<SleepDataUI> sleepDataList;
     protected Map<String, DataFiveMinAvgDataContainer> stringDataFiveMinAVGAllIntervalsMap;
 
-    static void setDaySleepPlot(DayFragment dayFragment, List<SleepDataUI> sleepDataUIList) {
+    public static void setDaySleepPlot(DayFragment dayFragment, List<SleepDataUI> sleepDataUIList) {
         if (sleepDataUIList == null || sleepDataUIList.size() == 0) return;
         dayFragment.sleepDataList = sleepDataUIList;
 
@@ -408,13 +408,6 @@ public class DayFragment extends Fragment {
 
             SetDataInViews.plotTemperatureData(tempBodyXYDataArraysForPlotting,
                     binding.fragmentTemperaturePlot);
-            Double[] rangeDouble = tempBodyXYDataArraysForPlotting.getSeriesDoubleAVR();
-            Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
-                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
-            Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
-            String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
-            binding.tempSummaryTextView.setText(formattedMaxValue);
         }
     }
 
