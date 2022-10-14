@@ -7,4 +7,12 @@
 
     </style>
 
+    <style name="splashScreenHome" parent="Theme.AppCompat.DayNight.NoActionBar" >
+        <item name="android:windowBackground">
+            @drawable/splash_screen_home
+        </item>
+        <item name="android:statusBarColor" >@color/white</item>
+    </style>
+
+
 </resources>

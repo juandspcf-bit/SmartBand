@@ -293,10 +293,16 @@ public class PlotUtilsSleep {
 
     public static List<SleepDataUI> sortSleepListData(List<SleepDataUI> sleepDataUIS) {
         List<Integer> collect = sleepDataUIS.stream().map(sleepDataUI -> {
-            LocalTime localTimeFromVeepooTimeDateObj;
-            localTimeFromVeepooTimeDateObj =
+            LocalTime localTimeSleepDown;
+            localTimeSleepDown =
                     DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepDown());
-            return localTimeFromVeepooTimeDateObj.toSecondOfDay();
+            LocalTime localTimeSleepUp;
+            localTimeSleepUp = DateUtils.getLocalTimeFromVeepooTimeDateObj(sleepDataUI.getSleepUp());
+            if(localTimeSleepDown.compareTo(localTimeSleepUp)>0){
+                localTimeSleepDown = LocalTime.of(0,0);
+            }
+
+            return localTimeSleepDown.toSecondOfDay();
 
         }).collect(toList());
 

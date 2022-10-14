@@ -52,7 +52,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
         super.onCreate(savedInstanceState);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
     }
 
     @Override
@@ -103,6 +102,7 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
         binding.imageViewSleep2.setVisibility(View.GONE);
         binding.groupViews.setVisibility(View.VISIBLE);
         sleepDataUIS = PlotUtilsSleep.sortSleepListData(sleepDataUIS);
+        sleepDataUIS.forEach(sleepDataUI ->  Log.d(TAG, "setFragmentViews: " + sleepDataUI));
         if(sleepDataUIS.get(0).idTypeDataTable.equals(IdTypeDataTable.SleepPrecision)){
             sleepDataUIS = PlotUtilsSleep.joinSleepListData(sleepDataUIS);
         }
@@ -255,7 +255,6 @@ public class SummarySleepFragmentV2 extends SummaryFragment {
                 binding.lightSleepPercenextView.setText(String.format(Locale.JAPAN, "%d%c of light sleep", lightSleepPercent, '%'));
 
                 List<Integer> awakeLine = sleepDataMapLines.get("wakeUp");
-                Log.d(TAG, "onPageSelected: " + awakeLine);
                 String awakeTime = getTypeSleepFormattedStringCount(awakeLine, sleepDataUI.idTypeDataTable);
                 long awakeLineCountMin = getTypeSleepFormattedCountHourMin(awakeLine, sleepDataUI.idTypeDataTable);
                 int awakeSleepPercent = (int) (awakeLineCountMin*(1.0/allSleepTimeMinutes)*100.0);
