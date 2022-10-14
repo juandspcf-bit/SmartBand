@@ -2,17 +2,13 @@ package com.misawabus.project.heartRate;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -75,7 +71,7 @@ public class DashBoardActivity extends AppCompatActivity {
     };
     private VPOperateManager mVpoperateManager;
 
-    public static void hideWindowForLesR(FragmentActivity activity) {
+    public static void hideWindowForAndroidVersionLessR(FragmentActivity activity) {
         View decorView = activity.getWindow().getDecorView();
         decorView.setSystemUiVisibility(flags);
 
@@ -176,7 +172,7 @@ public class DashBoardActivity extends AppCompatActivity {
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         }else {
-            hideWindowForLesR(this);
+            hideWindowForAndroidVersionLessR(this);
         }
     }
 

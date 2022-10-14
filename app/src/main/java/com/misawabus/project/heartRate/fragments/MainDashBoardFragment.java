@@ -1,14 +1,12 @@
 package com.misawabus.project.heartRate.fragments;
 
 import android.animation.ValueAnimator;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -25,8 +23,6 @@ import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentMainDashboardBinding;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
-
-import org.apache.poi.ss.formula.functions.T;
 
 public class MainDashBoardFragment extends Fragment{
     private static final String TAG = MainDashBoardFragment.class.getSimpleName();
@@ -79,7 +75,7 @@ public class MainDashBoardFragment extends Fragment{
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         }else {
             Log.d(TAG, "onResume: DayFragment");
-            DashBoardActivity.hideWindowForLesR(getActivity());
+            DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
         }
 
         binding.bottomNavigationV2.setOnItemSelectedListener(item -> {
@@ -181,7 +177,7 @@ public class MainDashBoardFragment extends Fragment{
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         }else {
             Log.d(TAG, "onResume: DayFragment");
-            DashBoardActivity.hideWindowForLesR(getActivity());
+            DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
         }
     }
 

@@ -379,7 +379,7 @@ public class DayFragment extends Fragment {
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         } else {
             Log.d(TAG, "onResume: DayFragment");
-            DashBoardActivity.hideWindowForLesR(getActivity());
+            DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
         }
 
 
