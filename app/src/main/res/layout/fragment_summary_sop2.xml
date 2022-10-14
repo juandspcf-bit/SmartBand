@@ -163,7 +163,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="#AED1EC">
+                    android:background="#FFEAE7"
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/apneaResultValue"
@@ -226,13 +227,24 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="1.0" />
 
+                    <TextView
+                        android:id="@+id/apneaNormalValueTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:textAlignment="center"
+                        android:textColor="@color/textRowFieldsSop2"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="128dp"
+                        tools:layout_editor_absoluteY="24dp" />
+
                     <ProgressBar
                         android:id="@+id/apneaResultProgressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="#2196F3"
-                        android:max="20"
+                        android:max="30"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
                         android:progressTint="#FFF59D"
@@ -270,13 +282,32 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.75" />
+
+                    <ImageView
+                        android:id="@+id/apneaImageViewArrow"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        app:srcCompat="@drawable/down_filled_triangular_arrow" />
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:constraint_referenced_ids="apneaNormalValueTextView,apneaImageViewArrow"
+                        app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/apneaResultProgressBar"
+                        app:layout_constraintHorizontal_bias="0.17"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="#AED1EC">
+                    android:background="#FFEAE7"
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/bloodOxygenValue"
@@ -389,7 +420,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="#AED1EC">
+                    android:background="#FFEAE7">
 
                     <TextView
                         android:id="@+id/respirationRateValue"
@@ -502,7 +533,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="#AED1EC">
+                    android:background="#FFEAE7"
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/hypoxiaTimeValue"
@@ -615,7 +647,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="#AED1EC">
+                    android:background="#FFEAE7"
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/cardiacLoadValue"
@@ -728,7 +761,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="#AED1EC">
+                    android:background="#FFEAE7"
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/sleepActivityValue"

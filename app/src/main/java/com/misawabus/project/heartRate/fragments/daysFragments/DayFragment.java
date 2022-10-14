@@ -417,10 +417,10 @@ public class DayFragment extends Fragment {
 
             } else if(binding.fragmentTemperaturePlotCardView!=null){
                 binding.fragmentTemperaturePlotCardView.setVisibility(View.VISIBLE);
-                if(binding.tempSummaryTextView!=null && binding.tempTitleTextView!=null){
+/*                if(binding.tempSummaryTextView!=null && binding.tempTitleTextView!=null){
                     binding.tempSummaryTextView.setVisibility(View.VISIBLE);
                     binding.tempTitleTextView.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
 
         });

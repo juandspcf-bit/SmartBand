@@ -5,11 +5,9 @@ import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWith
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -23,7 +21,6 @@ import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySop2Binding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
-import com.misawabus.project.heartRate.plotting.PlotUtils;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSpo2;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -42,8 +39,6 @@ public class SummarySop2Fragment extends SummaryFragment {
     private DashBoardViewModel dashBoardViewModel;
     private DeviceViewModel deviceViewModel;
     private Button selectDateButton;
-    private Button shareButton;
-    private Button backToMainFragButton;
 
 
     public SummarySop2Fragment() {
@@ -75,9 +70,9 @@ public class SummarySop2Fragment extends SummaryFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        backToMainFragButton = binding.buttonBackFromSummarySop2Frag;
+        Button backToMainFragButton = binding.buttonBackFromSummarySop2Frag;
         selectDateButton = binding.selectDateSop2Button;
-        shareButton = binding.buttonShareSop2;
+        Button shareButton = binding.buttonShareSop2;
 
         backToMainFragButton.setOnClickListener(view1 -> backMainFragment());
         shareButton.setOnClickListener(viewToShare -> shareScreen());
@@ -150,6 +145,15 @@ public class SummarySop2Fragment extends SummaryFragment {
 
 
         long roundApneaResult = Math.round(apneaResult);
+        if(roundApneaResult>=5 && roundApneaResult <15){
+            binding.apneaResultTextView.setText("Mild");
+        }else if(roundApneaResult>=15 && roundApneaResult <30){
+            binding.apneaResultTextView.setText("Moderate");
+        }else if(roundApneaResult>=30){
+            binding.apneaResultTextView.setText("Serious");
+        }else {
+            binding.apneaResultTextView.setText("Normal");
+        }
         binding.apneaResultValue.setText(String.valueOf(roundApneaResult));
         binding.apneaResultProgressBar.setProgress((int) roundApneaResult);
 

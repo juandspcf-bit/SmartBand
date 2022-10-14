@@ -14,18 +14,21 @@ public class Device {
     @PrimaryKey(autoGenerate = true)
     public long deviceId;
 
-
-
     @ColumnInfo(name = "mac_address")
     public String macAddress;
 
     @ColumnInfo(name = "name")
     public String name;
-
+    @ColumnInfo(name = "weight")
     public String weight;
+    @ColumnInfo(name = "gender")
     public String gender;
+    @ColumnInfo(name = "birth_date")
     public Date birthDate;
+    @ColumnInfo(name = "height")
     public String height;
+    @ColumnInfo(name = "steps_goal")
+    public String stepsGoal;
 
     public Device(){
 
@@ -61,7 +64,6 @@ public class Device {
         this.gender = gender;
     }
 
-
     public String getWeight() {
         return weight;
     }
@@ -83,7 +85,13 @@ public class Device {
         this.height = height;
     }
 
-    @NonNull
+    public String getStepsGoal() {
+        return stepsGoal;
+    }
+    public void setStepsGoal(String stepsGoal) {
+        this.stepsGoal = stepsGoal;
+    }
+
     @Override
     public String toString() {
         return "Device{" +
@@ -91,8 +99,10 @@ public class Device {
                 ", macAddress='" + macAddress + '\'' +
                 ", name='" + name + '\'' +
                 ", weight='" + weight + '\'' +
+                ", gender='" + gender + '\'' +
                 ", birthDate=" + birthDate +
-                ", height=" + height +
+                ", height='" + height + '\'' +
+                ", stepsGoal=" + stepsGoal +
                 '}';
     }
 }
