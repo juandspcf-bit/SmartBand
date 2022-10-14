@@ -14,13 +14,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        DeviceViewModel deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-
-
-
-
 
         Intent intent = new Intent(this, ScanConnectionActivity.class);
         startActivity(intent);
