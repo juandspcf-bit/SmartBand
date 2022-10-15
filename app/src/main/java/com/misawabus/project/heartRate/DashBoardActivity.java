@@ -72,12 +72,7 @@ public class DashBoardActivity extends AppCompatActivity {
     };
     private VPOperateManager mVpoperateManager;
 
-    public static void hideWindowForAndroidVersionLessR(FragmentActivity activity) {
-        View decorView = activity.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(flags);
 
-
-    }
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -190,7 +185,10 @@ public class DashBoardActivity extends AppCompatActivity {
         finishAndRemoveTask();
     }
 
-
+    public static void hideWindowForAndroidVersionLessR(FragmentActivity activity) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(flags);
+    }
 
 
 }
