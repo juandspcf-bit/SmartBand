@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -148,5 +150,17 @@ public class SettingsFragment extends Fragment {
         });
 
 
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
     }
 }

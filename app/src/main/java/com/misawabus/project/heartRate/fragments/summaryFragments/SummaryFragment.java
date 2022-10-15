@@ -115,6 +115,27 @@ public class SummaryFragment extends Fragment {
         }
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
+
+            WindowInsetsControllerCompat windowInsetsController2 =
+                    WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+            windowInsetsController2.setAppearanceLightStatusBars(true);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white, null));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                WindowInsetsControllerCompat windowInsetsController =
+                        WindowCompat.getInsetsController(getActivity().getWindow(), getView());
+                windowInsetsController.setSystemBarsBehavior(
+                        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                );
+                windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+            }else {
+                DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
+            }
+
+            windowInsetsController2.setAppearanceLightStatusBars(true);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white, null));
+
+
             Date date = new Date(selection);
             currentDate = date;
             String dateS = DateFormat.getDateInstance(DateFormat.SHORT, Locale.JAPAN).format(date);

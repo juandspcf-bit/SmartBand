@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments.dialogFragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import java.util.concurrent.Executors;
 public class BloodPressureDialogFragment extends DialogFragment {
     private ExecutorService executor;
     private DashBoardViewModel dashBoardViewModel;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,5 +112,23 @@ public class BloodPressureDialogFragment extends DialogFragment {
         if(executor==null) return;
         executor.shutdownNow();
         dashBoardViewModel.getRealTimeTesterClass().stopBloodPressure();
+    }
+
+
+
+    NoticeDialogListener listener;
+
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (NoticeDialogListener) getParentFragment();
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.onDetach(this);
     }
 }

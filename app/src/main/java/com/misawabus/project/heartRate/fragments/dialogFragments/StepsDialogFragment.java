@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments.dialogFragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +93,16 @@ private ExecutorService executor;
 
     }
 
+    NoticeDialogListener listener;
+
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (NoticeDialogListener) getParentFragment();
+
+    }
+
     private void startStepsMeasurement() {
         executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
@@ -109,5 +120,10 @@ private ExecutorService executor;
 
         });
 
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.onDetach(this);
     }
 }

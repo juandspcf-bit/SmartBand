@@ -2,6 +2,7 @@ package com.misawabus.project.heartRate.fragments.dialogFragments;
 
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -124,5 +125,20 @@ public class HeartRateDialogFragment extends DialogFragment {
             dashBoardViewModel.getRealTimeTesterClass().readHeartRate();
         });
 
+    }
+
+    NoticeDialogListener listener;
+
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (NoticeDialogListener) getParentFragment();
+
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.onDetach(this);
     }
 }

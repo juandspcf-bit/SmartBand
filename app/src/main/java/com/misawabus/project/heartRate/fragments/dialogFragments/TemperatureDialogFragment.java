@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments.dialogFragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -88,5 +89,20 @@ public class TemperatureDialogFragment extends DialogFragment {
         map.put("BodyTemp", 0.0);
         map.put("SkinTemp", 0.0);
         map.put("Progress", 0.0);
+    }
+
+    NoticeDialogListener listener;
+
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (NoticeDialogListener) getParentFragment();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.onDetach(this);
     }
 }

@@ -104,6 +104,11 @@ public class TabsDailyActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsControllerCompat windowInsetsController =
                     WindowCompat.getInsetsController(getActivity().getWindow(), getView());

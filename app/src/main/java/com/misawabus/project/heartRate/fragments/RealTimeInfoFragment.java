@@ -1,10 +1,14 @@
 package com.misawabus.project.heartRate.fragments;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -17,8 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.misawabus.project.heartRate.DashBoardActivity;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentRealtTimeDataBinding;
+import com.misawabus.project.heartRate.fragments.dialogFragments.NoticeDialogListener;
 import com.misawabus.project.heartRate.fragments.dialogFragments.TemperatureDialogFragment;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -31,7 +37,8 @@ import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.util.Map;
 
-public class RealTimeInfoFragment extends Fragment {
+public class RealTimeInfoFragment extends Fragment implements NoticeDialogListener {
+    private static final String TAG = RealTimeInfoFragment.class.getSimpleName();
     FragmentRealtTimeDataBinding binding;
     DeviceViewModel deviceViewModel;
     private DashBoardViewModel dashBoardViewModel;
@@ -124,7 +131,6 @@ public class RealTimeInfoFragment extends Fragment {
                 FragmentManager fragmentManager = getChildFragmentManager();
                 EcgDialogFragment newFragment = new EcgDialogFragment();
                 newFragment.show(fragmentManager, "dialog");
-
             }
         });
 
@@ -138,11 +144,51 @@ public class RealTimeInfoFragment extends Fragment {
         });
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
     private void disableAllButtons() {
         binding.imageButtonRunner.setEnabled(false);
         binding.imageButtonTemp.setEnabled(false);
         binding.imageButtonHeartRate.setEnabled(false);
         binding.imageButtonBloodP.setEnabled(false);
         binding.imageButtonEcg.setEnabled(false);
+    }
+
+    @Override
+    public void onDetach(DialogFragment dialog) {
+        Log.d(TAG, "onDetach callback: ");
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getActivity().getWindow(), getView());
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+        }else {
+            DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
+        }
+
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
     }
 }
