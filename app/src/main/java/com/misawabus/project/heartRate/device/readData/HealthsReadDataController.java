@@ -172,37 +172,46 @@ public class HealthsReadDataController {
                         formattedMaxValue);
 
         rangeDouble = heartRateArraysForPlotting.getSeriesDoubleAVR();
-        Optional<ContainerDouble> optionalMaxIndex =
-                getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                        .max(Comparator.comparing(ContainerDouble::getValue));
-        Double maxValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
-        formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
-        summaryTitlesMap
-                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
-                        formattedMaxValue);
+        if(rangeDouble!=null){
+            Optional<ContainerDouble> optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(ContainerDouble::getValue));
+            Double maxValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
+            summaryTitlesMap
+                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                            formattedMaxValue);
+        }
+
 
 
         rangeDouble = highBPArraysForPlotting.getSeriesDoubleAVR();
-        optionalMaxIndex =
-                getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                        .max(Comparator.comparing(ContainerDouble::getValue));
-        int index = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getIndex();
-        Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
-        Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
-        formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
-        summaryTitlesMap
-                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
-                        formattedMaxValue);
+        if(rangeDouble!=null){
+            Optional<ContainerDouble> optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(ContainerDouble::getValue));
+            int index = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getIndex();
+            Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
+            Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
+            summaryTitlesMap
+                    .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                            formattedMaxValue);
+        }
+
 
         rangeDouble = spo2PArraysForPlotting.getSeriesDoubleAVR();
-        optionalMaxIndex =
-                getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                        .min(Comparator.comparing(ContainerDouble::getValue));
-        Double minValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
-        String formattedMinValue = String.format(Locale.getDefault(), "Min value: %.1f%s", minValue, "%");
-        summaryTitlesMap
-                .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
-                        formattedMinValue);
+        if(rangeDouble!=null){
+            Optional<ContainerDouble> optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .min(Comparator.comparing(ContainerDouble::getValue));
+            Double minValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
+            String formattedMinValue = String.format(Locale.getDefault(), "Min value: %.1f%s", minValue, "%");
+            summaryTitlesMap
+                    .put(Sop2HData5MinAvgDataContainer.class.getSimpleName(),
+                            formattedMinValue);
+
+        }
         return summaryTitlesMap;
     }
 
@@ -423,22 +432,24 @@ public class HealthsReadDataController {
             Map<String, String> arraysTempSummaryValuesMap = new HashMap<>();
 
             Double[] rangeDouble = bodyTemperatureArraysForPlotting.getSeriesDoubleAVR();
-            Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
-                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
-            Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
-            String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
-            arraysTempSummaryValuesMap.put(Temperature5MinDataContainer.class.getSimpleName()+":body",
-                    formattedMaxValue);
+            if(rangeDouble!=null){
+                Optional<SummaryFragment.ContainerDouble> optionalMaxIndex =
+                        getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                                .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+                Double maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+                String formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
+                arraysTempSummaryValuesMap.put(Temperature5MinDataContainer.class.getSimpleName()+":body",
+                        formattedMaxValue);
 
-            rangeDouble = skinTemperatureArraysForPlotting.getSeriesDoubleAVR();
-            optionalMaxIndex =
-                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                            .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
-            maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
-            formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
-            arraysTempSummaryValuesMap.put(Temperature5MinDataContainer.class.getSimpleName()+":skin",
-                    formattedMaxValue);
+                rangeDouble = skinTemperatureArraysForPlotting.getSeriesDoubleAVR();
+                optionalMaxIndex =
+                        getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                                .max(Comparator.comparing(SummaryFragment.ContainerDouble::getValue));
+                maxValue = optionalMaxIndex.orElse(new SummaryFragment.ContainerDouble(0.0, 0)).getValue();
+                formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f °C", maxValue);
+                arraysTempSummaryValuesMap.put(Temperature5MinDataContainer.class.getSimpleName()+":skin",
+                        formattedMaxValue);
+            }
 
 
             mHandler.post(() -> {

@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -92,27 +93,11 @@ public class DashBoardActivity extends AppCompatActivity {
         });
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-
-            int height;
-            Resources myResources = getResources();
-            int idStatusBarHeight = myResources.getIdentifier( "status_bar_height", "dimen", "android");
-            if (idStatusBarHeight > 0) {
-                height = getResources().getDimensionPixelSize(idStatusBarHeight);
-                Log.d(TAG, "onCreate: " + height);
-                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-                params.setMargins(0, height, 0, 0);
-                binding.mainDashBoardFragmentContainerInActivityDashBoard.setLayoutParams(params);
-            }
-
+            addMarginTopToMakeVisibleStatusBar();
         }
 
         Bundle extras = getIntent().getExtras();
         String macAddress = extras.getString("deviceAddress");
-
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        hideBottomNavigationBar();
-
-
 
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
@@ -163,16 +148,16 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
-    private void hideBottomNavigationBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowInsetsControllerCompat windowInsetsController =
-                    WindowCompat.getInsetsController(getWindow(), binding.mainDashBoardFragmentContainerInActivityDashBoard);
-            windowInsetsController.setSystemBarsBehavior(
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            );
-            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else {
-            hideWindowForAndroidVersionLessR(this);
+    private void addMarginTopToMakeVisibleStatusBar() {
+        int height;
+        Resources myResources = getResources();
+        int idStatusBarHeight = myResources.getIdentifier( "status_bar_height", "dimen", "android");
+        if (idStatusBarHeight > 0) {
+            height = getResources().getDimensionPixelSize(idStatusBarHeight);
+            Log.d(TAG, "onCreate: " + height);
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(0, height, 0, 0);
+            binding.mainDashBoardFragmentContainerInActivityDashBoard.setLayoutParams(params);
         }
     }
 
@@ -190,7 +175,6 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        hideBottomNavigationBar();
         registerCallBack();
     }
 

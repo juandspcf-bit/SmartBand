@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.misawabus.project.heartRate.DashBoardActivity;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
@@ -48,32 +50,22 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getActivity()!=null){
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_fragments, null));
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && getActivity()!=null) {
-            WindowInsetsControllerCompat windowInsetsController =
-                    WindowCompat.getInsetsController(getActivity().getWindow(), view);
-            windowInsetsController.setSystemBarsBehavior(
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            );
-            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else if(getActivity()!=null) {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
+
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.white));
+
     }
 
     protected void shareScreen(){
         View viewToShare = getActivity().getWindow().getDecorView().getRootView();
-        //viewToShare = getView().getRootView();
 
         String filename = "screen.jpg";
 
@@ -129,7 +121,13 @@ public class SummaryFragment extends Fragment {
 
         });
 
+
+
+
         datePicker.show(getChildFragmentManager(), "tag");
+
+
+
 
     }
 
@@ -157,5 +155,14 @@ public class SummaryFragment extends Fragment {
         public int getIndex() {
             return index;
         }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
     }
 }

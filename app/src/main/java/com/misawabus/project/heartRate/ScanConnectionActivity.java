@@ -26,6 +26,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -85,10 +87,10 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
         setContentView(R.layout.activity_main);
         //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        ScanConnectionActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        ScanConnectionActivity.this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
         ScanConnectionActivity.this.getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
-        ScanConnectionActivity.this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         swipeRefreshLayout = findViewById(R.id.devices_refresh_layout);
         swipeRefreshLayout.setEnabled(true);

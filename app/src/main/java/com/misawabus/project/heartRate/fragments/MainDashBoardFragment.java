@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,12 +41,7 @@ public class MainDashBoardFragment extends Fragment{
         super.onCreate(savedInstanceState);
         dashBoardViewModel = new ViewModelProvider(requireActivity()).get(DashBoardViewModel.class);
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        if(getActivity()!=null){
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+
     }
 
     @Override
@@ -66,15 +62,20 @@ public class MainDashBoardFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsControllerCompat windowInsetsController =
-                    WindowCompat.getInsetsController(getActivity().getWindow(), view);
+                    WindowCompat.getInsetsController(getActivity().getWindow(), getView());
             windowInsetsController.setSystemBarsBehavior(
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             );
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
         }else {
-            Log.d(TAG, "onResume: DayFragment");
             DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
         }
 
@@ -150,10 +151,6 @@ public class MainDashBoardFragment extends Fragment{
                 binding.statusSynchronizingBluetooth.setVisibility(View.INVISIBLE);
                 binding.progressBar.setVisibility(View.INVISIBLE);
             }
-
-
-
-
         });
 
 
@@ -162,23 +159,23 @@ public class MainDashBoardFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        if(getActivity()!=null){
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowInsetsControllerCompat windowInsetsController =
-                    WindowCompat.getInsetsController(getActivity().getWindow(), getView());
-            windowInsetsController.setSystemBarsBehavior(
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            );
-            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        }else {
-            Log.d(TAG, "onResume: DayFragment");
-            DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
-        }
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "passddddd onAttach: ");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "passddddd onStart: ");
     }
 
     private void hideProgressBar(ValueAnimator animation) {

@@ -10,6 +10,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -115,7 +116,6 @@ public class DayFragment extends Fragment {
                     dayFragment.binding.fragmentSleepPlot,
                     dayFragment.binding);
         }
-
 
     }
 
@@ -343,19 +343,19 @@ public class DayFragment extends Fragment {
         String s2 = stringStringMap.get(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High");
         String s3 = stringStringMap.get(Sop2HData5MinAvgDataContainer.class.getSimpleName());
 
-        if(binding.stepsSummaryTextView!=null){
+        if(binding.stepsSummaryTextView!=null && s!=null){
             binding.stepsSummaryTextView.setText(s);
         }
 
-        if(binding.heartRateSummaryTextView!=null){
+        if(binding.heartRateSummaryTextView!=null && s1!=null){
             binding.heartRateSummaryTextView.setText(s1);
         }
 
-        if(binding.bpSummaryTextView!=null){
+        if(binding.bpSummaryTextView!=null && s2!=null){
             binding.bpSummaryTextView.setText(s2);
         }
 
-        if(binding.spo2SummaryTextView!=null){
+        if(binding.spo2SummaryTextView!=null && s3!=null){
             binding.spo2SummaryTextView.setText(s3);
         }
     }
@@ -364,24 +364,10 @@ public class DayFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (getActivity() != null) {
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && getView()!=null) {
-            WindowInsetsControllerCompat windowInsetsController =
-                    WindowCompat.getInsetsController(getActivity().getWindow(), getView());
-            windowInsetsController.setSystemBarsBehavior(
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            );
-            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        } else {
-            Log.d(TAG, "onResume: DayFragment");
-            DashBoardActivity.hideWindowForAndroidVersionLessR(getActivity());
-        }
-
+        WindowInsetsControllerCompat windowInsetsController2 =
+                WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView());
+        windowInsetsController2.setAppearanceLightStatusBars(true);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color_for_main_fragment, null));
 
         deviceViewModel.getCustomSettingDataObject().observe(getViewLifecycleOwner(), customSettingData -> {
             if (customSettingData == null) return;
