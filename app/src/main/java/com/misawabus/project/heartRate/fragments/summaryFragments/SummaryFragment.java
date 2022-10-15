@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import java.util.Locale;
 import java.util.function.Consumer;
 
 public class SummaryFragment extends Fragment {
+    private static final String TAG = SummaryFragment.class.getSimpleName();
     protected DeviceViewModel deviceViewModel;
     Date currentDate;
 
@@ -124,6 +126,8 @@ public class SummaryFragment extends Fragment {
 
 
 
+
+
         datePicker.show(getChildFragmentManager(), "tag");
 
 
@@ -161,8 +165,6 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
-
+        Log.d(TAG, "passddddd Summary fragment onResume: ");
     }
 }

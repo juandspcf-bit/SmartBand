@@ -40,8 +40,7 @@ import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
 import java.time.LocalDate;
 
 public class DashBoardActivity extends AppCompatActivity {
-    public static final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    public static final int flags =  View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
     public static final int flags2 = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
