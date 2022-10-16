@@ -160,6 +160,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/apneaCardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -227,17 +228,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="1.0" />
 
-                    <TextView
-                        android:id="@+id/apneaNormalValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="5"
-                        android:textAlignment="center"
-                        android:textColor="@color/textRowFieldsSop2"
-                        android:textStyle="bold"
-                        tools:layout_editor_absoluteX="128dp"
-                        tools:layout_editor_absoluteY="24dp" />
-
                     <ProgressBar
                         android:id="@+id/apneaResultProgressBar"
                         style="?android:attr/progressBarStyleHorizontal"
@@ -285,27 +275,6 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.75" />
 
-                    <ImageView
-                        android:id="@+id/apneaImageViewArrow"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        app:srcCompat="@drawable/down_filled_triangular_arrow" />
-
-                    <androidx.constraintlayout.helper.widget.Flow
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:constraint_referenced_ids="apneaNormalValueTextView,apneaImageViewArrow"
-                        app:flow_horizontalAlign="center"
-                        app:flow_horizontalStyle="packed"
-                        app:flow_verticalAlign="center"
-                        app:flow_verticalStyle="packed"
-                        app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
-                        app:layout_constraintEnd_toStartOf="@+id/guidelineApneaResultMax"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMin"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -14,6 +14,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -160,6 +162,8 @@ public class SummarySop2Fragment extends SummaryFragment {
         }
         binding.apneaResultValue.setText(String.valueOf(roundApneaResult));
         binding.apneaResultProgressBar.setProgress((int) roundApneaResult);
+
+
 
         long roundOxygenValue = Math.round(oxygenValue);
         binding.bloodOxygenValue.setText(String.valueOf(roundOxygenValue));

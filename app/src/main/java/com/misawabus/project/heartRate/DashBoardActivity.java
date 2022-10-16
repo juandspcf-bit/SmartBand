@@ -149,7 +149,9 @@ public class DashBoardActivity extends AppCompatActivity {
         if (idStatusBarHeight > 0) {
             height = getResources().getDimensionPixelSize(idStatusBarHeight);
             Log.d(TAG, "onCreate: " + height);
-            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            ConstraintLayout.LayoutParams params;
+            params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    ConstraintLayout.LayoutParams.MATCH_PARENT);
             params.setMargins(0, height, 0, 0);
             binding.mainDashBoardFragmentContainerInActivityDashBoard.setLayoutParams(params);
         }
