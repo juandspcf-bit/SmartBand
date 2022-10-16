@@ -36,7 +36,7 @@ import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYSeriesFormatter;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
-import com.misawabus.project.heartRate.Utils.Utils;
+import com.misawabus.project.heartRate.Utils.Constants;
 
 import java.text.FieldPosition;
 import java.text.Format;
@@ -60,7 +60,7 @@ public class PlotUtilsSports {
     public static void initSeriesForSummarySteps(XYPlot plotI) {
 
         xyPlotForSummarySteps = plotI;
-        int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
+        int intervalsTotal = (int) Math.round(24.0 / Constants.INTERVAL_WIDTH_HALF);
 
         seriesStepsInit = new Double[intervalsTotal];
         Arrays.fill(seriesStepsInit, 0.0);
@@ -245,7 +245,7 @@ public class PlotUtilsSports {
         PlotUtils.setRangeMargins(updatedRangeStepsUpperLimit, xyPlotForSummarySteps);
 
 
-        int intervalsTotal = (int) Math.round(24.0 / Utils.INTERVAL_WIDTH_HALF);
+        int intervalsTotal = (int) Math.round(24.0 / Constants.INTERVAL_WIDTH_HALF);
         Stream.iterate(0, i -> ++i).limit(intervalsTotal - 1)
                 .forEach(data -> {
                     seriesBarRepresentation.setY(seriesSteps[data], data);

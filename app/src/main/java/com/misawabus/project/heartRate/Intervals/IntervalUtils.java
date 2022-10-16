@@ -2,7 +2,7 @@ package com.misawabus.project.heartRate.Intervals;
 
 import androidx.annotation.NonNull;
 
-import com.misawabus.project.heartRate.Utils.Utils;
+import com.misawabus.project.heartRate.Utils.Constants;
 import com.veepoo.protocol.model.datas.TimeData;
 
 import java.time.LocalTime;
@@ -12,11 +12,11 @@ public class IntervalUtils {
     private static final String TAG = IntervalUtils.class.getSimpleName();
 
     static {
-        int intervalsTotal = (int) Math.round(24.0/ Utils.INTERVAL_WIDTH_HALF);
+        int intervalsTotal = (int) Math.round(24.0/ Constants.INTERVAL_WIDTH_HALF);
         final String[] domainLabels = new String[intervalsTotal];
         for (int i = 0; i < domainLabels.length; i++) {
 
-            String value = String.valueOf((i+1)*Utils.INTERVAL_WIDTH_HALF);//**************
+            String value = String.valueOf((i+1)* Constants.INTERVAL_WIDTH_HALF);//**************
             if(value.contains(".5")){
                 value = value.substring(0, value.indexOf("."));
                 value += ":30";

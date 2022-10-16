@@ -15,23 +15,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.androidplot.ui.SeriesRenderer;
 import com.androidplot.xy.BarFormatter;
 import com.androidplot.xy.BarRenderer;
-import com.androidplot.xy.CatmullRomInterpolator;
-import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.misawabus.project.heartRate.R;
-import com.misawabus.project.heartRate.Utils.Utils;
 import com.misawabus.project.heartRate.constans.IdTypeDataTable;
 import com.misawabus.project.heartRate.databinding.FragmentGeneralSummaryBinding;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
-import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.shareprence.VpSpGetUtil;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 public class SummaryActivityFragment extends Fragment {
     private static final String TAG = MainDashBoardFragment.class.getSimpleName();

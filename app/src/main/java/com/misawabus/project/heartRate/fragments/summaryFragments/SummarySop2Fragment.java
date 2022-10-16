@@ -30,6 +30,7 @@ import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -124,6 +125,8 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .map(sop2Data -> sop2Data.get("respirationRate"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
+        getRespirationRateQuality(respirationRate);
+
 
         double isHypoxia = sop2DataMap.stream()
                 .map(sop2Data -> sop2Data.get("isHypoxia"))
@@ -186,6 +189,20 @@ public class SummarySop2Fragment extends SummaryFragment {
         }
         binding.resultRespirationRateTextView.setText(resultResRate);
 
+    }
+
+    private void getRespirationRateQuality(double respirationRate) {
+        int age;
+        Optional<Integer> value = dashBoardViewModel.getAge().getValue();
+        if(value!=null && value.isPresent()){
+            age = value.orElse(30);
+        }else {
+            age=30;
+        }
+
+        if(respirationRate>=12 && respirationRate<=20){
+
+        }
     }
 
 
