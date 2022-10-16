@@ -251,7 +251,12 @@ public class SummaryHRFragment extends SummaryFragment {
                                    ViewsInRowHolder viewsInRowHolder) {
 
         int dataSize = data.size();
-        int age = dashBoardViewModel.getAge().getValue().orElse(0);
+        int age;
+        Optional<Integer> value = dashBoardViewModel.getAge().getValue();
+        if(value!=null && value.isPresent()){
+            age = value.orElse(30);
+        }
+
 
         OnEntityClickListener onEntityClickListener = (id, position) -> Log.d("RECYCLER", String.valueOf(id));
 
