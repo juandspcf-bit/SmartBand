@@ -243,6 +243,8 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="#2196F3"
                         android:max="30"
                         android:progress="0"
@@ -290,13 +292,17 @@
                         app:srcCompat="@drawable/down_filled_triangular_arrow" />
 
                     <androidx.constraintlayout.helper.widget.Flow
-                        android:layout_width="wrap_content"
+                        android:layout_width="10dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:constraint_referenced_ids="apneaNormalValueTextView,apneaImageViewArrow"
+                        app:flow_horizontalAlign="center"
+                        app:flow_horizontalStyle="packed"
+                        app:flow_verticalAlign="center"
+                        app:flow_verticalStyle="packed"
                         app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
-                        app:layout_constraintEnd_toEndOf="@+id/apneaResultProgressBar"
-                        app:layout_constraintHorizontal_bias="0.17"
+                        app:layout_constraintEnd_toStartOf="@+id/guidelineApneaResultMax"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMin"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="1.0" />

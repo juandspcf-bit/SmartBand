@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.fragments.summaryFragments;
 
+import static com.misawabus.project.heartRate.Utils.Constants.DEFAULT_AGE;
 import static java.util.stream.Collectors.averagingDouble;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.inuker.bluetooth.library.Code;
 import com.misawabus.project.heartRate.Database.entities.HeartRate;
 import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.R;
+import com.misawabus.project.heartRate.Utils.Constants;
 import com.misawabus.project.heartRate.Utils.DateUtils;
 import com.misawabus.project.heartRate.adapters.recyclerView.FillViewsFieldsWithEntitiesValues;
 import com.misawabus.project.heartRate.adapters.recyclerView.OnEntityClickListener;
@@ -256,7 +258,7 @@ public class SummaryHRFragment extends SummaryFragment {
         if(value!=null && value.isPresent()){
             age = value.orElse(30);
         }else {
-            age=30;
+            age= DEFAULT_AGE;
         }
 
 

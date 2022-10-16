@@ -1,5 +1,6 @@
 package com.misawabus.project.heartRate.fragments.summaryFragments;
 
+import static com.misawabus.project.heartRate.Utils.Constants.DEFAULT_AGE;
 import static com.misawabus.project.heartRate.Utils.DateUtils.getTodayFormattedDate;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 
@@ -125,7 +126,7 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .map(sop2Data -> sop2Data.get("respirationRate"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
-        getRespirationRateQuality(respirationRate);
+        String respirationRateQuality = getRespirationRateQuality(respirationRate);
 
 
         double isHypoxia = sop2DataMap.stream()
@@ -177,6 +178,7 @@ public class SummarySop2Fragment extends SummaryFragment {
         binding.cardiacLoadProgressBar.setProgress((int) roundCardiacLoad);
 
         long roundSleepActivity = Math.round(sleepActivity);
+        binding.resultRespirationRateTextView.setText(respirationRateQuality);
         binding.sleepActivityValue.setText(String.valueOf(roundSleepActivity));
         binding.sleepActivityProgressBar.setProgress((int) roundSleepActivity);
 
@@ -191,18 +193,64 @@ public class SummarySop2Fragment extends SummaryFragment {
 
     }
 
-    private void getRespirationRateQuality(double respirationRate) {
+    private String getRespirationRateQuality(double respirationRate) {
+        String rate = "";
         int age;
         Optional<Integer> value = dashBoardViewModel.getAge().getValue();
         if(value!=null && value.isPresent()){
             age = value.orElse(30);
         }else {
-            age=30;
+            age= DEFAULT_AGE;
         }
 
-        if(respirationRate>=12 && respirationRate<=20){
+        if(age>=18 && age<=65){
+            if(respirationRate<12){
+                rate="Low";
+            }else if(respirationRate>20){
+                rate="High";
+            }else{
+                rate="Normal";
+            }
+        }else if(age>=65 && age<=80){
+            if(respirationRate<12){
+                rate="Low";
+            }else if(respirationRate>28){
+                rate="High";
+            }else{
+                rate="Normal";
+            }
+
+        }else if(age>80){
+            if(respirationRate<10){
+                rate="Low";
+            }else if(respirationRate>30){
+                rate="High";
+            }else{
+                rate="Normal";
+            }
+
+        }else if(age>=13 && age<=17){
+            if(respirationRate<12){
+                rate="Low";
+            }else if(respirationRate>20){
+                rate="High";
+            }else{
+                rate="Normal";
+            }
+
+        } else if(age>=6 && age<=12){
+            if(respirationRate<18){
+                rate="Low";
+            }else if(respirationRate>30){
+                rate="High";
+            }else{
+                rate="Normal";
+            }
 
         }
+
+        return rate;
+
     }
 
 
