@@ -153,6 +153,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/analytic_result"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -162,9 +164,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/apneaCardView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:layout_margin="10dp"
-                    android:background="#FFEAE7"
+                    android:background="#faf2f1"
                     android:elevation="5dp">
 
                     <TextView
@@ -190,7 +192,6 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/apneaResultProgressBar"
                         app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMax"
                         app:layout_constraintTop_toBottomOf="@+id/apneaResultValue" />
 
@@ -235,23 +236,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
-                        android:background="#2196F3"
+                        android:background="#96373c"
                         android:max="30"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
-                        android:progressTint="#FFF59D"
+                        android:progressTint="#FBE9E7"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guidelineApneaResultMax"
                         app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMin"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.9" />
 
                     <TextView
                         android:id="@+id/apneaResultNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:text="@string/apnea_n_result"
                         android:textAlignment="center"
@@ -279,9 +278,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:layout_margin="10dp"
-                    android:background="#FFEAE7"
+                    android:background="#faf2f1"
                     android:elevation="5dp">
 
                     <TextView
@@ -307,7 +306,6 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/bloodOxygenProgressBar"
                         app:layout_constraintStart_toStartOf="@+id/guidelineBloodOxygenMax"
                         app:layout_constraintTop_toBottomOf="@+id/bloodOxygenValue" />
 
@@ -350,23 +348,21 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#2196F3"
+                        android:background="#96373c"
                         android:max="99"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
-                        android:progressTint="#FFF59D"
+                        android:progressTint="#FBE9E7"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guidelineBloodOxygenMax"
                         app:layout_constraintStart_toStartOf="@+id/guidelineBloodOxygenMin"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.9" />
 
                     <TextView
                         android:id="@+id/bloodOxygenNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:text="@string/blood_n_oxygen"
                         android:textAlignment="center"
@@ -393,9 +389,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:layout_margin="10dp"
-                    android:background="#FFEAE7">
+                    android:background="#faf2f1">
 
                     <TextView
                         android:id="@+id/respirationRateValue"
@@ -420,7 +416,6 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/respirationRateProgressBar"
                         app:layout_constraintStart_toStartOf="@+id/guidelineRespirationRateMax"
                         app:layout_constraintTop_toBottomOf="@+id/respirationRateValue" />
 
@@ -463,23 +458,21 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#2196F3"
+                        android:background="#96373c"
                         android:max="40"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
-                        android:progressTint="#FFF59D"
+                        android:progressTint="#FBE9E7"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guidelineRespirationRateMax"
                         app:layout_constraintStart_toStartOf="@+id/guidelineRespirationRateMin"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.9" />
 
                     <TextView
                         android:id="@+id/respirationRateNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:text="@string/respiration_n_rate"
                         android:textAlignment="center"
@@ -506,9 +499,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:layout_margin="10dp"
-                    android:background="#FFEAE7"
+                    android:background="#faf2f1"
                     android:elevation="5dp">
 
                     <TextView
@@ -534,7 +527,6 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/hypoxiaTimeProgressBar"
                         app:layout_constraintStart_toStartOf="@+id/guidelineHypoxiaTimeMax"
                         app:layout_constraintTop_toBottomOf="@+id/hypoxiaTimeValue" />
 
@@ -577,23 +569,21 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#2196F3"
+                        android:background="#96373c"
                         android:max="100"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
-                        android:progressTint="#FFF59D"
+                        android:progressTint="#FBE9E7"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guidelineHypoxiaTimeMax"
                         app:layout_constraintStart_toStartOf="@+id/guidelineHypoxiaTimeMin"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.9" />
 
                     <TextView
                         android:id="@+id/hypoxiaTimeNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:text="@string/hypoxia_n_time"
                         android:textAlignment="center"
@@ -620,9 +610,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:layout_margin="10dp"
-                    android:background="#FFEAE7"
+                    android:background="#faf2f1"
                     android:elevation="5dp">
 
                     <TextView
@@ -648,7 +638,6 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/cardiacLoadProgressBar"
                         app:layout_constraintStart_toStartOf="@+id/guidelineCardiacLoadMax"
                         app:layout_constraintTop_toBottomOf="@+id/cardiacLoadValue" />
 
@@ -691,23 +680,21 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#2196F3"
+                        android:background="#96373c"
                         android:max="60"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
-                        android:progressTint="#FFF59D"
+                        android:progressTint="#FBE9E7"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guidelineCardiacLoadMax"
                         app:layout_constraintStart_toStartOf="@+id/guidelineCardiacLoadMin"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.9" />
 
                     <TextView
                         android:id="@+id/cardiacLoadNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:text="@string/cardiac_n_load"
                         android:textAlignment="center"
@@ -734,9 +721,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:layout_margin="10dp"
-                    android:background="#FFEAE7"
+                    android:background="#faf2f1"
                     android:elevation="5dp">
 
                     <TextView
@@ -762,7 +749,6 @@
                         android:textColor="@color/textRowFieldsSop2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/sleepActivityProgressBar"
                         app:layout_constraintStart_toStartOf="@+id/guidelineSleepActivityMax"
                         app:layout_constraintTop_toBottomOf="@+id/sleepActivityValue" />
 
@@ -805,23 +791,21 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#2196F3"
+                        android:background="#96373c"
                         android:max="50"
                         android:progress="0"
                         android:progressBackgroundTint="#D1B2B2"
-                        android:progressTint="#FFF59D"
+                        android:progressTint="#FBE9E7"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guidelineSleepActivityMax"
                         app:layout_constraintStart_toStartOf="@+id/guidelineSleepActivityMin"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.9" />
 
                     <TextView
                         android:id="@+id/sleepActivityNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:text="@string/range_of_sleeping_n_activity"
                         android:textAlignment="center"

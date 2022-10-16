@@ -6,6 +6,7 @@ import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWith
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,6 +116,7 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .map(sop2Data -> sop2Data.get("apneaResult)"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
+        String apneaQuality = getApneaQuality(apneaResult);
 
 
         double oxygenValue = sop2DataMap.stream()
@@ -135,12 +137,14 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .map(sop2Data -> sop2Data.get("isHypoxia"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
+        String hypoxiaQuality = getHypoxiaQuality(isHypoxia);
 
         double cardiacLoad = sop2DataMap.stream()
                 .limit(84) //limit to 7:00 am
                 .map(sop2Data -> sop2Data.get("cardiacLoad"))
                 .filter(value -> value != null && value > 0.0)
                 .collect(Collectors.averagingDouble(Double::doubleValue));
+        String cardiacLoadQuality = getCardiacLoadQuality(cardiacLoad);
 
         double sleepActivity = sop2DataMap.stream()
                 .limit(84) //limit to 7:00 am
@@ -151,68 +155,86 @@ public class SummarySop2Fragment extends SummaryFragment {
 
 
         long roundApneaResult = Math.round(apneaResult);
-        if(roundApneaResult>=5 && roundApneaResult <15){
-            binding.apneaResultTextView.setText("Mild");
-        }else if(roundApneaResult>=15 && roundApneaResult <30){
-            binding.apneaResultTextView.setText("Moderate");
-        }else if(roundApneaResult>=30){
-            binding.apneaResultTextView.setText("Serious");
-        }else {
-            binding.apneaResultTextView.setText("Normal");
-        }
         binding.apneaResultValue.setText(String.valueOf(roundApneaResult));
         binding.apneaResultProgressBar.setProgress((int) roundApneaResult);
-
-
+        binding.apneaResultTextView.setText(apneaQuality);
 
         long roundOxygenValue = Math.round(oxygenValue);
         binding.bloodOxygenValue.setText(String.valueOf(roundOxygenValue));
         binding.bloodOxygenProgressBar.setProgress((int) roundOxygenValue);
 
         long roundRespirationRate = Math.round(respirationRate);
+        Log.d(TAG, "getRespirationRateQuality: " + respirationRateQuality);
+        binding.resultRespirationRateTextView.setText(respirationRateQuality);
         binding.respirationRateValue.setText(String.valueOf(roundRespirationRate));
         binding.respirationRateProgressBar.setProgress((int) roundRespirationRate);
 
         long roundIsHypoxia = Math.round(isHypoxia);
         binding.hypoxiaTimeValue.setText(String.valueOf(roundIsHypoxia));
         binding.hypoxiaTimeProgressBar.setProgress((int) roundIsHypoxia);
+        binding.resultHypoxiaTimeTextView.setText(hypoxiaQuality);
 
         long roundCardiacLoad = Math.round(cardiacLoad);
         binding.cardiacLoadValue.setText(String.valueOf(roundCardiacLoad));
         binding.cardiacLoadProgressBar.setProgress((int) roundCardiacLoad);
+        binding.resultCardiacLoadTextView.setText(cardiacLoadQuality);
 
         long roundSleepActivity = Math.round(sleepActivity);
-        binding.resultRespirationRateTextView.setText(respirationRateQuality);
         binding.sleepActivityValue.setText(String.valueOf(roundSleepActivity));
         binding.sleepActivityProgressBar.setProgress((int) roundSleepActivity);
 
         binding.resultBloodOxygenTextView.setText(roundOxygenValue >= 95 ? "Normal" : "Low");
-        String resultResRate = "";
-        if(roundRespirationRate<=16 && roundRespirationRate>=15){
-            resultResRate = "Normal";
-        }else if(roundRespirationRate<=13){
-            resultResRate = "Low";
-        }
-        binding.resultRespirationRateTextView.setText(resultResRate);
 
+    }
+
+    private String getApneaQuality( double roundApneaResult) {
+        if(roundApneaResult>=5 && roundApneaResult <15){
+            return "Mild";
+        }else if(roundApneaResult>=15 && roundApneaResult <30){
+            return "Moderate";
+        }else if(roundApneaResult>=30){
+            return "Serious";
+        }else {
+            return "Normal";
+        }
+    }
+
+    private String getHypoxiaQuality(double isHypoxia) {
+        if(isHypoxia<=20){
+            return "Normal";
+        }else{
+            return "Abnormal";
+        }
+    }
+
+    private String getCardiacLoadQuality(double cardiacLoad) {
+        if(cardiacLoad<20){
+            return "Mild";
+        }else if(cardiacLoad>=20 && cardiacLoad<40){
+            return "Normal";
+        }else {
+            return "Abnormal";
+        }
     }
 
     private String getRespirationRateQuality(double respirationRate) {
         String rate = "";
-        int age;
+        int age = DEFAULT_AGE;
         Optional<Integer> value = dashBoardViewModel.getAge().getValue();
         if(value!=null && value.isPresent()){
-            age = value.orElse(30);
-        }else {
-            age= DEFAULT_AGE;
+            age = value.orElse(DEFAULT_AGE);
+            if(age==0) age = DEFAULT_AGE;
         }
 
+        Log.d(TAG, "getRespirationRateQuality: " + age);
         if(age>=18 && age<=65){
+            Log.d(TAG, "getRespirationRateQuality: " + "right interval");
             if(respirationRate<12){
                 rate="Low";
             }else if(respirationRate>20){
                 rate="High";
             }else{
+                Log.d(TAG, "getRespirationRateQuality: right status");
                 rate="Normal";
             }
         }else if(age>=65 && age<=80){
@@ -252,7 +274,7 @@ public class SummarySop2Fragment extends SummaryFragment {
             }
 
         }
-
+        Log.d(TAG, "getRespirationRateQuality: " + rate);
         return rate;
 
     }
