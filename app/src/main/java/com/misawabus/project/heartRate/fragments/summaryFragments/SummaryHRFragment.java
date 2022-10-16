@@ -255,6 +255,8 @@ public class SummaryHRFragment extends SummaryFragment {
         Optional<Integer> value = dashBoardViewModel.getAge().getValue();
         if(value!=null && value.isPresent()){
             age = value.orElse(30);
+        }else {
+            age=30;
         }
 
 
