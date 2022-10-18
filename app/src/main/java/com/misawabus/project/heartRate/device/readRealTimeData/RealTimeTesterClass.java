@@ -18,6 +18,7 @@ import com.misawabus.project.heartRate.viewModels.HeartRateViewModel;
 import com.orhanobut.logger.Logger;
 import com.veepoo.protocol.VPOperateManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
+import com.veepoo.protocol.listener.data.IAllSetDataListener;
 import com.veepoo.protocol.listener.data.IBPDetectDataListener;
 import com.veepoo.protocol.listener.data.IBPSettingDataListener;
 import com.veepoo.protocol.listener.data.IHeartDataListener;
@@ -27,6 +28,7 @@ import com.veepoo.protocol.listener.data.ISportDataListener;
 import com.veepoo.protocol.listener.data.ITemptureDataListener;
 import com.veepoo.protocol.listener.data.ITemptureDetectDataListener;
 import com.veepoo.protocol.model.DayState;
+import com.veepoo.protocol.model.datas.AllSetData;
 import com.veepoo.protocol.model.datas.BpData;
 import com.veepoo.protocol.model.datas.BpSettingData;
 import com.veepoo.protocol.model.datas.HeartData;
@@ -35,11 +37,14 @@ import com.veepoo.protocol.model.datas.RRIntervalData;
 import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TemptureData;
 import com.veepoo.protocol.model.datas.TemptureDetectData;
+import com.veepoo.protocol.model.enums.EAllSetType;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
+import com.veepoo.protocol.model.settings.AllSetSetting;
 import com.veepoo.protocol.model.settings.BpSetting;
 import com.veepoo.protocol.model.settings.HeartWaringSetting;
 import com.veepoo.protocol.model.settings.ReadOriginSetting;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -207,17 +212,72 @@ public class RealTimeTesterClass {
         }, new IRRIntervalProgressListener() {
             @Override
             public void onReadRRIntervalProgressChanged(float v, RRIntervalData rrIntervalData) {
-                Log.d(TAG, "onReadRRIntervalProgressChanged: " + rrIntervalData.toString());
+                Log.d(TAG, "onReadRRIntervalProgressChanged: " + Arrays.toString(rrIntervalData.getData()));
             }
 
             @Override
             public void onReadRRIntervalComplete(DayState dayState, List<RRIntervalData> list) {
                 Log.d(TAG, "onReadRRIntervalProgressChanged: " + list);
             }
-        }, DayState.YESTERDAY, 1440);
+        }, DayState.BEFORE_YESTERDAY, 1);
     }
 
+    public void readSpo2AlertStatus(Consumer<Boolean> isOpen){
+        VPOperateManager.getMangerInstance(context).readSpo2hAutoDetect(new IBleWriteResponse() {
+            @Override
+            public void onResponse(int i) {
 
+            }
+        }, new IAllSetDataListener() {
+            @Override
+            public void onAllSetDataChangeListener(AllSetData allSetData) {
+                if (allSetData.getIsOpen() == 1) {
+                    isOpen.accept(true);
+                }else {
+                    isOpen.accept(false);
+                }
+                Log.d(TAG, "onAllSetDataChangeListener: " + allSetData.getIsOpen());
+                Log.d(TAG, "onAllSetDataChangeListener: " + allSetData.getOpenState());
+                Log.d(TAG, "onAllSetDataChangeListener: " + allSetData.getStartHour());
+            }
+        });
+    }
+
+    public void setOpenSpo2AlertStatus(){
+        int setting = 0, open = 1;
+        AllSetSetting mAlarmSetting = new AllSetSetting(EAllSetType.SPO2H_NIGHT_AUTO_DETECT, 22, 0, 8, 0, setting, open);
+        VPOperateManager.getMangerInstance(context).settingSpo2hAutoDetect(new IBleWriteResponse() {
+            @Override
+            public void onResponse(int i) {
+
+            }
+        }, new IAllSetDataListener() {
+            @Override
+            public void onAllSetDataChangeListener(AllSetData allSetData) {
+                String message = "血氧自动检测-打开\n" + allSetData.toString();
+                Logger.t(TAG).i(message);
+                sendMsg(message, 1);
+            }
+        }, mAlarmSetting);
+    }
+
+    public void setCloseSpo2AlertStatus(){
+        int setting = 0, close = 0;
+        AllSetSetting mAlarmSetting = new AllSetSetting(EAllSetType.SPO2H_NIGHT_AUTO_DETECT, 22, 0, 8, 0, setting, close);
+        VPOperateManager.getMangerInstance(context).settingSpo2hAutoDetect(new IBleWriteResponse() {
+            @Override
+            public void onResponse(int i) {
+
+            }
+        }, new IAllSetDataListener() {
+            @Override
+            public void onAllSetDataChangeListener(AllSetData allSetData) {
+                String message = "血氧自动检测-打开\n" + allSetData.toString();
+                Logger.t(TAG).i(message);
+                sendMsg(message, 1);
+            }
+        }, mAlarmSetting);
+    }
 
 
     private void sendMsg(String message, int what) {

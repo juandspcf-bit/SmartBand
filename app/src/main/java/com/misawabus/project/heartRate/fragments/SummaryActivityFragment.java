@@ -62,14 +62,8 @@ public class SummaryActivityFragment extends Fragment {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isSupportSettingsTemperatureUnit = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportSettingsTemperatureUnit();//是否支持温度单位设置
-                boolean isSupportSleep = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportPreciseSleep();//是否支持精准睡眠
+                dashBoardViewModel.getRealTimeTesterClass().readReadRRIntervalByDay();
 
-                boolean isCanReadTempture = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportReadTempture();//是否支持读取温度
-                boolean isCanDetectTempByApp = VpSpGetUtil.getVpSpVariInstance(getContext()).isSupportCheckTemptureByApp();//是否可以通过app监测体温
-
-
-                Log.d(TAG, "onClick: " + isCanReadTempture);
 
             }
         });

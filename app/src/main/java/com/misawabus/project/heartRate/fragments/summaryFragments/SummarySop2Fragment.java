@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,9 +31,13 @@ import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
+import com.orhanobut.logger.Logger;
+import com.veepoo.protocol.listener.data.IAllSetDataListener;
+import com.veepoo.protocol.model.datas.AllSetData;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -146,13 +151,6 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .collect(Collectors.averagingDouble(Double::doubleValue));
         String cardiacLoadQuality = getCardiacLoadQuality(cardiacLoad);
 
-        double sleepActivity = sop2DataMap.stream()
-                .limit(84) //limit to 7:00 am
-                .map(sop2Data -> sop2Data.get("SleepActivity"))
-                .filter(value -> value != null && value > 0.0)
-                .collect(Collectors.averagingDouble(Double::doubleValue));
-
-
 
         long roundApneaResult = Math.round(apneaResult);
         binding.apneaResultValue.setText(String.valueOf(roundApneaResult));
@@ -162,9 +160,9 @@ public class SummarySop2Fragment extends SummaryFragment {
         long roundOxygenValue = Math.round(oxygenValue);
         binding.bloodOxygenValue.setText(String.valueOf(roundOxygenValue));
         binding.bloodOxygenProgressBar.setProgress((int) roundOxygenValue);
+        binding.resultBloodOxygenTextView.setText(roundOxygenValue >= 95 ? "Normal" : "Low");
 
         long roundRespirationRate = Math.round(respirationRate);
-        Log.d(TAG, "getRespirationRateQuality: " + respirationRateQuality);
         binding.resultRespirationRateTextView.setText(respirationRateQuality);
         binding.respirationRateValue.setText(String.valueOf(roundRespirationRate));
         binding.respirationRateProgressBar.setProgress((int) roundRespirationRate);
@@ -179,11 +177,26 @@ public class SummarySop2Fragment extends SummaryFragment {
         binding.cardiacLoadProgressBar.setProgress((int) roundCardiacLoad);
         binding.resultCardiacLoadTextView.setText(cardiacLoadQuality);
 
-        long roundSleepActivity = Math.round(sleepActivity);
-        binding.sleepActivityValue.setText(String.valueOf(roundSleepActivity));
-        binding.sleepActivityProgressBar.setProgress((int) roundSleepActivity);
 
-        binding.resultBloodOxygenTextView.setText(roundOxygenValue >= 95 ? "Normal" : "Low");
+
+        dashBoardViewModel.getRealTimeTesterClass().readSpo2AlertStatus(isOpen->{
+            if(isOpen){
+                binding.spo2AlertSwitch.setEnabled(true);
+                binding.spo2AlertSwitch.setChecked(true);
+            }else{
+                binding.spo2AlertSwitch.setEnabled(true);
+                binding.spo2AlertSwitch.setChecked(false);
+            }
+        });
+
+        binding.spo2AlertSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) dashBoardViewModel.getRealTimeTesterClass().setOpenSpo2AlertStatus();
+                else dashBoardViewModel.getRealTimeTesterClass().setCloseSpo2AlertStatus();
+            }
+        });
+
 
     }
 

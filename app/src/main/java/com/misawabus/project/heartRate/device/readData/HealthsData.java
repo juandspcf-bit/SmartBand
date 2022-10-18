@@ -32,6 +32,7 @@ import com.veepoo.protocol.model.datas.TimeData;
 import com.veepoo.protocol.model.settings.ReadOriginSetting;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -166,9 +167,9 @@ public class HealthsData {
                 String stringDate = originData3List.get(0).getDate();
                 Date formattedDate = DateUtils.getFormattedDate(stringDate, "-");
                 LocalDate localDate = DateUtils.getLocalDate(formattedDate, "/");
-                if (localDate.compareTo(LocalDate.now()) == 0) {
+                if (localDate.compareTo(LocalDate.now().minusDays(1)) == 0) {
                     originData3List.forEach(originData3 -> {
-                        Log.d(TAG, "onOriginFiveMinuteListDataChange: " + originData3.getmTime() + " : " + originData3.getTempTwo());
+                        Log.d(TAG, "onOriginFiveMinuteListDataChange: " + originData3.getmTime() + " : " + Arrays.toString(originData3.sleepStates));
                     });
 
                 }
@@ -187,12 +188,12 @@ public class HealthsData {
 
             @Override
             public void onOriginHRVOriginListDataChange(List<HRVOriginData> originHrvDataList) {
-                Logger.t(TAG).i("HRV DATA: " + originHrvDataList.toString());
+                Logger.t(TAG).i("HRV DATA: " + originHrvDataList.get(0).getDate());
             }
 
             @Override
             public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> originSpo2hDataList) {
-
+                //Logger.t(TAG).i("Spo2hOriginData DATA: " + originSpo2hDataList.toString());
             }
 
             @Override
