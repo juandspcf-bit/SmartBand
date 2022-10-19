@@ -216,7 +216,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/apneaResultValue" />
 
                     <Button
-                        android:id="@+id/iconButton"
+                        android:id="@+id/apneaIconButton"
                         style="?attr/materialIconButtonFilledTonalStyle"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -320,7 +320,7 @@
                     android:elevation="5dp">
 
                     <Button
-                        android:id="@+id/iconButton2"
+                        android:id="@+id/bloodOxygenIconButton"
                         style="?attr/materialIconButtonFilledTonalStyle"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -463,7 +463,7 @@
                     android:elevation="5dp">
 
                     <Button
-                        android:id="@+id/iconButton3"
+                        android:id="@+id/respirationRateIconButton"
                         style="?attr/materialIconButtonFilledTonalStyle"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -607,7 +607,7 @@
                     android:elevation="5dp">
 
                     <Button
-                        android:id="@+id/iconButton4"
+                        android:id="@+id/hypoxiaTimeIconButton"
                         style="?attr/materialIconButtonFilledTonalStyle"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -751,7 +751,7 @@
                     android:elevation="5dp">
 
                     <Button
-                        android:id="@+id/iconButton5"
+                        android:id="@+id/cardiacLoadIconButton"
                         style="?attr/materialIconButtonFilledTonalStyle"
                         android:layout_width="30dp"
                         android:layout_height="30dp"

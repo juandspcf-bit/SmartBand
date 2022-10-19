@@ -16,8 +16,6 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -26,18 +24,15 @@ import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySop2Binding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
+import com.misawabus.project.heartRate.fragments.summaryFragments.spo2InfoFields.Spo2InfoFieldsFragment;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSpo2;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
 import com.misawabus.project.heartRate.viewModels.DeviceViewModel;
 import com.misawabus.project.heartRate.viewModels.Sop2ViewModel;
-import com.orhanobut.logger.Logger;
-import com.veepoo.protocol.listener.data.IAllSetDataListener;
-import com.veepoo.protocol.model.datas.AllSetData;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -99,8 +94,8 @@ public class SummarySop2Fragment extends SummaryFragment {
 
     private void setFragmentViews(Date selectedDate, Sop2 data) {
         setTextButtonDate(selectedDate, selectDateButton);
-        if(data == null) return;
-        if( data.getData()==null || data.getData().isEmpty()) return;
+        if (data == null) return;
+        if (data.getData() == null || data.getData().isEmpty()) return;
         String stringSop2Data = data.getData();
 
         List<Map<String, Double>> sop2DataMap = FragmentUtil.parse5MinFieldData(stringSop2Data);
@@ -178,20 +173,19 @@ public class SummarySop2Fragment extends SummaryFragment {
         binding.resultCardiacLoadTextView.setText(cardiacLoadQuality);
 
 
-
-        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(),  isBluetoothConnected-> {
-            if(!isBluetoothConnected) {
+        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(), isBluetoothConnected -> {
+            if (!isBluetoothConnected) {
                 binding.spo2AlertSwitch.setEnabled(false);
                 return;
             }
             binding.spo2AlertSwitch.setEnabled(true);
 
         });
-        dashBoardViewModel.getRealTimeTesterClass().readSpo2AlertStatus(isOpen->{
-            if(isOpen){
+        dashBoardViewModel.getRealTimeTesterClass().readSpo2AlertStatus(isOpen -> {
+            if (isOpen) {
                 binding.spo2AlertSwitch.setEnabled(true);
                 binding.spo2AlertSwitch.setChecked(true);
-            }else{
+            } else {
                 binding.spo2AlertSwitch.setEnabled(true);
                 binding.spo2AlertSwitch.setChecked(false);
             }
@@ -205,35 +199,41 @@ public class SummarySop2Fragment extends SummaryFragment {
             }
         });
 
+        binding.apneaIconButton.setOnClickListener(this::listenerInfoFieldsButtons);
+        binding.bloodOxygenIconButton.setOnClickListener(this::listenerInfoFieldsButtons);
+        binding.respirationRateIconButton.setOnClickListener(this::listenerInfoFieldsButtons);
+        binding.hypoxiaTimeIconButton.setOnClickListener(this::listenerInfoFieldsButtons);
+        binding.cardiacLoadIconButton.setOnClickListener(this::listenerInfoFieldsButtons);
+
 
     }
 
-    private String getApneaQuality( double roundApneaResult) {
-        if(roundApneaResult>=5 && roundApneaResult <15){
+    private String getApneaQuality(double roundApneaResult) {
+        if (roundApneaResult >= 5 && roundApneaResult < 15) {
             return "Mild";
-        }else if(roundApneaResult>=15 && roundApneaResult <30){
+        } else if (roundApneaResult >= 15 && roundApneaResult < 30) {
             return "Moderate";
-        }else if(roundApneaResult>=30){
+        } else if (roundApneaResult >= 30) {
             return "Serious";
-        }else {
+        } else {
             return "Normal";
         }
     }
 
     private String getHypoxiaQuality(double isHypoxia) {
-        if(isHypoxia<=20){
+        if (isHypoxia <= 20) {
             return "Normal";
-        }else{
+        } else {
             return "Abnormal";
         }
     }
 
     private String getCardiacLoadQuality(double cardiacLoad) {
-        if(cardiacLoad<20){
+        if (cardiacLoad < 20) {
             return "Mild";
-        }else if(cardiacLoad>=20 && cardiacLoad<40){
+        } else if (cardiacLoad >= 20 && cardiacLoad < 40) {
             return "Normal";
-        }else {
+        } else {
             return "Abnormal";
         }
     }
@@ -242,56 +242,56 @@ public class SummarySop2Fragment extends SummaryFragment {
         String rate = "";
         int age = DEFAULT_AGE;
         Optional<Integer> value = dashBoardViewModel.getAge().getValue();
-        if(value!=null && value.isPresent()){
+        if (value != null && value.isPresent()) {
             age = value.orElse(DEFAULT_AGE);
-            if(age==0) age = DEFAULT_AGE;
+            if (age == 0) age = DEFAULT_AGE;
         }
 
         Log.d(TAG, "getRespirationRateQuality: " + age);
-        if(age>=18 && age<=65){
+        if (age >= 18 && age <= 65) {
             Log.d(TAG, "getRespirationRateQuality: " + "right interval");
-            if(respirationRate<12){
-                rate="Low";
-            }else if(respirationRate>20){
-                rate="High";
-            }else{
+            if (respirationRate < 12) {
+                rate = "Low";
+            } else if (respirationRate > 20) {
+                rate = "High";
+            } else {
                 Log.d(TAG, "getRespirationRateQuality: right status");
-                rate="Normal";
+                rate = "Normal";
             }
-        }else if(age>=65 && age<=80){
-            if(respirationRate<12){
-                rate="Low";
-            }else if(respirationRate>28){
-                rate="High";
-            }else{
-                rate="Normal";
-            }
-
-        }else if(age>80){
-            if(respirationRate<10){
-                rate="Low";
-            }else if(respirationRate>30){
-                rate="High";
-            }else{
-                rate="Normal";
+        } else if (age >= 65 && age <= 80) {
+            if (respirationRate < 12) {
+                rate = "Low";
+            } else if (respirationRate > 28) {
+                rate = "High";
+            } else {
+                rate = "Normal";
             }
 
-        }else if(age>=13 && age<=17){
-            if(respirationRate<12){
-                rate="Low";
-            }else if(respirationRate>20){
-                rate="High";
-            }else{
-                rate="Normal";
+        } else if (age > 80) {
+            if (respirationRate < 10) {
+                rate = "Low";
+            } else if (respirationRate > 30) {
+                rate = "High";
+            } else {
+                rate = "Normal";
             }
 
-        } else if(age>=6 && age<=12){
-            if(respirationRate<18){
-                rate="Low";
-            }else if(respirationRate>30){
-                rate="High";
-            }else{
-                rate="Normal";
+        } else if (age >= 13 && age <= 17) {
+            if (respirationRate < 12) {
+                rate = "Low";
+            } else if (respirationRate > 20) {
+                rate = "High";
+            } else {
+                rate = "Normal";
+            }
+
+        } else if (age >= 6 && age <= 12) {
+            if (respirationRate < 18) {
+                rate = "Low";
+            } else if (respirationRate > 30) {
+                rate = "High";
+            } else {
+                rate = "Normal";
             }
 
         }
@@ -306,8 +306,41 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .getSingleRow(date, deviceViewModel.getMacAddress())
                 .observe(getViewLifecycleOwner(),
                         dataFromDB -> {
-                            if (dataFromDB == null) new  Sop2();
+                            if (dataFromDB == null) new Sop2();
                             listData.accept(dataFromDB);
                         });
+    }
+
+
+    private void listenerInfoFieldsButtons(View view) {
+        int id = view.getId();
+
+        if (id == R.id.apneaIconButton) {
+            dashBoardViewModel.setCurrentTitleSpo2InfoFields("Apnea");
+            goToSpo2InfoFieldsFragment();
+        } else if (id == R.id.bloodOxygenIconButton) {
+            dashBoardViewModel.setCurrentTitleSpo2InfoFields("Blood Oxygen");
+            goToSpo2InfoFieldsFragment();
+        } else if (id == R.id.respirationRateIconButton) {
+            dashBoardViewModel.setCurrentTitleSpo2InfoFields("Respiration Rate");
+            goToSpo2InfoFieldsFragment();
+        } else if (id == R.id.hypoxiaTimeIconButton) {
+            dashBoardViewModel.setCurrentTitleSpo2InfoFields("Hypoxia");
+            goToSpo2InfoFieldsFragment();
+        } else if (id == R.id.cardiacLoadIconButton) {
+            dashBoardViewModel.setCurrentTitleSpo2InfoFields("Cardiac Load");
+            goToSpo2InfoFieldsFragment();
+        }
+
+    }
+
+    private void goToSpo2InfoFieldsFragment() {
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainDashBoardFragmentContainerInActivityDashBoard,
+                        new Spo2InfoFieldsFragment())
+                //new SummarySleepFragment())
+                .addToBackStack(null)
+                .commit();
     }
 }

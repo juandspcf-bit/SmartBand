@@ -71,6 +71,7 @@ public class DashBoardViewModel extends ViewModel {
     private final MutableLiveData<Map<String, String>>  todayTempSummaryTitle = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> yesterdayTempSummaryTitle = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> pastYesterdayTempSummaryTitle = new MutableLiveData<>();
+    private MutableLiveData<String> currentTitleSpo2InfoFields = new MutableLiveData<>();
 
     public DashBoardViewModel() {
         isEnableFeatures.setValue(false);
@@ -412,4 +413,11 @@ public class DashBoardViewModel extends ViewModel {
         return pastYesterdayTempSummaryTitle;
     }
 
+    public void setCurrentTitleSpo2InfoFields(String currentTitleSpo2InfoFields) {
+        this.currentTitleSpo2InfoFields.setValue(currentTitleSpo2InfoFields);
+    }
+
+    public MutableLiveData<String> getCurrentTitleSpo2InfoFields() {
+        return currentTitleSpo2InfoFields;
+    }
 }
