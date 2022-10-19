@@ -215,6 +215,23 @@
                         app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMax"
                         app:layout_constraintTop_toBottomOf="@+id/apneaResultValue" />
 
+                    <Button
+                        android:id="@+id/iconButton"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:insetLeft="6dp"
+                        android:insetTop="6dp"
+                        android:insetRight="6dp"
+                        android:insetBottom="6dp"
+                        app:icon="@drawable/ic_baseline_help_outline_24"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="@id/apneaResultTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/apneaResultTextView"
+                        app:layout_constraintTop_toTopOf="@+id/apneaResultTextView" />
+
                     <TextView
                         android:id="@+id/apneaResultMaxTextView"
                         android:layout_width="wrap_content"
@@ -254,8 +271,6 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
                         android:background="#96373c"
                         android:max="30"
                         android:progress="0"
@@ -286,14 +301,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.25" />
+                        app:layout_constraintGuide_percent="0.27" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineApneaResultMax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.75" />
+                        app:layout_constraintGuide_percent="0.73" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -303,6 +318,23 @@
                     android:layout_margin="10dp"
                     android:background="#faf2f1"
                     android:elevation="5dp">
+
+                    <Button
+                        android:id="@+id/iconButton2"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:insetLeft="6dp"
+                        android:insetTop="6dp"
+                        android:insetRight="6dp"
+                        android:insetBottom="6dp"
+                        app:icon="@drawable/ic_baseline_help_outline_24"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/resultBloodOxygenTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/resultBloodOxygenTextView"
+                        app:layout_constraintTop_toTopOf="@+id/resultBloodOxygenTextView" />
 
                     <TextView
                         android:id="@+id/bloodOxygenValue"
@@ -401,14 +433,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.25" />
+                        app:layout_constraintGuide_percent="0.27" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineBloodOxygenMax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.75" />
+                        app:layout_constraintGuide_percent="0.73" />
 
                     <TextView
                         android:id="@+id/textView18"
@@ -429,6 +461,23 @@
                     android:layout_margin="10dp"
                     android:background="#faf2f1"
                     android:elevation="5dp">
+
+                    <Button
+                        android:id="@+id/iconButton3"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:insetLeft="6dp"
+                        android:insetTop="6dp"
+                        android:insetRight="6dp"
+                        android:insetBottom="6dp"
+                        app:icon="@drawable/ic_baseline_help_outline_24"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/resultRespirationRateTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/resultRespirationRateTextView"
+                        app:layout_constraintTop_toTopOf="@+id/resultRespirationRateTextView" />
 
                     <TextView
                         android:id="@+id/textView21"
@@ -540,14 +589,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.25" />
+                        app:layout_constraintGuide_percent="0.27" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineRespirationRateMax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.75" />
+                        app:layout_constraintGuide_percent="0.73" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -556,6 +605,23 @@
                     android:layout_margin="10dp"
                     android:background="#faf2f1"
                     android:elevation="5dp">
+
+                    <Button
+                        android:id="@+id/iconButton4"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:insetLeft="6dp"
+                        android:insetTop="6dp"
+                        android:insetRight="6dp"
+                        android:insetBottom="6dp"
+                        app:icon="@drawable/ic_baseline_help_outline_24"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/resultHypoxiaTimeTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/resultHypoxiaTimeTextView"
+                        app:layout_constraintTop_toTopOf="@+id/resultHypoxiaTimeTextView" />
 
                     <TextView
                         android:id="@+id/textView22"
@@ -667,14 +733,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.25" />
+                        app:layout_constraintGuide_percent="0.27" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineHypoxiaTimeMax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.75" />
+                        app:layout_constraintGuide_percent="0.73" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -683,6 +749,23 @@
                     android:layout_margin="10dp"
                     android:background="#faf2f1"
                     android:elevation="5dp">
+
+                    <Button
+                        android:id="@+id/iconButton5"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:insetLeft="6dp"
+                        android:insetTop="6dp"
+                        android:insetRight="6dp"
+                        android:insetBottom="6dp"
+                        app:icon="@drawable/ic_baseline_help_outline_24"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/resultCardiacLoadTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/resultCardiacLoadTextView"
+                        app:layout_constraintTop_toTopOf="@+id/resultCardiacLoadTextView" />
 
                     <TextView
                         android:id="@+id/textView23"
@@ -793,14 +876,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.25" />
+                        app:layout_constraintGuide_percent="0.27" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineCardiacLoadMax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.75" />
+                        app:layout_constraintGuide_percent="0.73" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

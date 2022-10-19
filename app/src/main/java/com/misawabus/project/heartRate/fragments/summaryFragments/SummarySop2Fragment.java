@@ -179,6 +179,14 @@ public class SummarySop2Fragment extends SummaryFragment {
 
 
 
+        dashBoardViewModel.getIsConnected().observe(getViewLifecycleOwner(),  isBluetoothConnected-> {
+            if(!isBluetoothConnected) {
+                binding.spo2AlertSwitch.setEnabled(false);
+                return;
+            }
+            binding.spo2AlertSwitch.setEnabled(true);
+
+        });
         dashBoardViewModel.getRealTimeTesterClass().readSpo2AlertStatus(isOpen->{
             if(isOpen){
                 binding.spo2AlertSwitch.setEnabled(true);
