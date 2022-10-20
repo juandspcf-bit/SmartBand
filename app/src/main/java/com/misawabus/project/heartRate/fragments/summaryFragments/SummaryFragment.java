@@ -45,9 +45,7 @@ public class SummaryFragment extends Fragment {
         super();
     }
 
-    protected void backMainFragment() {
-        getParentFragmentManager().popBackStack();
-    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +92,10 @@ public class SummaryFragment extends Fragment {
             e.printStackTrace();
         }
 
+    }
+
+    protected void backMainFragment() {
+        getParentFragmentManager().popBackStack();
     }
 
     protected void getDateFromCalendar(Consumer<Date> consumer) {

@@ -87,6 +87,23 @@
         of apnea may be tolerated without severe detrimental consequences.
     </string>
     <string name="apnea_reference">https://en.wikipedia.org/wiki/Apnea</string>
+    <string name="blood_oxygen_definition">Blood oxygen level is the amount of oxygen circulating in
+        the blood. Red blood cells carry most of the oxygen, collecting it from the lungs and
+        delivering it to all parts of the body. The body closely monitors blood oxygen levels to
+        keep them within a specific range so that there is enough oxygen for the needs of
+        every cell. A person’s blood oxygen level indicates how well the body distributes oxygen
+        from the lungs to the cells, and it can be important for people’s health.
+    </string>
+    <string name="blood_oxygen_info_1_title">Normal and low blood oxygen levels</string>
+    <string name="blood_oxygen_info_1_content">A healthy blood oxygen level varies between 75 and
+        100 millimeters of mercury (mm Hg). When arterial blood gas (ABG) test results reveal an
+        oxygen level below 60 mm HgTrusted Source, the medical community considers it low. In some
+        cases, people with these results may require oxygen supplementation. A blood oxygen level
+        that is too low compared with the average level of a healthy person can be a sign of a
+        condition known as hypoxemia. This develops when the body has difficulty delivering oxygen
+        to all of its cells, tissues, and organs.</string>
+    <string name="blood_oxygen_reference">https://www.medicalnewstoday.com/articles/321044</string>
+
     <string name="respiration_rate_definition">A person’s respiratory rate is the number of breaths
         they take per minute. Like body temperature and heart rate, respiratory rate is a vital
         sign that can offer a window into a person’s overall health. This is true of both your
@@ -101,6 +118,7 @@
         less variable with each successive stage of sleep. However, research shows that we also
         breathe faster and more erratically during the rapid eye movement (REM) sleep stage.
     </string>
+    <string name="respiration_rate_info_1_title">What Causes a Low Respiratory Rate During Sleep?</string>
     <string name="respiration_rate_info_1_content">An abnormally low respiratory rate is called
         bradypnea. Sleep apnea is a breathing disorder that causes people’s breathing to slow and
         stop for brief periods while they are asleep. There are two major forms of this disorder,
@@ -116,8 +134,8 @@
     Drug use or overdose, particularly of a central nervous system depressant\n
 
     </string>
-
-    <string name="respiration_rate_info_2_content">Rapid shallow breathing is called tachypnea14,
+    <string name="respiration_rate_info_2_title">What Causes a High Respiratory Rate During Sleep?</string>
+    <string name="respiration_rate_info_2_content">Rapid shallow breathing is called tachypnea,
         while deep rapid breathing is usually referred to as hyperventilation. However, both terms
         are sometimes used interchangeably. Neither form of high respiratory rate is a common
         symptom of any sleep disorder, though tachypnea is sometimes seen in people with sleep
@@ -133,5 +151,74 @@
 
 
     </string>
+
+    <string name="respiration_rate_reference">https://www.sleepfoundation.org/sleep-apnea/sleep-respiratory-rate</string>
+
+    <string name="hypoxia_definition">Hypoxia is a condition in which the body or a region of the
+        body is deprived of adequate oxygen supply at the tissue level. Hypoxia may be classified as
+        either generalized, affecting the whole body, or local, affecting a region of the body.
+         Although hypoxia is often a pathological condition, variations in arterial oxygen
+        concentrations can be part of the normal physiology, for example, during hypoventilation
+        training or strenuous physical exercise.\n\n
+        Generalized hypoxia occurs in healthy people when they ascend to high altitude, where it
+        causes altitude sickness leading to potentially fatal complications: high altitude pulmonary
+        edema and high altitude cerebral edema. Hypoxia also occurs in healthy individuals when
+        breathing mixtures of gases with a low oxygen content, e.g. while diving underwater
+        especially when using closed-circuit rebreather systems that control the amount of oxygen
+        in the supplied air. Mild, non-damaging intermittent hypoxia is used intentionally during
+        altitude training to develop an athletic performance adaptation at both the systemic and
+        cellular level.\n\n
+
+        In acute or silent hypoxia, a person’s oxygen level in blood cells and tissue can drop
+        without any initial warning, even though the individual’s chest x-ray shows diffuse
+        pneumonia with an oxygen level below normal. Doctors report cases of silent hypoxia with
+        COVID-19 patients who did not experience shortness of breath or coughing until their
+        oxygen levels had plummeted to such a degree that the patients risked acute respiratory
+        distress and organ failure.</string>
+
+    <string name="hypoxia_reference">https://en.wikipedia.org/wiki/Hypoxia_(medical)</string>
+
+    <string name="cardiac_output_definition">Cardiac output is how many liters of blood your heart pumps in one
+        minute. Your healthcare provider can figure this out with this cardiac output equation:
+        multiply stroke volume by heart rate. Stroke volume (the amount of blood your heart sends to
+        your body in one heartbeat) can vary based on how hard your heart muscles have to work (and
+        the force they need to use) to push your blood out to your body. Stroke volume can go up or
+        down based on your heart health and whether you’re at rest or moving.\n
+
+        Heart rate (number of heartbeats per minute) is normally 60 to 100 beats per minute.
+        Your heart rate can go up or down depending on whether you’re resting or exercising.\n
+
+        Sometimes, like when you’re exercising, your body needs more oxygen. At that time, your body
+        can change its cardiac output by adjusting your heart rate and stroke volume.
+        Blood delivers oxygen to your cells, so you need more cardiac output when your active body
+        is using more oxygen than usual.
+
+    </string>
+
+    <string name="cardiac_output_info_1_title">What does a cardiac output result mean?</string>
+    <string name="cardiac_output_info_1_content">Normal cardiac output ranges from 5 to 6 liters per
+        minute in a person at rest. While exercising, an athlete can have a cardiac output of more
+        than 35 liters per minute. A non-athlete’s cardiac output will be lower than an athlete’s
+        but higher than when the non-athlete is at rest. Your cardiac output also goes up during
+        pregnancy.\n\n
+
+        Factors that affect your cardiac output include:\n\n
+        High blood pressure: Your heart has to pump with more force to get blood into your arteries.
+        Like walking into a wind gust, your heart is pushing blood against arteries’ higher
+        pressure. Your heart also has to work harder to move blood to your lungs if their blood
+        pressure is high (because of scars or emphysema). Older age: As you age, your heart’s walls
+        get stiffer, keeping your heart from filling with blood as quickly or as well as it once
+        did. This makes your heart pump out less blood to your body. Heart attack that damaged your
+        heart: It may not be able to pump as much blood as it did before the heart attack.
+        An infection (myocarditis) can lower your heart’s ability to pump, too. Abnormal heart
+        rhythm like atrial fibrillation: Your heart’s upper chambers can’t pump enough blood into
+        your heart’s lower chambers and out to your body. Aortic stenosis (narrow aortic valve):
+        Because the valve leading to your aorta is narrow, you can’t get enough blood to it. This
+        is a problem because your aorta is the biggest blood vessel that sends blood to your body.
+        Constrictive pericarditis: When the sac (pericardium) around your heart gets stiff, your
+        heart can’t relax, fill with blood and pump as it should.
+    </string>
+
+    <string name="cardiac_output_reference">https://my.clevelandclinic.org/health/diagnostics/23344-cardiac-output</string>
 
 </resources>

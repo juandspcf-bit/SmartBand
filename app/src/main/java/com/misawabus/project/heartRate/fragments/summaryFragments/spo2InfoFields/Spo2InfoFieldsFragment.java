@@ -52,6 +52,83 @@ public class Spo2InfoFieldsFragment extends Fragment {
         String value = dashBoardViewModel.getCurrentTitleSpo2InfoFields().getValue();
         if(value!=null){
             binding.titleTextView.setText(value);
+            getInfo(value);
         }
+
+        binding.buttonBackFromSop2FieldsFrag.setOnClickListener(this::backSummaryFragment);
+    }
+
+    private void getInfo(String value) {
+        if ("Apnea".equals(value)) {
+            String definition = getString(R.string.apnea_definition);
+            String info1Title = getString(R.string.apnea_info_1_title);
+            String info1Content = getString(R.string.apnea_info_1_content);
+            String reference = getString(R.string.apnea_reference);
+
+            binding.infoTextView.setText(definition);
+            binding.info1TitleTextView.setText(info1Title);
+            binding.info1ContentTextView.setText(info1Content);
+            binding.info2TitleTextView.setText("");
+            binding.info2ContentTextView.setText("");
+            binding.referenceTextView.setText(reference);
+        } else if ("Blood Oxygen".equals(value)) {
+            String definition = getString(R.string.blood_oxygen_definition);
+            String info1Title = getString(R.string.blood_oxygen_info_1_title);
+            String info1Content = getString(R.string.blood_oxygen_info_1_content);
+            String reference = getString(R.string.blood_oxygen_reference);
+
+            binding.infoTextView.setText(definition);
+            binding.info1TitleTextView.setText(info1Title);
+            binding.info1ContentTextView.setText(info1Content);
+            binding.info2TitleTextView.setText("");
+            binding.info2ContentTextView.setText("");
+            binding.referenceTextView.setText(reference);
+
+        }else if ("Respiration Rate".equals(value)) {
+            String definition = getString(R.string.respiration_rate_definition);
+            String info1Title = getString(R.string.respiration_rate_info_1_title);
+            String info1Content = getString(R.string.respiration_rate_info_1_content);
+            String info2Title = getString(R.string.respiration_rate_info_2_title);
+            String info2Content = getString(R.string.respiration_rate_info_2_content);
+            String reference = getString(R.string.respiration_rate_reference);
+
+            binding.infoTextView.setText(definition);
+            binding.info1TitleTextView.setText(info1Title);
+            binding.info1ContentTextView.setText(info1Content);
+            binding.info2TitleTextView.setText(info2Title);
+            binding.info2ContentTextView.setText(info2Content);
+            binding.referenceTextView.setText(reference);
+
+        } else if ("Hypoxia".equals(value)) {
+        String definition = getString(R.string.hypoxia_definition);
+        String reference = getString(R.string.hypoxia_reference);
+
+        binding.infoTextView.setText(definition);
+        binding.info1TitleTextView.setText("");
+        binding.info1ContentTextView.setText("");
+        binding.info2TitleTextView.setText("");
+        binding.info2ContentTextView.setText("");
+        binding.referenceTextView.setText(reference);
+
+    }else if ("Cardiac Load".equals(value)) {
+            String definition = getString(R.string.cardiac_output_definition);
+            String info1Title = getString(R.string.cardiac_output_info_1_title);
+            String info1Content = getString(R.string.cardiac_output_info_1_content);
+            String info2Title = "";
+            String info2Content = "";
+            String reference = getString(R.string.cardiac_output_reference);
+
+            binding.infoTextView.setText(definition);
+            binding.info1TitleTextView.setText(info1Title);
+            binding.info1ContentTextView.setText(info1Content);
+            binding.info2TitleTextView.setText(info2Title);
+            binding.info2ContentTextView.setText(info2Content);
+            binding.referenceTextView.setText(reference);
+
+        }
+    }
+
+    protected void backSummaryFragment(View view) {
+        getParentFragmentManager().popBackStack();
     }
 }
