@@ -771,11 +771,11 @@
                         android:id="@+id/textView23"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="pi"
+                        android:text="liters/\nminute"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cardiacLoadValue"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintHorizontal_bias="0.2"
                         app:layout_constraintStart_toEndOf="@+id/cardiacLoadValue"
                         app:layout_constraintTop_toTopOf="@+id/cardiacLoadValue" />
 
