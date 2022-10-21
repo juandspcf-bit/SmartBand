@@ -173,7 +173,7 @@ public class PersonalFieldsScrollingFragment extends Fragment {
                 device.setName(binding.textViewName.getText().toString());
                 device.setGender(binding.textViewGender.getText().toString());
                 String dateBirthDay = binding.textViewBirthDay.getText().toString();
-                device.setBirthDate(DateUtils.getFormattedDate(dateBirthDay, "-"));
+                device.setBirthDate(DateUtils.getFormattedDate(dateBirthDay, "/"));
                 device.setWeight(binding.textViewWeight.getText().toString());
                 device.setHeight(binding.textViewHeight.getText().toString());
                 device.setStepsGoal(binding.stepsGoalValueTextView.getText().toString());
@@ -187,7 +187,7 @@ public class PersonalFieldsScrollingFragment extends Fragment {
                     double weight = Double.parseDouble(Sweight);
                     String stepsGoalString = device.getStepsGoal().substring(0, device.getStepsGoal().indexOf(" steps"));
                     double stepsGoal = Double.parseDouble(stepsGoalString) * 100.0;
-                    final String[] split = dateBirthDay.split("-");
+                    final String[] split = dateBirthDay.split("/");
                     LocalDate bii = LocalDate.of(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                     int i = LocalDate.now().getMonthValue() - bii.getMonthValue();
                     int offset = i >= 0 ? 0 : -1;

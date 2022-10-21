@@ -120,7 +120,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 return;
             }
             dashBoardViewModel.setDevice(deviceDB);
-            LocalDate localDateBirthDate = DateUtils.getLocalDate(deviceDB.getBirthDate(), "-");
+            LocalDate localDateBirthDate = DateUtils.getLocalDate(deviceDB.getBirthDate(), "/");
             int age = LocalDate.now().getYear() - localDateBirthDate.getYear();
             dashBoardViewModel.setAge(age);
         });
