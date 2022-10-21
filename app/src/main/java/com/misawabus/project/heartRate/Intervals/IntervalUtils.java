@@ -9,9 +9,15 @@ import java.time.LocalTime;
 
 public class IntervalUtils {
     public static final String[] intervalLabels30Min;
+    public static final String[] intervalLabels5Min;
     private static final String TAG = IntervalUtils.class.getSimpleName();
 
     static {
+        intervalLabels30Min = getIntervalStatic30Min();
+        intervalLabels5Min = getIntervalStatic5Min();
+    }
+
+    private static String[] getIntervalStatic30Min() {
         int intervalsTotal = (int) Math.round(24.0/ Constants.INTERVAL_WIDTH_HALF);
         final String[] domainLabels = new String[intervalsTotal];
         for (int i = 0; i < domainLabels.length; i++) {
@@ -33,7 +39,13 @@ public class IntervalUtils {
 
             domainLabels[i] = value;
         }
-        intervalLabels30Min = domainLabels;
+        return domainLabels;
+    }
+
+    private static String[] getIntervalStatic5Min() {
+        int intervalsTotal = (int) Math.round(24.0/ Constants.INTERVAL_WIDTH_FIVE_MIN);
+        final String[] domainLabels = new String[intervalsTotal];
+        return getStringFiveMinutesIntervals(intervalsTotal);
     }
 
     @NonNull

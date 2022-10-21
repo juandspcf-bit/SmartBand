@@ -1,6 +1,7 @@
 package com.misawabus.project.heartRate.fragments.summaryFragments;
 
 import static com.misawabus.project.heartRate.Utils.Constants.DEFAULT_AGE;
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2;
 import static java.util.stream.Collectors.averagingDouble;
 
 import android.content.Context;
@@ -182,30 +183,13 @@ public class SummaryHRFragment extends SummaryFragment {
                 heartRateGroupByFieldsWith30MinSumValues = FragmentUtil
                         .getHeartRateDataGroupByFieldsWith30MinSumValues(heartRateDataMap);
 
-                XYDataArraysForPlotting fieldXYDataArraysForPlotting =
-                        PlotUtils.get5MinFieldXYDataArraysForPlottingHeartRate(heartRateDataMap, "Ppgs");
 
-                Double[] seriesDoubleAVR = fieldXYDataArraysForPlotting.getSeriesDoubleAVR();
 
-                Optional<Double> max = Arrays
-                        .stream(seriesDoubleAVR)
-                        .max(Comparator.naturalOrder());
-                Optional<Double> min = Arrays
-                        .stream(seriesDoubleAVR).filter(value -> value > 0.0)
-                        .min(Comparator.naturalOrder());
-                var maxString = String.format(Locale.getDefault(),
-                        "%.1f",
-                        max.orElse(0.0));
-                var minString = String.format(Locale.getDefault(),
-                        "%.1f",
-                        min.orElse(0.0));
-
-                Double average = Arrays
-                        .stream(seriesDoubleAVR)
-                        .collect(averagingDouble(Double::doubleValue));
-                var averageString = String.format(Locale.getDefault(),
-                        "%.1f",
-                        average);
+/*                fieldXYDataArraysForPlotting =
+                        PlotUtils.get5MinFieldXYDataArraysForPlottingHeartRate(heartRateDataMap, "Ppgs");*/
+                PlotUtils.AxisClass ppgs1 = getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2(heartRateDataMap, "Ppgs");
+                XYDataArraysForPlotting fieldXYDataArraysForPlotting;
+                fieldXYDataArraysForPlotting = new XYDataArraysForPlotting(ppgs1.getTimeAxis(), ppgs1.getRangeAxis());
 
 
                 Double[] ppgs = heartRateGroupByFieldsWith30MinSumValues.get("Ppgs").toArray(new Double[0]);
@@ -218,6 +202,30 @@ public class SummaryHRFragment extends SummaryFragment {
                             domainLabels[position] + "-" + "00:00";
                     intervals.add(interval);
                 });
+
+
+                Optional<Double> max = Arrays
+                        .stream(ppgs)
+                        .max(Comparator.naturalOrder());
+                Optional<Double> min = Arrays
+                        .stream(ppgs).filter(value -> value > 0.0)
+                        .min(Comparator.naturalOrder());
+                var maxString = String.format(Locale.getDefault(),
+                        "%.1f",
+                        max.orElse(0.0));
+                var minString = String.format(Locale.getDefault(),
+                        "%.1f",
+                        min.orElse(0.0));
+
+                Double average = Arrays
+                        .stream(ppgs)
+                        .collect(averagingDouble(Double::doubleValue));
+                var averageString = String.format(Locale.getDefault(),
+                        "%.1f",
+                        average);
+
+
+
 
                 if (getActivity()==null) return;
                 getActivity().runOnUiThread(() -> {

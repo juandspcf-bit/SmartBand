@@ -5,6 +5,8 @@ import static com.misawabus.project.heartRate.fragments.summaryFragments.utils.U
 import static java.util.stream.Collectors.averagingDouble;
 import static java.util.stream.Collectors.toList;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.androidplot.ui.SeriesRenderer;
@@ -16,6 +18,7 @@ import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -73,6 +76,42 @@ public class PlotUtils {
         int indexOfLastNonZeroElement = getIndexOfLastNonZeroElement(data, field);
         Double[] subArray = getSubArrayFromFieldList(data, field, indexOfLastNonZeroElement);
         return setArrayZeroValuesWithAvgHeartRate(subArray);
+    }
+
+    @NonNull
+    public static AxisClass getSubArrayWithReplacedZeroValuesAsAvgV2(List<Map<String, Double>> data, String field) {
+        int indexOfFirstNonZeroElement = getIndexOfFirstNonZeroElement(data, field);
+        List<Map<String, Double>> maps = data.subList(indexOfFirstNonZeroElement, data.size());
+        int indexOfLastNonZeroElement = getIndexOfLastNonZeroElement(maps, field);
+
+        Double[] subArray = getSubArrayFromFieldList(maps, field, indexOfLastNonZeroElement);
+        subArray= setArrayZeroValuesWithAvg(subArray);
+        String[] timeAxisArray = IntervalUtils.intervalLabels5Min;
+        String[] timeAxisSubArray = Arrays.copyOfRange(timeAxisArray, indexOfFirstNonZeroElement, indexOfFirstNonZeroElement+subArray.length);
+
+        AxisClass axisClass = new AxisClass();
+        axisClass.setRangeAxis(subArray);
+        axisClass.setTimeAxis(timeAxisSubArray);
+
+        return axisClass;
+    }
+
+    @NonNull
+    public static AxisClass getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2(List<Map<String, Double>> data, String field) {
+        int indexOfFirstNonZeroElement = getIndexOfFirstNonZeroElement(data, field);
+        List<Map<String, Double>> maps = data.subList(indexOfFirstNonZeroElement, data.size());
+        int indexOfLastNonZeroElement = getIndexOfLastNonZeroElement(maps, field);
+
+        Double[] subArray = getSubArrayFromFieldList(maps, field, indexOfLastNonZeroElement);
+        subArray= setArrayZeroValuesWithAvgHeartRate(subArray);
+        String[] timeAxisArray = IntervalUtils.intervalLabels5Min;
+        String[] timeAxisSubArray = Arrays.copyOfRange(timeAxisArray, indexOfFirstNonZeroElement, indexOfFirstNonZeroElement+subArray.length);
+
+        AxisClass axisClass = new AxisClass();
+        axisClass.setRangeAxis(subArray);
+        axisClass.setTimeAxis(timeAxisSubArray);
+
+        return axisClass;
     }
 
     @NonNull
@@ -136,8 +175,8 @@ public class PlotUtils {
         int index = 0;
 
         while (mapListIterator.hasPrevious()) {
-            Map<String, Double> previous = mapListIterator.previous();
-            Double value = previous.get(field);
+            Map<String, Double> map = mapListIterator.previous();
+            Double value = map.get(field);
             if (value != null && value > 0.0) {
                 index = mapListIterator.previousIndex() + 1;
                 break;
@@ -146,6 +185,34 @@ public class PlotUtils {
         return index;
     }
 
+    private static int getIndexOfFirstNonZeroElement(@NonNull List<Map<String, Double>> data, String field) {
+        ListIterator<Map<String, Double>> mapListIterator = data.listIterator(data.size());
+        int index = 0;
+
+        for (int i = 0; i < data.size(); i++) {
+            Map<String, Double> map = data.get(i);
+            Double value = map.get(field);
+            Log.d(TAG, "getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2: value " + value);
+            if (value != null && value > 0.0) {
+                Log.d(TAG, "getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2: value " + value);
+                index = i;
+                break;
+            }
+        }
+/*
+        while (mapListIterator.hasNext()) {
+            Log.d(TAG, "getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2: value " + index);
+            Map<String, Double> map = mapListIterator.next();
+            Double value = map.get(field);
+            Log.d(TAG, "getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2: value" + value);
+            if (value != null && value > 0.0) {
+                Log.d(TAG, "getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2: value" + value);
+                index = mapListIterator.nextIndex() + 1;
+                break;
+            }
+        }*/
+        return index;
+    }
 
     public static void setRangeMargins(int rangeStepsUpperLimit, XYPlot plot) {
         if (rangeStepsUpperLimit > 10000) {
@@ -192,6 +259,28 @@ public class PlotUtils {
             } else {
                 return getFormatter(series);
             }
+        }
+    }
+
+
+    public static class AxisClass{
+        private Double[] rangeAxis;
+        private String[] timeAxis;
+
+        public Double[] getRangeAxis() {
+            return rangeAxis;
+        }
+
+        public void setRangeAxis(Double[] rangeAxis) {
+            this.rangeAxis = rangeAxis;
+        }
+
+        public String[] getTimeAxis() {
+            return timeAxis;
+        }
+
+        public void setTimeAxis(String[] timeAxis) {
+            this.timeAxis = timeAxis;
         }
     }
 

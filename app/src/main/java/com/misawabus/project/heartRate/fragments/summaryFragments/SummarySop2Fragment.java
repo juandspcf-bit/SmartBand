@@ -3,6 +3,7 @@ package com.misawabus.project.heartRate.fragments.summaryFragments;
 import static com.misawabus.project.heartRate.Utils.Constants.DEFAULT_AGE;
 import static com.misawabus.project.heartRate.Utils.DateUtils.getTodayFormattedDate;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgV2;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.misawabus.project.heartRate.R;
 import com.misawabus.project.heartRate.databinding.FragmentSummarySop2Binding;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
 import com.misawabus.project.heartRate.fragments.summaryFragments.spo2InfoFields.Spo2InfoFieldsFragment;
+import com.misawabus.project.heartRate.plotting.PlotUtils;
 import com.misawabus.project.heartRate.plotting.PlotUtilsSpo2;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 import com.misawabus.project.heartRate.viewModels.DashBoardViewModel;
@@ -100,13 +102,15 @@ public class SummarySop2Fragment extends SummaryFragment {
 
         List<Map<String, Double>> sop2DataMap = FragmentUtil.parse5MinFieldData(stringSop2Data);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(sop2DataMap, "oxygenValue");
-        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
-        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+        PlotUtils.AxisClass oxygenValue1 = getSubArrayWithReplacedZeroValuesAsAvgV2(sop2DataMap, "oxygenValue");
+
+        //Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvgV2(sop2DataMap, "oxygenValue");
+        int lengthSubArray = oxygenValue1.getRangeAxis().length;
+        //String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
 
         XYDataArraysForPlotting sop2XYDataArraysForPlotting;
-        sop2XYDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
-                subArrayWithReplacedZeroValuesAsAvg);
+        sop2XYDataArraysForPlotting = new XYDataArraysForPlotting(oxygenValue1.getTimeAxis(),
+                oxygenValue1.getRangeAxis());
 
         PlotUtilsSpo2.plotSpo2DoubleIntervalsData(sop2XYDataArraysForPlotting.getPeriodIntervalsArray(),
                 sop2XYDataArraysForPlotting.getSeriesDoubleAVR(),

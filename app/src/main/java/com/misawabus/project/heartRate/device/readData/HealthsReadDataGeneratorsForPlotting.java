@@ -2,6 +2,8 @@ package com.misawabus.project.heartRate.device.readData;
 
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgHeartRate;
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2;
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgV2;
 
 import androidx.annotation.NonNull;
 
@@ -12,6 +14,7 @@ import com.misawabus.project.heartRate.device.DataContainers.HeartRateData5MinAv
 import com.misawabus.project.heartRate.device.DataContainers.Sop2HData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.device.DataContainers.SportsData5MinAvgDataContainer;
 import com.misawabus.project.heartRate.fragments.fragmentUtils.FragmentUtil;
+import com.misawabus.project.heartRate.plotting.PlotUtils;
 import com.misawabus.project.heartRate.plotting.XYDataArraysForPlotting;
 
 import org.jetbrains.annotations.Contract;
@@ -107,16 +110,13 @@ public class HealthsReadDataGeneratorsForPlotting {
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvgHeartRate(dataIntervalsList, "Ppgs");
-        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
-        if (lengthSubArray < 3) {
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        PlotUtils.AxisClass ppgs = getSubArrayWithReplacedZeroValuesAsAvgHeartRateV2(dataIntervalsList, "Ppgs");
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(ppgs.getTimeAxis(),
+                ppgs.getRangeAxis());
+        if (ppgs.getRangeAxis().length < 3) {
             return new XYDataArraysForPlotting();
         }
-        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
-
-        XYDataArraysForPlotting xyDataArraysForPlotting;
-        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
-                subArrayWithReplacedZeroValuesAsAvg);
         return xyDataArraysForPlotting;
     }
 
@@ -187,16 +187,13 @@ public class HealthsReadDataGeneratorsForPlotting {
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "oxygenValue");
-        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
-        if (lengthSubArray < 3) {
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        PlotUtils.AxisClass oxygenValue = getSubArrayWithReplacedZeroValuesAsAvgV2(dataIntervalsList, "oxygenValue");
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(oxygenValue.getTimeAxis(),
+                oxygenValue.getRangeAxis());
+        if (oxygenValue.getRangeAxis().length < 3) {
             return new XYDataArraysForPlotting();
         }
-        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
-        XYDataArraysForPlotting xyDataArraysForPlotting;
-        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
-                subArrayWithReplacedZeroValuesAsAvg);
-
         return xyDataArraysForPlotting;
     }
 
@@ -210,39 +207,14 @@ public class HealthsReadDataGeneratorsForPlotting {
         List<Map<String, Double>> dataIntervalsList;
         dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
 
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "bodyTemperature");
-        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
-        if (lengthSubArray < 3) {
+        XYDataArraysForPlotting xyDataArraysForPlotting;
+        PlotUtils.AxisClass bodyTemperature = getSubArrayWithReplacedZeroValuesAsAvgV2(dataIntervalsList, "bodyTemperature");
+        xyDataArraysForPlotting = new XYDataArraysForPlotting(bodyTemperature.getTimeAxis(),
+                bodyTemperature.getRangeAxis());
+        if (bodyTemperature.getRangeAxis().length < 3) {
             return new XYDataArraysForPlotting();
         }
-        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
-
-        XYDataArraysForPlotting xyDataArraysForPlotting;
-        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
-                subArrayWithReplacedZeroValuesAsAvg);
         return xyDataArraysForPlotting;
     }
 
-    public static XYDataArraysForPlotting getSkinTemperatureArraysForPlotting(DataFiveMinAvgDataContainer dataIntervalsMapContainer) {
-        if (dataIntervalsMapContainer == null) return new XYDataArraysForPlotting();
-        Map<Integer, Map<String, Double>> dataIntervalsMap;
-        dataIntervalsMap = dataIntervalsMapContainer.getDoubleMap();
-        if (dataIntervalsMap == null || dataIntervalsMap.size() == 0 || dataIntervalsMap.size() < 3)
-            return new XYDataArraysForPlotting();
-
-        List<Map<String, Double>> dataIntervalsList;
-        dataIntervalsList = FragmentUtil.mapToList(dataIntervalsMap);
-
-        Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvg(dataIntervalsList, "skinTemperature");
-        int lengthSubArray = subArrayWithReplacedZeroValuesAsAvg.length;
-        if (lengthSubArray < 3) {
-            return new XYDataArraysForPlotting();
-        }
-        String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
-
-        XYDataArraysForPlotting xyDataArraysForPlotting;
-        xyDataArraysForPlotting = new XYDataArraysForPlotting(timeAxisSubArray,
-                subArrayWithReplacedZeroValuesAsAvg);
-        return xyDataArraysForPlotting;
-    }
 }
