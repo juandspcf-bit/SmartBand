@@ -2,7 +2,6 @@ package com.misawabus.project.heartRate.fragments.summaryFragments;
 
 import static com.misawabus.project.heartRate.Utils.Constants.DEFAULT_AGE;
 import static com.misawabus.project.heartRate.Utils.DateUtils.getTodayFormattedDate;
-import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvg;
 import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgV2;
 
 import android.os.Build;
@@ -102,11 +101,7 @@ public class SummarySop2Fragment extends SummaryFragment {
 
         List<Map<String, Double>> sop2DataMap = FragmentUtil.parse5MinFieldData(stringSop2Data);
 
-        PlotUtils.AxisClass oxygenValue1 = getSubArrayWithReplacedZeroValuesAsAvgV2(sop2DataMap, "oxygenValue");
-
-        //Double[] subArrayWithReplacedZeroValuesAsAvg = getSubArrayWithReplacedZeroValuesAsAvgV2(sop2DataMap, "oxygenValue");
-        int lengthSubArray = oxygenValue1.getRangeAxis().length;
-        //String[] timeAxisSubArray = IntervalUtils.getStringFiveMinutesIntervals(lengthSubArray);
+        PlotUtils.AxisClass oxygenValue1 = getSubArrayWithReplacedZeroValuesAsAvgV2(sop2DataMap, "oxygenValue", IntervalUtils.intervalLabels5Min);
 
         XYDataArraysForPlotting sop2XYDataArraysForPlotting;
         sop2XYDataArraysForPlotting = new XYDataArraysForPlotting(oxygenValue1.getTimeAxis(),

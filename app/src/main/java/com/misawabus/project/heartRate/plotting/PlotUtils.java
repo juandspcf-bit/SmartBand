@@ -18,7 +18,6 @@ import com.misawabus.project.heartRate.Intervals.IntervalUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -79,14 +78,13 @@ public class PlotUtils {
     }
 
     @NonNull
-    public static AxisClass getSubArrayWithReplacedZeroValuesAsAvgV2(List<Map<String, Double>> data, String field) {
+    public static AxisClass getSubArrayWithReplacedZeroValuesAsAvgV2(List<Map<String, Double>> data, String field, String[] timeAxisArray) {
         int indexOfFirstNonZeroElement = getIndexOfFirstNonZeroElement(data, field);
         List<Map<String, Double>> maps = data.subList(indexOfFirstNonZeroElement, data.size());
         int indexOfLastNonZeroElement = getIndexOfLastNonZeroElement(maps, field);
 
         Double[] subArray = getSubArrayFromFieldList(maps, field, indexOfLastNonZeroElement);
         subArray= setArrayZeroValuesWithAvg(subArray);
-        String[] timeAxisArray = IntervalUtils.intervalLabels5Min;
         String[] timeAxisSubArray = Arrays.copyOfRange(timeAxisArray, indexOfFirstNonZeroElement, indexOfFirstNonZeroElement+subArray.length);
 
         AxisClass axisClass = new AxisClass();
@@ -141,9 +139,7 @@ public class PlotUtils {
         var seriesList = new ArrayList<List<Double>>();
         if (lengthSubArray > 3)
             interpolateSeries(subArray, numericalTimeAxisSubArray, lengthSubArray, seriesList);
-
         return subArray;
-
     }
 
 
