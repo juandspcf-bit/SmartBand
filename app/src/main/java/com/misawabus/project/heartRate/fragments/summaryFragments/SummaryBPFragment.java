@@ -3,6 +3,7 @@ package com.misawabus.project.heartRate.fragments.summaryFragments;
 import static com.misawabus.project.heartRate.constans.IdTypeDataTable.HighPressure;
 import static com.misawabus.project.heartRate.constans.IdTypeDataTable.LowPressure;
 import static com.misawabus.project.heartRate.fragments.summaryFragments.utils.UtilsSummaryFragments.Companion;
+import static com.misawabus.project.heartRate.plotting.PlotUtils.getSubArrayWithReplacedZeroValuesAsAvgV2;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -128,9 +129,17 @@ public class SummaryBPFragment extends SummaryFragment {
         List<Map<String, Double>> bloodPressureDataMap = FragmentUtil.parse5MinFieldData(bloodPressure.getData());
         List<Map<String, Double>> bPMapFieldsForEach30Min = FragmentUtil.getBloodPressureMapFieldsWith30MinAVGValues(bloodPressureDataMap);
 
+        XYDataArraysForPlotting lowValuesSampleContainer;
+        PlotUtils.AxisClass lowVaamlue = getSubArrayWithReplacedZeroValuesAsAvgV2(bPMapFieldsForEach30Min, "lowVaamlue", IntervalUtils.intervalLabels30Min);
+        lowValuesSampleContainer = new XYDataArraysForPlotting(lowVaamlue.getTimeAxis(),
+                lowVaamlue.getRangeAxis());
+        XYDataArraysForPlotting highValuesSampleContainer;
+        PlotUtils.AxisClass highValue = getSubArrayWithReplacedZeroValuesAsAvgV2(bPMapFieldsForEach30Min, "highValue", IntervalUtils.intervalLabels30Min);
+        highValuesSampleContainer = new XYDataArraysForPlotting(highValue.getTimeAxis(),
+                highValue.getRangeAxis());
 
-        XYDataArraysForPlotting highValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "highValue");
-        XYDataArraysForPlotting lowValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "lowVaamlue");
+        //XYDataArraysForPlotting highValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "highValue");
+        //XYDataArraysForPlotting lowValuesSampleContainer = PlotUtils.get30MinFieldXYDataArraysForPlotting(bPMapFieldsForEach30Min, "lowVaamlue");
         Double[] highValuesSampleArray = highValuesSampleContainer.getSeriesDoubleAVR();
         Double[] lowValuesSampleArray = lowValuesSampleContainer.getSeriesDoubleAVR();
         List<Double> HPList = Arrays.asList(highValuesSampleArray);
