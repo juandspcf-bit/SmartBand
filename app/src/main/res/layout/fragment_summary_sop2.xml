@@ -116,14 +116,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.75" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/Sop2guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            app:layout_constraintGuide_percent="0.35" />
-
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/spo2AlertSwitch"
@@ -133,7 +125,7 @@
             android:layout_marginBottom="8dp"
             android:checked="false"
             android:enabled="false"
-            android:minHeight="5dp"
+            android:minHeight="48dp"
             android:text="low blood\n oxygen alert"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/analyticResultTextView"
@@ -200,8 +192,8 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/apneaResultProgressBar"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMax"
+                        app:layout_constraintEnd_toEndOf="@+id/apneaResultTextView"
+                        app:layout_constraintStart_toStartOf="@+id/apneaResultTextView"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -212,6 +204,7 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.323"
                         app:layout_constraintStart_toStartOf="@+id/guidelineApneaResultMax"
                         app:layout_constraintTop_toBottomOf="@+id/apneaResultValue" />
 
@@ -361,6 +354,7 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.32"
                         app:layout_constraintStart_toStartOf="@+id/guidelineBloodOxygenMax"
                         app:layout_constraintTop_toBottomOf="@+id/bloodOxygenValue" />
 
@@ -517,6 +511,7 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.32"
                         app:layout_constraintStart_toStartOf="@+id/guidelineRespirationRateMax"
                         app:layout_constraintTop_toBottomOf="@+id/respirationRateValue" />
 
@@ -661,6 +656,7 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.32"
                         app:layout_constraintStart_toStartOf="@+id/guidelineHypoxiaTimeMax"
                         app:layout_constraintTop_toBottomOf="@+id/hypoxiaTimeValue" />
 
@@ -804,6 +800,7 @@
                         android:textColor="#455A64"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.32"
                         app:layout_constraintStart_toStartOf="@+id/guidelineCardiacLoadMax"
                         app:layout_constraintTop_toBottomOf="@+id/cardiacLoadValue" />
 
@@ -890,6 +887,32 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/Sop2guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="fragmentSop2PlotCardViewSummary,Sop2Guideline1,Sop2Guideline2,spo2AlertSwitch,analyticResultTextView,scrollviewSpo2,Sop2guideline3" />
+
+        <ImageView
+            android:id="@+id/spo2ImageView"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectDateSop2Button"
+            app:srcCompat="@drawable/oxygen_saturation" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

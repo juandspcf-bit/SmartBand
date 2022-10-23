@@ -95,11 +95,22 @@ public class SummarySop2Fragment extends SummaryFragment {
 
     private void setFragmentViews(Date selectedDate, Sop2 data) {
         setTextButtonDate(selectedDate, selectDateButton);
-        if (data == null) return;
-        if (data.getData() == null || data.getData().isEmpty()) return;
-        String stringSop2Data = data.getData();
+        if (data == null) {
+            binding.spo2ImageView.setVisibility(View.VISIBLE);
+            binding.group2.setVisibility(View.GONE);
+            return;
+        }
+        if (data.getData() == null || data.getData().isEmpty()) {
+            binding.group2.setVisibility(View.GONE);
+            binding.spo2ImageView.setVisibility(View.VISIBLE);
+            return;
+        }
 
+        String stringSop2Data = data.getData();
         List<Map<String, Double>> sop2DataMap = FragmentUtil.parse5MinFieldData(stringSop2Data);
+
+
+        Log.d(TAG, "setFragmentViews: " + sop2DataMap);
 
         PlotUtils.AxisClass oxygenValue1 = getSubArrayWithReplacedZeroValuesAsAvgV2(sop2DataMap, "oxygenValue", IntervalUtils.intervalLabels5Min);
 
@@ -145,6 +156,13 @@ public class SummarySop2Fragment extends SummaryFragment {
                 .collect(Collectors.averagingDouble(Double::doubleValue));
         String cardiacLoadQuality = getCardiacLoadQuality(cardiacLoad);
 
+        if(oxygenValue<70){
+            binding.group2.setVisibility(View.GONE);
+            binding.spo2ImageView.setVisibility(View.VISIBLE);
+            return;
+        }
+        binding.group2.setVisibility(View.VISIBLE);
+        binding.spo2ImageView.setVisibility(View.GONE);
 
         long roundApneaResult = Math.round(apneaResult);
         binding.apneaResultValue.setText(String.valueOf(roundApneaResult));
