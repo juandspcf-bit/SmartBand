@@ -11,6 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline74"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline73"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+
         <Button
             android:id="@+id/buttonBackFromSummarySleepFrag"
             style="@style/Widget.Material3.Button.IconButton"
@@ -72,13 +86,12 @@
 
         <ImageView
             android:id="@+id/imageViewSleep"
-            android:layout_width="246dp"
+            android:layout_width="0dp"
             android:layout_height="362dp"
-            android:layout_marginTop="36dp"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline74"
+            app:layout_constraintStart_toStartOf="@+id/guideline73"
             app:layout_constraintTop_toBottomOf="@+id/dividerSleep"
             app:srcCompat="@drawable/sleeping" />
 
