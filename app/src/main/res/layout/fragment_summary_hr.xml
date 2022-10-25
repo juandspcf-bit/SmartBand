@@ -113,8 +113,9 @@
             android:id="@+id/highestHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="TextView"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="92dp"
             tools:layout_editor_absoluteY="424dp" />
@@ -123,8 +124,9 @@
             android:id="@+id/averageHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="TextView"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="452dp"
             tools:layout_editor_absoluteY="424dp" />
@@ -147,8 +149,10 @@
             android:id="@+id/highestHRTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="Highest Value"
-            android:textSize="20sp"
+            android:textColor="#808383"
+            android:textSize="24sp"
             tools:layout_editor_absoluteX="77dp"
             tools:layout_editor_absoluteY="383dp" />
 
@@ -156,8 +160,10 @@
             android:id="@+id/avgHRTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="Average"
-            android:textSize="20sp"
+            android:textColor="#808383"
+            android:textSize="24sp"
             tools:layout_editor_absoluteX="441dp"
             tools:layout_editor_absoluteY="383dp" />
 
@@ -166,8 +172,10 @@
             android:id="@+id/lowesHRTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="Lowest value"
-            android:textSize="20sp"
+            android:textColor="#808383"
+            android:textSize="24sp"
             tools:layout_editor_absoluteX="251dp"
             tools:layout_editor_absoluteY="421dp" />
 
@@ -175,8 +183,9 @@
             android:id="@+id/lowestHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="TextView"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="301dp"
             tools:layout_editor_absoluteY="421dp" />
