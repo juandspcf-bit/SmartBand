@@ -88,7 +88,7 @@
             android:id="@+id/imageViewSleep"
             android:layout_width="0dp"
             android:layout_height="362dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline74"
             app:layout_constraintStart_toStartOf="@+id/guideline73"
