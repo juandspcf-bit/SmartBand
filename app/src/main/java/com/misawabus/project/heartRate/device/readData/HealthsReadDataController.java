@@ -332,29 +332,45 @@ public class HealthsReadDataController {
         summaryTitlesMap
                 .put(SportsData5MinAvgDataContainer.class.getSimpleName(),
                         formattedMaxValue);
+        Optional<ContainerDouble> optionalMaxIndex;
+
 
         rangeDouble = heartRateArraysForPlotting.getSeriesDoubleAVR();
-        Optional<ContainerDouble> optionalMaxIndex =
-                getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                        .max(Comparator.comparing(ContainerDouble::getValue));
-        Double maxValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
-        formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
-        summaryTitlesMap
-                .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
-                        formattedMaxValue);
-
+        if(rangeDouble!=null){
+            optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(ContainerDouble::getValue));
+            Double maxValue = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getValue();
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value: %.1f bpm", maxValue);
+            summaryTitlesMap
+                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                            formattedMaxValue);
+        }else{
+            summaryTitlesMap
+                    .put(HeartRateData5MinAvgDataContainer.class.getSimpleName(),
+                            "");
+        }
 
         rangeDouble = highBPArraysForPlotting.getSeriesDoubleAVR();
-        optionalMaxIndex =
-                getContainerDoubleStream(rangeDouble, rangeDouble.length)
-                        .max(Comparator.comparing(ContainerDouble::getValue));
-        int index = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getIndex();
-        Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
-        Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
-        formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
-        summaryTitlesMap
-                .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
-                        formattedMaxValue);
+
+
+        if(rangeDouble!=null){
+            optionalMaxIndex =
+                    getContainerDoubleStream(rangeDouble, rangeDouble.length)
+                            .max(Comparator.comparing(ContainerDouble::getValue));
+            int index = optionalMaxIndex.orElse(new ContainerDouble(0.0, 0)).getIndex();
+            Double higValue = highBPArraysForPlotting.getSeriesDoubleAVR()[index];
+            Double lowValue = lowBPArraysForPlotting.getSeriesDoubleAVR()[index];
+            formattedMaxValue = String.format(Locale.getDefault(), "Max value:\n%.1f/%.1f mmHg", higValue, lowValue);
+            summaryTitlesMap
+                    .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                            formattedMaxValue);
+        }else{
+            summaryTitlesMap
+                    .put(BloodPressureDataFiveMinAvgDataContainer.class.getSimpleName() + "High",
+                            "");
+        }
+
         return summaryTitlesMap;
 
     }
@@ -414,7 +430,6 @@ public class HealthsReadDataController {
                     HealthsReadDataGeneratorsForDB.functionToSetFieldsInTemperatureData(),
                     new Temperature5MinDataContainer());
 
-            Log.d(TAG, "processTemperatureDataList: " + temperatureFiveMinAvgDataContainer.getDoubleMap());
 
             XYDataArraysForPlotting bodyTemperatureArraysForPlotting;
             bodyTemperatureArraysForPlotting = HealthsReadDataGeneratorsForPlotting.getBodyTemperatureArraysForPlotting(temperatureFiveMinAvgDataContainer);
@@ -453,6 +468,7 @@ public class HealthsReadDataController {
 
 
             mHandler.post(() -> {
+                if(list.size()==0) return;
                 TimeData timeData = list.get(0).getmTime();
                 LocalDate localDate = DateUtils.getLocalDateFromVeepooTimeDateObj(timeData.toString());
                 if (localDate.compareTo(LocalDate.now()) == 0) {
@@ -485,12 +501,13 @@ public class HealthsReadDataController {
     public static DataFiveMinAvgDataContainer computeTemperatureDataFiveMinAVR(List<TemptureData> list,
                                                                                List<BiConsumer<Map<String, Double>, TemptureData>> functionToSetFieldsInTemperatureData,
                                                                                Temperature5MinDataContainer temperature5MinDataContainer) {
-        TimeData timeData = list.get(0).getmTime();
-        temperature5MinDataContainer.setStringDate(timeData.getYear()+"-"+timeData.getMonth()+"-"+ timeData.getDay());
-        computeDataFiveMinTemperature(list,
-                functionToSetFieldsInTemperatureData,
-                temperature5MinDataContainer);
-
+        if(list.size()!=0){
+            TimeData timeData = list.get(0).getmTime();
+            temperature5MinDataContainer.setStringDate(timeData.getYear()+"-"+timeData.getMonth()+"-"+ timeData.getDay());
+            computeDataFiveMinTemperature(list,
+                    functionToSetFieldsInTemperatureData,
+                    temperature5MinDataContainer);
+        }
         return temperature5MinDataContainer;
 
     }

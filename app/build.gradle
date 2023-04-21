@@ -54,6 +54,7 @@ dependencies {
     implementation 'org.apache.commons:commons-math3:3.6.1'
     implementation 'androidx.compose.ui:ui-graphics:1.2.1'
     implementation fileTree(dir: '/home/juan/AndroidStudioProjects/SmartBand/app/libs/', include: ['*.aar', '*.jar'], exclude: [])
+    implementation fileTree(dir: '/home/juan/StudioProjects/SmartBandHbandClone/app/libs/', include: ['*.aar', '*.jar'], exclude: [])
 
 
     testImplementation 'junit:junit:4.13.2'
