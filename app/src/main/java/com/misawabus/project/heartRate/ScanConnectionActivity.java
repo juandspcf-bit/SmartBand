@@ -97,6 +97,8 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
         swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
         swipeRefreshLayout.setProgressViewEndTarget(true, 512);
         scanConnectionViewModel = new ViewModelProvider(this).get(ScanConnectionViewModel.class);
+        bluetoothMustPermissions.check_BLUETOOTH_CONNECT_Permission();
+        bluetoothMustPermissions.check_BLUETOOTH_SCAN_Permission();
         initBluetoothLocalDevice();
 
 
@@ -232,6 +234,7 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
         BluetoothManager systemService = (BluetoothManager) getBaseContext().getSystemService(Context.BLUETOOTH_SERVICE);
         systemService.getAdapter();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothMustPermissions.check_BLUETOOTH_CONNECT_Permission();
         String nameAdapter = bluetoothAdapter.getName();
         Log.d("nameAdapter", nameAdapter);
         if (bluetoothAdapter == null) {
@@ -443,6 +446,10 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
         switch (requestCode) {
             case SELECT_DEVICE_REQUEST_CODE:
                 Log.d("PERMISSION_ALL","SELECT_DEVICE_REQUEST_CODE");
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Log.d("PERMISSION_ALL","granted");
+                }
                 break;
             case LOCATION_PER_CODE:
                 Log.d("PERMISSION_ALL","LOCATION_PER_CODE");
@@ -467,7 +474,10 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
                 return;
                 // You can use the API that requires the permission.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_CONNECT)) {
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Log.d("PERMISSION_ALL","BLUETOOTH_CONNECT");
+                    requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, SELECT_DEVICE_REQUEST_CODE);
+                }
             } else {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -499,7 +509,10 @@ public class ScanConnectionActivity extends AppCompatActivity implements OnViewC
                     PackageManager.PERMISSION_GRANTED) {
                 return;
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_SCAN)) {
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Log.d("PERMISSION_ALL","SCAN PER");
+                    requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN}, SELECT_DEVICE_REQUEST_CODE);
+                }
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     Log.d("PERMISSION_ALL","SCAN PER");
